@@ -1,0 +1,46 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import {Types} from 'mongoose';
+import { HydratedDocument } from 'mongoose';
+
+export type UserDocument = HydratedDocument<UserMongoose>;
+
+/* Entity Fields */
+/**
+ *      public projectKey: string,
+ *      public name: string,
+ *      public email: string,
+ *      public scopes: string[],
+ *      public active: boolean = true,
+ *      public id?: ID, 
+ *      public password?: string,
+ *      public createdAt?: Date,
+ *      public updatedAt?: Date
+ **/
+
+
+@Schema({timestamps: true})
+export class UserMongoose {
+    @Prop({required: true, type: String})
+    name: string;
+
+    @Prop({unique: true, required: true, type: String})
+    projectKey: string;
+
+    @Prop({unique: true, required: true, type: String})
+    email: string;
+
+    @Prop({type: [String], required: true})
+    scopes: string[]
+
+    @Prop({type: Boolean, required: true, default: true})
+    active: boolean
+
+    @Prop({required: false})
+    password?: string
+
+
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export const UserSchema = SchemaFactory.createForClass(UserMongoose);

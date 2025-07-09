@@ -1,4 +1,4 @@
-export class Users<ID> {
+export class UserEntity<ID> {
     constructor(
         public projectKey: string,
         public name: string,
@@ -20,6 +20,10 @@ export class Users<ID> {
         if (password !== undefined && password.trim().length === 0) 
         {
             throw new Error("Senha do usuário inválido");
+        }
+        if(active === undefined)
+        {
+            throw new Error("Active must to be a boolean!")
         }
     }
 }
