@@ -1,0 +1,17 @@
+{
+  "material-icon-theme.folders.associations": {
+    "domain": "class",
+    "application": "app",
+    "usecase": "controller",
+    "dtos": "tools",
+    "infrastructure": "server",
+    "entities": "class",
+    "mongodb": "database",
+    "mapper": "tools"
+  },
+
+  "material-icon-theme.files.associations": {
+    "*.mongodb.ts": "database",
+    "*.mongoose.ts": "database",
+  }
+}
