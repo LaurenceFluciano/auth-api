@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString } from "@nestjs/class-validator"
+import { IsEmail, IsNotEmpty, IsString, IsArray, ArrayNotEmpty } from "@nestjs/class-validator"
 
 export class CreateUserDTO {
     @IsNotEmpty()
@@ -18,6 +18,8 @@ export class CreateUserDTO {
     @IsString()
     password: string
 
-    @IsNotEmpty()
-    scopes: string[]
+    @IsArray()
+    @ArrayNotEmpty()
+    @IsString({ each: true })
+    scopes: string[];
 }
