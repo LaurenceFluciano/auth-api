@@ -23,6 +23,6 @@ import { UpdateUserMongoDBRepository } from "../repository/user.update.repositor
             useClass: UpdateUserMongoDBRepository
         }
     ],
-    exports: [USER_CREATOR_REPOSITORY,USER_GETTER_REPOSITORY]
+    exports: [USER_CREATOR_REPOSITORY,USER_GETTER_REPOSITORY, USER_UPDATE_REPOSITORY]
 })
 export class UserRepositoryModule {} 
