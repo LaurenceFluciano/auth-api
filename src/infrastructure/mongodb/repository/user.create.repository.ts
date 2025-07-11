@@ -23,7 +23,7 @@ implements UserCreatorRepository
     = new UserSimpleMapper()
 
     constructor(
-        @InjectModel(UserMongoose.name, "user")
+        @InjectModel(UserMongoose.name)
         private userModel: Model<UserDocument>
     )
     {}

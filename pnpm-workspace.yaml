@@ -1,3 +1,4 @@
 ignoredBuiltDependencies:
   - '@nestjs/core'
   - '@swc/core'
+  - mongodb-memory-server

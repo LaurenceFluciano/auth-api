@@ -1,7 +1,7 @@
 import { UserEntity } from "src/domain/entities/user.entities";
 import { SimpleMapper } from "src/domain/interface/mapper.interface";
 import { UserDocument, UserMongoose } from "../schema/user.schema.mongodb";
-import { Types } from "mongoose";
+import { isValidObjectId, Types } from "mongoose";
 import { ID } from "src/domain/interface/user.repository";
 
 export class UserSimpleMapper 
@@ -42,7 +42,7 @@ implements SimpleMapper<UserEntity<ID>, UserDocument | Partial<UserMongoose>>
     }
 
     toPersistence(
-        entity: UserEntity<ID>, 
+        domain: UserEntity<ID>, 
         options?: 
         {
             ignoreId?: boolean, 
@@ -50,33 +50,48 @@ implements SimpleMapper<UserEntity<ID>, UserDocument | Partial<UserMongoose>>
         }): Partial<UserMongoose> & UserDocument
     {
         if (
-            !entity.name ||
-            !entity.email ||
-            entity.scopes.length <= 0 ||
-            !entity.projectKey ||
-            entity.active === undefined
+            !domain.name ||
+            !domain.email ||
+            domain.scopes.length <= 0 ||
+            !domain.projectKey ||
+            domain.active === undefined
         ) {
             throw new Error("[SIMPLE MAPPER] Campos obrigatórios para persistência faltando.")
         }
 
         const doc = {
-            name: entity.name,
-            email: entity.email,
-            active: entity.active,
-            scopes: entity.scopes,
-            projectKey: entity.projectKey
+            name: domain.name,
+            email: domain.email,
+            active: domain.active,
+            scopes: domain.scopes,
+            projectKey: domain.projectKey
         } as Partial<UserMongoose>  & UserDocument
 
-        if (!options?.ignoreId && entity.id) 
+        if (!options?.ignoreId && domain.id) 
         {
-            doc._id = new Types.ObjectId(entity.id);
+            doc._id = new Types.ObjectId(domain.id);
         }
 
-        if(!options?.ignorePassword && entity.password) 
+        if(!options?.ignorePassword && domain.password) 
         {
-            doc.password = entity.password;
+            doc.password = domain.password;
         }
 
         return doc
     }
 } 
+
+export class UserIDMapper
+implements SimpleMapper<ID, Types.ObjectId>
+{
+    toDomain(external: Types.ObjectId): ID {
+        return external.toString()
+    }
+    toPersistence(domain: string): Types.ObjectId {
+        if(!isValidObjectId(domain))
+        {
+            throw new Error("[Simple Mapper] Id obtido é inválido");
+        }
+        return new Types.ObjectId(domain);
+    }
+}

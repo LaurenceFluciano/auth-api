@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString } from "@nestjs/class-validator";
 
-class GetUserByIdDTO {
+class GetUserIdDTO {
     @IsNotEmpty()
     @IsString()
     id: string;
@@ -19,6 +19,6 @@ class GetByCredentialsDTO {
 }
 
 export {
-    GetUserByIdDTO,
+    GetUserIdDTO,
     GetByCredentialsDTO
 }
