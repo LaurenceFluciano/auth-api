@@ -17,7 +17,7 @@ export class UserEntity<ID> {
         {
             throw new Error("Pelo menos um escopo é obrigatório.");
         }
-        if (password !== undefined && password.trim().length === 0) 
+        if(password !== undefined && password.trim().length === 0) 
         {
             throw new Error("Senha do usuário inválido");
         }
@@ -27,9 +27,3 @@ export class UserEntity<ID> {
         }
     }
 }
-
-/* Regras de Negócios futuras
-*
-* if (!name || name.length < 3) throw new Error("Nome inválido.");
-*
-*/

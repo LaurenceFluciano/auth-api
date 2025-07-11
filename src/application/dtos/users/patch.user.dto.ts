@@ -13,7 +13,7 @@ class PatchUserScopesDTO {
     scopes: string[];
 }
 
-class PatchUserStatusDTO {
+class PatchUserActiveDTO {
     @IsBoolean()
     active: boolean;
 }
@@ -22,6 +22,6 @@ class PatchUserStatusDTO {
 export {
     PatchUserNameDTO,
     PatchUserScopesDTO,
-    PatchUserStatusDTO
+    PatchUserActiveDTO
 }
 

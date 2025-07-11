@@ -9,15 +9,19 @@ import { UserEntity } from 'src/domain/entities/user.entities';
 /* DTOS */
 import { CreateUserDTO } from '../dtos/users/create.user.dto';
 import { GetUserIdDTO } from '../dtos/users/get.user.dto';
+import { EncryptService } from 'src/infrastructure/utils/crypto.abstract';
 
 export class CreateUserService {
   constructor(
     @Inject(USER_CREATOR_REPOSITORY)
-    private readonly repository: UserCreatorRepository
+    private readonly repository: UserCreatorRepository,
+    @Inject(EncryptService)
+    private readonly encryptService: EncryptService,
   ){}
   
   async create(dto: CreateUserDTO): Promise<GetUserIdDTO>
   {
+
     const user: UserEntity<ID> = {
       name: dto.name,
       email: dto.email,
