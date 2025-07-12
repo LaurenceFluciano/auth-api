@@ -23,10 +23,10 @@ export class UserMongoose {
     @Prop({required: true, type: String})
     name: string;
 
-    @Prop({unique: true, required: true, type: String})
+    @Prop({required: true, type: String})
     projectKey: string;
 
-    @Prop({unique: true, required: true, type: String})
+    @Prop({required: true, type: String})
     email: string;
 
     @Prop({type: [String], required: true})
@@ -43,4 +43,10 @@ export class UserMongoose {
     updatedAt?: Date;
 }
 
-export const UserSchema = SchemaFactory.createForClass(UserMongoose);
+
+
+const UserSchema = SchemaFactory.createForClass(UserMongoose);
+
+UserSchema.index({ email: 1, projectKey: 1 }, { unique: true });
+
+export {UserSchema};
