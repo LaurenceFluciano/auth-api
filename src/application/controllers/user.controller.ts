@@ -1,19 +1,25 @@
 import { Body, Controller, Post, Get, Patch, Param, HttpCode, Query } from '@nestjs/common';
-import { UserService } from '../services/user.service';
+import { CreateUserService } from '../services/create.user.service';
+import { GetUserService } from '../services/get.user.service';
 import { CreateUserDTO } from '../dtos/users/create.user.dto';
+import { PatchUserService } from '../services/patch.user.service';
 import { GetByCredentialsDTO, GetUserIdDTO } from '../dtos/users/get.user.dto';
 import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from '../dtos/users/patch.user.dto';
 
 
 @Controller("users")
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly createUserService: CreateUserService,
+    private readonly getUserService: GetUserService,
+    private readonly updateUserService: PatchUserService
+  ) {}
 
 
   /** [POST METHOD] createUser
    * 
    * @param dtoBody 
-   * @returns new GetUserIdDTO()
+   * @returns GetUserIdDTO
    */
 
   @Post()
@@ -22,14 +28,14 @@ export class UserController {
     @Body() dtoBody: CreateUserDTO
   ): Promise<GetUserIdDTO>
   {
-    const user = await this.userService.create(dtoBody);
-    return user;
+    const id = await this.createUserService.create(dtoBody);
+    return id;
   }
 
   /** [GET METHOD] getUserById
    * 
    * @param dtoParam 
-   * @returns  new GetUserResponseDTO()
+   * @returns  GetUserResponseDTO
    */
 
   @Get(":id")
@@ -44,7 +50,7 @@ export class UserController {
   /** [GET METHOD] getUserByCredentials
    * 
    * @param dtoQuery 
-   * @returns new GetUserResponseDTO()
+   * @returns GetUserResponseDTO
    */
 
   @Get("by-credentials")
@@ -60,7 +66,7 @@ export class UserController {
    * 
    * @param dtoParam 
    * @param dtoBody 
-   * @returns Promise<{"name":"string"}>
+   * @returns Promise<PatchUserNameDTO>
    */
 
   @Patch(":id")
@@ -68,7 +74,7 @@ export class UserController {
   async updateUserName(
     @Param() dtoParam: GetUserIdDTO,
     @Body() dtoBody: PatchUserNameDTO
-  ) /*: Promise<{"name":"string"}>*/
+  ) /*: Promise<PatchUserNameDTO>*/
   {
     return "[UPDATE NAME] Must to be Implemeted";
   }
@@ -77,7 +83,7 @@ export class UserController {
    * 
    * @param dtoParam 
    * @param dtoBody 
-   * @returns Promise<{"scopes":["string"]}>
+   * @returns Promise<PatchUserScopesDTO>
    */
 
   @Patch(":id/scopes/")
@@ -85,16 +91,16 @@ export class UserController {
   async updateUserScopes(
     @Param() dtoParam: GetUserIdDTO,
     @Body() dtoBody: PatchUserScopesDTO
-  ) /*: Promise<{"scopes":["string"]}>*/
+  ) /*: Promise<PatchUserScopesDTO>*/
   {
     return "[UPDATE SCOPES] Must to be Implemeted";
   }
 
-  /** [PATCH METHOD] updateUserStatus
+  /** [PATCH METHOD] updateUserActive
    * 
    * @param dtoParam 
    * @param dtoBody 
-   * @returns Promise<{"active": boolean }>
+   * @returns Promise<PatchUserActiveDTO>
    */
 
   @Patch(":id/status/")
@@ -102,7 +108,7 @@ export class UserController {
   async updateUserActive(
     @Param() dtoParam: GetUserIdDTO,
     @Body() dtoBody: PatchUserActiveDTO
-  ) /*: Promise<{"active": boolean }>*/
+  ) /*: Promise<PatchUserActiveDTO>*/
   {
     return "[UPDATE ACTIVE] Must to be Implemeted";
   }
