@@ -10,8 +10,8 @@ import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { 
     PatchUserActiveDTO,
     PatchUserNameDTO,
-    PatchUserScopesDTO } from "../dtos/users/patch.user.dto";
-import { GetUserIdDTO } from "../dtos/users/get.user.dto";
+    PatchUserScopesDTO } from "../../dtos/users/patch.user.dto";
+import { GetUserIdDTO } from "../../dtos/users/get.user.dto";
 
 @Injectable()
 export class PatchUserService 
@@ -49,7 +49,7 @@ export class PatchUserService
         } as PatchUserActiveDTO
     }
 
-    async updatePatchUserScopesDTO(idDto: GetUserIdDTO, dto: PatchUserScopesDTO): Promise<PatchUserScopesDTO>
+    async updatePatchUserScopes(idDto: GetUserIdDTO, dto: PatchUserScopesDTO): Promise<PatchUserScopesDTO>
     {
 
         const result = await this.repository.updateScopes(idDto.id, dto.scopes);

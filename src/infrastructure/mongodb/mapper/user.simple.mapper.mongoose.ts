@@ -22,21 +22,23 @@ implements SimpleMapper<UserEntity<ID>, UserDocument | Partial<UserMongoose>>
                 active: external.active,
             } as UserEntity<ID>
 
-            if(options?.ignoreId && external._id)
+            if(!options?.ignoreId && external._id)
             {
                 entity.id = external._id.toString()
             }
 
-            if(options?.ignorePassword && external.password)
+            if(!options?.ignorePassword && external.password)
             {  
                 entity.password = external.password
             }
 
-            if(options?.ignoreTimeStamp && external.createdAt && external.updatedAt)
+            if(!options?.ignoreTimeStamp && external.createdAt && external.updatedAt)
             {
                 entity.createdAt = new Date(external.createdAt)
                 entity.updatedAt = new Date(external.updatedAt)
             }
+
+            console.log(entity)
 
             return entity
     }

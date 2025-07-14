@@ -1,11 +1,11 @@
 import { Body, Controller, Post, Get, Patch, Param, HttpCode, Query } from '@nestjs/common';
-import { CreateUserService } from '../services/create.user.service';
-import { GetUserService } from '../services/get.user.service';
+import { CreateUserService } from '../services/user/create.user.service';
+import { GetUserService } from '../services/user/get.user.service';
 import { CreateUserDTO } from '../dtos/users/create.user.dto';
-import { PatchUserService } from '../services/patch.user.service';
+import { PatchUserService } from '../services/user/patch.user.service';
 import { GetByCredentialsDTO, GetUserIdDTO } from '../dtos/users/get.user.dto';
 import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from '../dtos/users/patch.user.dto';
-
+import { GetUserResponseDTO } from '../dtos/users/response.user.dto';
 
 @Controller("users")
 export class UserController {
@@ -42,9 +42,10 @@ export class UserController {
   @HttpCode(200)
   async getUserById(
     @Param() dtoParam: GetUserIdDTO
-  ) /*: Promise<GetUserResponseDTO>*/
+  ): Promise<GetUserResponseDTO>
   {
-    return "[GET BY ID] Must to be Implemeted";
+    const user = await this.getUserService.getUserById(dtoParam);
+    return user;
   }
 
   /** [GET METHOD] getUserByCredentials
@@ -57,9 +58,10 @@ export class UserController {
   @HttpCode(200)
   async getUserByCredentials(
     @Query() dtoQuery: GetByCredentialsDTO
-  ) /*: Promise<GetUserResponseDTO>*/
+  ) : Promise<GetUserResponseDTO>
   {
-    return "[GET BY CREDENTIALS] Must to be Implemeted";
+    const user = await this.getUserService.getUserByCredentials(dtoQuery);
+    return user;
   }
 
   /** [PATCH METHOD] updateUserName
@@ -74,9 +76,10 @@ export class UserController {
   async updateUserName(
     @Param() dtoParam: GetUserIdDTO,
     @Body() dtoBody: PatchUserNameDTO
-  ) /*: Promise<PatchUserNameDTO>*/
+  ): Promise<PatchUserNameDTO>
   {
-    return "[UPDATE NAME] Must to be Implemeted";
+    const updated = await this.updateUserService.updateUsername(dtoParam, dtoBody);
+    return updated;
   }
 
   /** [PATCH METHOD] updateUserScopes
@@ -91,9 +94,10 @@ export class UserController {
   async updateUserScopes(
     @Param() dtoParam: GetUserIdDTO,
     @Body() dtoBody: PatchUserScopesDTO
-  ) /*: Promise<PatchUserScopesDTO>*/
+  ) : Promise<PatchUserScopesDTO>
   {
-    return "[UPDATE SCOPES] Must to be Implemeted";
+    const updated = await this.updateUserService.updatePatchUserScopes(dtoParam, dtoBody);
+    return updated;
   }
 
   /** [PATCH METHOD] updateUserActive
@@ -108,8 +112,9 @@ export class UserController {
   async updateUserActive(
     @Param() dtoParam: GetUserIdDTO,
     @Body() dtoBody: PatchUserActiveDTO
-  ) /*: Promise<PatchUserActiveDTO>*/
+  ): Promise<PatchUserActiveDTO>
   {
-    return "[UPDATE ACTIVE] Must to be Implemeted";
+    const updated = await this.updateUserService.updateActive(dtoParam, dtoBody);
+    return updated;
   }
 }

@@ -11,7 +11,7 @@ import { UserIDMapper, UserSimpleMapper } from "../mapper/user.simple.mapper.mon
 
 /* External */
 import { Model } from "mongoose";
-import { Injectable } from "@nestjs/common";
+import { Injectable, Options } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { SimpleMapper } from "src/domain/interface/mapper.interface";
 import { Types } from "mongoose";
@@ -53,6 +53,8 @@ implements UserGetterRepsitory
             return null;
         }
 
-        return this.simpleMapper.toDomain(result);
+        console.log(result)
+
+        return this.simpleMapper.toDomain(result, {ignorePassword: false});
     }
 }

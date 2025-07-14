@@ -8,8 +8,8 @@ import { UserEntity } from 'src/domain/entities/user.entities';
 import { UserValidation } from 'src/domain/validations/user.validation';
 
 /* DTOS */
-import { CreateUserDTO } from '../dtos/users/create.user.dto';
-import { GetUserIdDTO } from '../dtos/users/get.user.dto';
+import { CreateUserDTO } from '../../dtos/users/create.user.dto';
+import { GetUserIdDTO } from '../../dtos/users/get.user.dto';
 import { EncryptService } from 'src/infrastructure/utils/crypto.abstract';
 
 @Injectable()

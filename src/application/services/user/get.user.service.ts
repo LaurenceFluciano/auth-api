@@ -9,9 +9,9 @@ import { UserEntity } from 'src/domain/entities/user.entities';
 import { UserValidation } from 'src/domain/validations/user.validation';
         
 /* DTOS */
-import { GetByCredentialsDTO, GetUserIdDTO } from '../dtos/users/get.user.dto';
+import { GetByCredentialsDTO, GetUserIdDTO } from '../../dtos/users/get.user.dto';
 import { IdValidator } from 'src/domain/interface/validation.interface';
-import { GetUserResponseDTO } from '../dtos/users/response.user.dto';
+import { GetUserResponseDTO } from '../../dtos/users/response.user.dto';
 
 @Injectable()
 export class GetUserService {

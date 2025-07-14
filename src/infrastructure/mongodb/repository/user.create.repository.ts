@@ -31,7 +31,7 @@ implements UserCreatorRepository
     async create(entity: UserEntity<ID>): Promise<ID> {
         const doc= this.simpleMapper.toPersistence(entity, {
             ignoreId: true, 
-            ignorePassword: true});
+            ignorePassword: false});
 
         const taskInstance = new this.userModel(doc);
         const result = await taskInstance.save()
