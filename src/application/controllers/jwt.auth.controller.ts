@@ -1,14 +1,12 @@
 import { Body, Controller, Post, HttpCode, Headers } from '@nestjs/common';
 import { LoginDTO, LoginResponseDTO } from '../dtos/auth/auth.dto';
-import { AuthService } from '../services/auth/user.auth.service';
+import { AuthServiceJWT } from '../services/auth/auth.strategy.jwt.service';
 import { BadRequestException } from '@nestjs/common';
-import { Logger } from '@nestjs/common';
 
 @Controller("auth")
 export class AuthController {
-  private readonly logger = new Logger(AuthController.name);
   constructor(
-    private authService: AuthService
+    private authService: AuthServiceJWT
   ) {}
 
 
@@ -29,8 +27,6 @@ export class AuthController {
     if (!projectKey) {
       throw new BadRequestException("x-project-key header is required");
     }
-
-    this.logger.log(`ProjectKey recebido: ${projectKey}`)
 
     const result = await this.authService.login(
       {

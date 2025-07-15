@@ -2,8 +2,8 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 
 /* Domain Layer */
-import { ID, UserCreatorRepository } from 'src/domain/interface/user.repository';
-import { USER_CREATOR_REPOSITORY } from 'src/domain/interface/user.repository.ports';
+import { UserCreatorRepository, ID } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
+import { USER_CREATOR_REPOSITORY } from 'src/domain/ports/repositories/user.repository.ports';
 import { UserEntity } from 'src/domain/entities/user.entities';
 import { UserValidation } from 'src/domain/validations/user.validation';
 

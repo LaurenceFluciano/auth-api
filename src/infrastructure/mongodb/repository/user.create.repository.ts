@@ -3,7 +3,7 @@ import { UserEntity } from "src/domain/entities/user.entities";
 import { UserMongoose, UserDocument } from "../schema/user.schema.mongodb";
 
 /* Repository */
-import { ID, UserCreatorRepository } from "src/domain/interface/user.repository";
+import { ID, UserCreatorRepository } from "src/domain/ports/repositories/user.repository";
 
 /* Mappers */
 import { UserSimpleMapper } from "../mapper/user.simple.mapper.mongoose";
@@ -12,7 +12,7 @@ import { UserSimpleMapper } from "../mapper/user.simple.mapper.mongoose";
 import { Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { SimpleMapper } from "src/domain/interface/mapper.interface";
+import { SimpleMapper } from "src/domain/ports/mapper.interface";
 
 
 @Injectable()
@@ -28,10 +28,10 @@ implements UserCreatorRepository
     )
     {}
 
-    async create(entity: UserEntity<ID>): Promise<ID> {
+    async create(entity: UserEntity<ID>, options?: {ignorePassword: false}): Promise<ID> {
         const doc= this.simpleMapper.toPersistence(entity, {
             ignoreId: true, 
-            ignorePassword: false});
+            ignorePassword: options?.ignorePassword});
 
         const taskInstance = new this.userModel(doc);
         const result = await taskInstance.save()

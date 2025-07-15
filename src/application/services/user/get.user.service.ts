@@ -1,16 +1,15 @@
 /* EXTERN */
-import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 /* Domain Layer */
-import { ID, UserGetterRepsitory } from 'src/domain/interface/user.repository';
-import { USER_GETTER_REPOSITORY } from 'src/domain/interface/user.repository.ports';
-import { USER_ID_VALIDATION } from 'src/domain/interface/validations.ports';
-import { UserEntity } from 'src/domain/entities/user.entities';
+import { UserGetterRepsitory } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
+import { USER_GETTER_REPOSITORY } from 'src/domain/ports/repositories/user.repository.ports';
+import { USER_ID_VALIDATION } from 'src/domain/ports/validations.ports';
 import { UserValidation } from 'src/domain/validations/user.validation';
         
 /* DTOS */
 import { GetByCredentialsDTO, GetUserIdDTO } from '../../dtos/users/get.user.dto';
-import { IdValidator } from 'src/domain/interface/validation.interface';
+import { IdValidator } from 'src/domain/ports/validation.interface';
 import { GetUserResponseDTO } from '../../dtos/users/response.user.dto';
 
 @Injectable()

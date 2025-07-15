@@ -1,18 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './services/auth/user.auth.service';
+import { AuthService } from './services/auth/auth.service';
+import { AuthServiceJWT } from './services/auth/auth.strategy.jwt.service';
 import { UserModule } from './user.module';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from 'src/application/controllers/auth.controller';
+import { AuthController } from 'src/application/controllers/jwt.auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { CryptoModule } from 'src/infrastructure/utils/crypto.module';
 
 @Module({
   imports: [
     UserModule,
-    CryptoModule,
     ConfigModule,
     JwtModule.registerAsync({
-      global: true,
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
@@ -21,8 +19,8 @@ import { CryptoModule } from 'src/infrastructure/utils/crypto.module';
       }),
     }),
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthServiceJWT],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthServiceJWT],
 })
 export class AuthModule {}

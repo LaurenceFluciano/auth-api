@@ -1,8 +1,8 @@
 import { UserEntity } from "src/domain/entities/user.entities";
-import { SimpleMapper } from "src/domain/interface/mapper.interface";
+import { SimpleMapper } from "src/domain/ports/mapper.interface";
 import { UserDocument, UserMongoose } from "../schema/user.schema.mongodb";
 import { isValidObjectId, Types } from "mongoose";
-import { ID } from "src/domain/interface/user.repository";
+import { ID } from "../repository/test/user.repo.basic.test.kit";
 
 export class UserSimpleMapper 
 implements SimpleMapper<UserEntity<ID>, UserDocument | Partial<UserMongoose>>

@@ -5,8 +5,8 @@ import { Test, TestingModule } from "@nestjs/testing"
 import { CreateUserService } from "../user/create.user.service"
 
 /* Domain Layer - Repository */
-import { USER_CREATOR_REPOSITORY } from "src/domain/interface/user.repository.ports"
-import { UserCreatorRepository } from "src/domain/interface/user.repository"
+import { USER_CREATOR_REPOSITORY } from "src/domain/ports/repositories/user.repository.ports"
+import { UserCreatorRepository } from "src/domain/ports/user.repository"
 
 /* External services and Validations */
 import { EncryptService } from "src/infrastructure/utils/crypto.abstract"

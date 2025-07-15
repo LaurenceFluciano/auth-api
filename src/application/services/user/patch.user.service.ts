@@ -1,6 +1,6 @@
 /* Domain Layer */
-import { USER_UPDATE_REPOSITORY } from "src/domain/interface/user.repository.ports";
-import { UserUpdateRepository } from "src/domain/interface/user.repository";
+import { USER_UPDATE_REPOSITORY } from "src/domain/ports/repositories/user.repository.ports";
+import { UserUpdateRepository } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
 
 /* Extenal */
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
