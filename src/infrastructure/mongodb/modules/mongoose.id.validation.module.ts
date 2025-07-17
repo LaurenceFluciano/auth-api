@@ -1,14 +1,14 @@
 import { Module } from "@nestjs/common";
 import { MongooseIdValidation } from "../../validation/objectid.validation";
-import { USER_ID_VALIDATION } from "src/domain/ports/validations.ports";
+import { ID_VALIDATION } from "src/domain/ports/validations.ports";
 
 @Module({
     providers: [
         {
-            provide: USER_ID_VALIDATION,
+            provide: ID_VALIDATION,
             useClass: MongooseIdValidation
         }
     ],
-    exports: [USER_ID_VALIDATION]
+    exports: [ID_VALIDATION]
 })
-export class UserValidationModule {} 
+export class IdValidationModule {} 

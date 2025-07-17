@@ -5,7 +5,8 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { UserCreatorRepository, ID } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
 import { USER_CREATOR_REPOSITORY } from 'src/domain/ports/repositories/user.repository.ports';
 import { UserEntity } from 'src/domain/entities/user.entities';
-import { UserValidation } from 'src/domain/validations/user.validation';
+import { AbstractUserExternalValidation } from 'src/domain/ports/validation.interface';
+import { USER_VALIDATION } from 'src/domain/ports/validations.ports';        
 
 /* DTOS */
 import { CreateUserDTO } from '../../dtos/users/create.user.dto';
@@ -14,13 +15,14 @@ import { EncryptService } from 'src/infrastructure/utils/crypto.abstract';
 
 @Injectable()
 export class CreateUserService {
-  private userValidation: UserValidation = new UserValidation()
 
   constructor(
     @Inject(USER_CREATOR_REPOSITORY)
     private readonly repository: UserCreatorRepository,
     @Inject(EncryptService)
     private readonly encryptService: EncryptService,
+    @Inject(USER_VALIDATION)
+     private userValidation: AbstractUserExternalValidation
   ){}
   
   async create(dto: CreateUserDTO): Promise<GetUserIdDTO>

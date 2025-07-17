@@ -8,19 +8,21 @@ import { GetUserService } from "../user/get.user.service";
 import { LoginServiceDTO } from "src/application/dtos/auth/auth.dto";
 
 /* User Validation services */
-import { UserValidation } from "src/domain/validations/user.validation";
+import { AbstractUserExternalValidation } from 'src/domain/ports/validation.interface';
+import { USER_VALIDATION } from 'src/domain/ports/validations.ports';        
 
 /* Encrypt Services */
 import { EncryptService } from "src/infrastructure/utils/crypto.abstract";
 
 @Injectable()
 export class AuthService {
-    private userValidation = new UserValidation();
 
     constructor(
         private readonly userGetService: GetUserService,
         @Inject(EncryptService)
         private readonly encryptService: EncryptService,
+        @Inject(USER_VALIDATION)
+        private userValidation: AbstractUserExternalValidation
     ){}
 
     async validateUser(dto: LoginServiceDTO) {

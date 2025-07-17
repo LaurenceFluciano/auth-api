@@ -2,7 +2,9 @@ import { Body, Controller, Post, HttpCode, Headers } from '@nestjs/common';
 import { LoginDTO, LoginResponseDTO } from '../dtos/auth/auth.dto';
 import { AuthServiceJWT } from '../services/auth/auth.strategy.jwt.service';
 import { BadRequestException } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller("auth")
 export class AuthController {
   constructor(

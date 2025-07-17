@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, Patch, Param, HttpCode, Query } from '@nestjs/common';
+import { Body, Controller, Post, Get, Patch, Param, HttpCode, Query, HttpStatus } from '@nestjs/common';
 import { CreateUserService } from '../services/user/create.user.service';
 import { GetUserService } from '../services/user/get.user.service';
 import { CreateUserDTO } from '../dtos/users/create.user.dto';
@@ -6,7 +6,10 @@ import { PatchUserService } from '../services/user/patch.user.service';
 import { GetByCredentialsDTO, GetUserIdDTO } from '../dtos/users/get.user.dto';
 import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from '../dtos/users/patch.user.dto';
 import { GetUserResponseDTO } from '../dtos/users/response.user.dto';
+import { PatchPasswordDTO } from '../dtos/users/user.password.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user')
 @Controller("users")
 export class UserController {
   constructor(
@@ -96,7 +99,7 @@ export class UserController {
     @Body() dtoBody: PatchUserScopesDTO
   ) : Promise<PatchUserScopesDTO>
   {
-    const updated = await this.updateUserService.updatePatchUserScopes(dtoParam, dtoBody);
+    const updated = await this.updateUserService.updateUserScopes(dtoParam, dtoBody);
     return updated;
   }
 
@@ -116,5 +119,16 @@ export class UserController {
   {
     const updated = await this.updateUserService.updateActive(dtoParam, dtoBody);
     return updated;
+  }
+
+
+  @Patch(":id/password") 
+  @HttpCode(200)
+  async updateUserPassword(
+    @Param() dtoParam: GetUserIdDTO,
+    @Body() dtoBody: PatchPasswordDTO
+  ){
+    await this.updateUserService.updateUserPassword(dtoParam,dtoBody);
+    return {message: "Password updated"};
   }
 }

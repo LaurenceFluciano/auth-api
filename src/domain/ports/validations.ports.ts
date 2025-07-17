@@ -4,4 +4,5 @@
  * 
  */
 
-export const USER_ID_VALIDATION = 'USER_ID_VALIDATION';
+export const ID_VALIDATION = 'ID_VALIDATION';
+export const USER_VALIDATION = 'USER_VALIDATION';

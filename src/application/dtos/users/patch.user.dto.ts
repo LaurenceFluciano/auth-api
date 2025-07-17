@@ -1,8 +1,10 @@
 import { IsNotEmpty, IsString, ArrayNotEmpty, IsArray, IsBoolean } from "@nestjs/class-validator";
+import { ApiProperty } from "@nestjs/swagger";
 
 class PatchUserNameDTO {
     @IsNotEmpty()
     @IsString()
+    @ApiProperty()
     name: string
 }
 
@@ -10,11 +12,13 @@ class PatchUserScopesDTO {
     @IsArray()
     @ArrayNotEmpty()
     @IsString({ each: true })
+    @ApiProperty()
     scopes: string[];
 }
 
 class PatchUserActiveDTO {
     @IsBoolean()
+    @ApiProperty()
     active: boolean;
 }
 

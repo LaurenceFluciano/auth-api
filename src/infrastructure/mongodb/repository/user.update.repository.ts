@@ -98,4 +98,24 @@ implements UserUpdateRepository
         return domainUpdated;
     }
 
+    async updatePassword(id: ID, password: string, options?: {}): Promise<void> {
+            const persistenceId = this.idMapper.toPersistence(id);
+
+            if(password === undefined || password === null)
+            {
+                throw new Error("Password must to be a string!")
+            }
+
+            const persistenceUpdated = await this.userModel.findOneAndUpdate(
+                {_id: persistenceId},
+                {password: password},
+                {new: true}
+            )
+
+            if(!persistenceUpdated)
+            {
+                throw new Error("Not found id.")
+            }
+    }
+
 }
