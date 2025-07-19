@@ -8,6 +8,7 @@ import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from '../dto
 import { GetUserResponseDTO } from '../dtos/users/response.user.dto';
 import { PatchPasswordDTO } from '../dtos/users/user.password.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { UserPasswordService } from '../services/user/password.user.service';
 
 @ApiTags('user')
 @Controller("users")
@@ -15,7 +16,8 @@ export class UserController {
   constructor(
     private readonly createUserService: CreateUserService,
     private readonly getUserService: GetUserService,
-    private readonly updateUserService: PatchUserService
+    private readonly updateUserService: PatchUserService,
+    private readonly passwordService: UserPasswordService
   ) {}
 
 
@@ -130,5 +132,15 @@ export class UserController {
   ){
     await this.updateUserService.updateUserPassword(dtoParam,dtoBody);
     return {message: "Password updated"};
+  }
+
+
+  @Post("/password") 
+  @HttpCode(200)
+  async getRecoveryCode(
+    @Body() dtoBody: GetByCredentialsDTO
+  ){
+    await this.passwordService.sendRecoveryCode(dtoBody);
+    return {message: "Recovery code sent"};
   }
 }

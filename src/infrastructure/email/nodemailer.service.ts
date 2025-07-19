@@ -1,4 +1,3 @@
-import { Injectable } from "@nestjs/common";
 import nodemailer, { Transporter } from "nodemailer";
 import { SendEmailService, EmailBody } from "src/domain/ports/email.strategy";
 
@@ -8,7 +7,6 @@ if (!GMAIL_SMTP_TRANSPORTER || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
   throw new Error("Ambient SMTP var incomplete");
 }
 
-@Injectable()
 export class SendGmailNodemailerService implements SendEmailService {
     private transporter: Transporter = nodemailer.createTransport({
         host: GMAIL_SMTP_TRANSPORTER,
