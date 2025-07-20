@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString, ArrayNotEmpty, IsArray, IsBoolean } from "@nestjs/class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { IsOptional } from "class-validator";
 
 class PatchUserNameDTO {
     @IsNotEmpty()
@@ -14,6 +15,12 @@ class PatchUserScopesDTO {
     @IsString({ each: true })
     @ApiProperty()
     scopes: string[];
+
+
+    @IsString()
+    @IsOptional()
+    @ApiProperty()
+    permissions: string;
 }
 
 class PatchUserActiveDTO {

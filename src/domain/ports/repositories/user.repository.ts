@@ -14,8 +14,9 @@ export interface UserGetterRepsitory
 
 export interface UserUpdateRepository
 {
-  updateScopes(id: ID, scopes: string[], options?: {}): Promise<UserEntity<ID>>;
+  addScopes(id: ID, scopes: string[], options?: {}): Promise<UserEntity<ID>>;
   updateUsername(id: ID, name: string, options?: {}): Promise<UserEntity<ID>>;
   updateStatus(id: ID, status: boolean, options?: {}): Promise<UserEntity<ID>>;
   updatePassword(id: ID, password: string, options?: {}): Promise<void>;
+  addScopedPermissions(id: ID, name: string[], permissions: string , options?: {}): Promise<UserEntity<ID>>;
 }

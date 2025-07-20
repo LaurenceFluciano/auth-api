@@ -52,13 +52,16 @@ export class GetUserService {
 
     async getUserByCredentials(dto: GetByCredentialsDTO): Promise<GetUserResponseDTO>
     {
+        console.log("TEST: ", dto)
         if(!this.userValidation.isValidEmail(dto.email))
-        {
+        {   
+            console.log(dto.email)
             throw new NotFoundException("User not found");
         }
 
         if(!this.userValidation.isValidProjectKey(dto.projectKey))
         {
+            console.log(dto.projectKey)
             throw new NotFoundException("User not found");
         }
 
@@ -67,6 +70,7 @@ export class GetUserService {
 
         if(userEntity === null)
         {
+            console.log(userEntity)
             throw new NotFoundException("User not found");
         }
 

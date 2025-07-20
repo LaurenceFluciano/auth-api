@@ -3,7 +3,7 @@ import { USER_UPDATE_REPOSITORY } from "src/domain/ports/repositories/user.repos
 import { UserUpdateRepository } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
 
 /* Extenal */
-import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
 
 /* Services layer */
 import { GetUserService } from "./get.user.service";
@@ -62,14 +62,28 @@ export class PatchUserService
 
     async updateUserScopes(idDto: GetUserIdDTO, dto: PatchUserScopesDTO): Promise<PatchUserScopesDTO>
     {
+        const trimmedPermission = dto.permissions?.trim();
 
-        const result = await this.repository.updateScopes(idDto.id, dto.scopes);
+        dto.scopes.forEach(scope => {
+            if (!this.userValidation.isValidScopes(scope)) {
+                throw new BadRequestException("Invalid scope format");
+            }
+
+            if (trimmedPermission && !this.userValidation.isValidScopes(scope + ":" + trimmedPermission)) {
+                throw new BadRequestException("Invalid scope with permission");
+            }
+        });
+
+        let result = await this.repository.addScopes(idDto.id, dto.scopes);
+        
+        if(trimmedPermission.length > 0) {
+            result = await this.repository.addScopedPermissions(idDto.id,dto.scopes,trimmedPermission)
+        }
 
         if (result === null)
         {
             throw new NotFoundException("User not found")
         }
-
 
         return {
             scopes: result.scopes

@@ -25,5 +25,11 @@ export abstract class AbstractUserExternalValidation
         return !(projectKey.trim().length < MINIMAL_PROJECT_KEY_SIZE);
     }
 
+    public isValidScopes(scope: string): boolean
+    {
+        const regex = /^([A-Za-z]*:)?([A-Za-z0-9_-]+)$/
+        return regex.test(scope)
+    }
+
     public abstract isValidPassword(password: string): boolean
 }

@@ -46,8 +46,14 @@ describe("[MongoDB Test] : [Unitary Test] UpdateUserRepository",() => {
         expect(userEntity.active).toBe(false);
     })
 
-    it("It should update scopes.", async () => {
-        const userEntity = await userUpdateRepository.updateScopes(userId,["write","test"]);
+    it("It should add scopes.", async () => {
+        const userEntity = await userUpdateRepository.addScopes(userId,["write","test"]);
         expect(userEntity.scopes.sort()).toEqual(["write", "test"].sort());
+    })
+
+    it("it should add permissions.", async () => {
+        await userUpdateRepository.addScopes(userId,["write","test"]);
+        const userEntity = await userUpdateRepository.addScopedPermissions(userId,["write"],"r");
+        expect(userEntity.scopes.sort()).toEqual(["r:write","test"].sort())
     })
 })
