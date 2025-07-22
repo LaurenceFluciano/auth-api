@@ -32,7 +32,7 @@ implements UserUpdateRepository
     )
     {}
 
-    async addScopes(id: ID, scopes: string[]): Promise<UserEntity<ID>> {
+    async addScopes(id: ID, scopes: string[]): Promise<UserEntity<ID> | null> {
         const persistenceId = this.idMapper.toPersistence(id);
 
         scopes.forEach(scope => {
@@ -109,7 +109,7 @@ implements UserUpdateRepository
         return domainUpdated;
     }
 
-    async updateStatus(id: ID, status: boolean): Promise<UserEntity<ID>> {
+    async updateStatus(id: ID, status: boolean): Promise<UserEntity<ID> | null> {
         const persistenceId = this.idMapper.toPersistence(id);
 
         if (status === undefined)
@@ -119,21 +119,21 @@ implements UserUpdateRepository
 
         const persitenceUpdated = await this.userModel.findOneAndUpdate(
             {_id: persistenceId},
-            {active: status},
+            {$set: { active: status}},
             {new: true}
         )
 
 
         if(!persitenceUpdated)
         {
-            throw new Error("Not found id.")
+            return  null;
         }
 
         const domainUpdated = this.simpleMapper.toDomain(persitenceUpdated)
         return domainUpdated;
     }
 
-    async updateUsername(id: ID, name: string): Promise<UserEntity<ID>> {
+    async updateUsername(id: ID, name: string): Promise<UserEntity<ID> | null> {
         const persistenceId = this.idMapper.toPersistence(id);
 
         if (name === undefined || name === null)
@@ -157,7 +157,7 @@ implements UserUpdateRepository
         return domainUpdated;
     }
 
-    async updatePassword(id: ID, password: string, options?: {}): Promise<void> {
+    async updatePassword(id: ID, password: string, options?: {}): Promise<void | null> {
             const persistenceId = this.idMapper.toPersistence(id);
 
             if(password === undefined || password === null)
@@ -173,7 +173,7 @@ implements UserUpdateRepository
 
             if(!persistenceUpdated)
             {
-                throw new Error("Not found id.")
+                return null;
             }
     }
 

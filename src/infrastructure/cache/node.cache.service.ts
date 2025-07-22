@@ -4,7 +4,7 @@ import { CacheStrategyService } from 'src/domain/ports/cache.strategy';
 export class NodeCacheService<Input, Output> implements CacheStrategyService<Input, Output> {
   private cache: NodeCache;
 
-  constructor(ttlSeconds: number = 60) {
+  constructor(ttlSeconds: number = 900) {
     this.cache = new NodeCache({ stdTTL: ttlSeconds });
   }
 
@@ -14,5 +14,13 @@ export class NodeCacheService<Input, Output> implements CacheStrategyService<Inp
 
   get(key: string): Output | undefined {
     return this.cache.get(key) as Output | undefined;
+  }
+
+  del(keys: string[]): boolean {
+    if(this.cache.del([...keys]) >= 1)
+    {
+      return true;
+    }
+    return false;
   }
 }

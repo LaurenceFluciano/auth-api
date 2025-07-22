@@ -38,17 +38,17 @@ describe("[MongoDB Test] : [Unitary Test] UpdateUserRepository",() => {
 
     it("It should update username.", async () => {
         const userEntity = await userUpdateRepository.updateUsername(userId,"john");
-        expect(userEntity.name).toBe("john");
+        expect(userEntity?.name).toBe("john");
     })
 
     it("It should update status.", async () => {
          const userEntity = await userUpdateRepository.updateStatus(userId,false);
-        expect(userEntity.active).toBe(false);
+        expect(userEntity?.active).toBe(false);
     })
 
     it("It should add scopes.", async () => {
         const userEntity = await userUpdateRepository.addScopes(userId,["write","test"]);
-        expect(userEntity.scopes.sort()).toEqual(["write", "test"].sort());
+        expect(userEntity?.scopes.sort()).toEqual(["write", "test"].sort());
     })
 
     it("it should add permissions.", async () => {

@@ -11,8 +11,9 @@ async function bootstrap() {
     whitelist: true,
     forbidNonWhitelisted: true, 
     transform: true,
+    stopAtFirstError: true,
     transformOptions: {
-      enableImplicitConversion: true,
+      enableImplicitConversion: false,
     }
   }));
   

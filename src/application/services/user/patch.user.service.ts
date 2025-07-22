@@ -1,6 +1,6 @@
 /* Domain Layer */
 import { USER_UPDATE_REPOSITORY } from "src/domain/ports/repositories/user.repository.ports";
-import { UserUpdateRepository } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
+import { ID, UserEntity, UserUpdateRepository } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
 
 /* Extenal */
 import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
@@ -34,6 +34,11 @@ export class PatchUserService
 
     async updateUsername(idDto: GetUserIdDTO, dto: PatchUserNameDTO): Promise<PatchUserNameDTO>
     {
+        if(!this.userValidation.isValidUsername(dto.name))
+        {
+            throw new BadRequestException("Invalid username!")
+        }
+
         const result = await this.repository.updateUsername(idDto.id, dto.name);
 
         if (result === null)
@@ -48,6 +53,11 @@ export class PatchUserService
 
     async updateActive(idDto: GetUserIdDTO, dto: PatchUserActiveDTO): Promise<PatchUserActiveDTO>
     {
+        if(!this.userValidation.isValidActive(dto.active))
+        {
+            throw new BadRequestException("The body must to be a real boolean!");
+        }
+
         const result = await this.repository.updateStatus(idDto.id, dto.active);
 
         if (result === null)
@@ -74,15 +84,33 @@ export class PatchUserService
             }
         });
 
-        let result = await this.repository.addScopes(idDto.id, dto.scopes);
+        const user = await this.userGetService.getUserById(idDto);
+
+        const existingBaseScopes = new Set(
+            user.scopes.map(scope => {
+                const parts = scope.split(":");
+                return parts.length === 2 ? parts[1] : parts[0];
+            })
+        );
+        console.log(existingBaseScopes)
+        const newScopes = dto.scopes.filter(scope => !existingBaseScopes.has(scope));
         
-        if(trimmedPermission.length > 0) {
+        console.log(newScopes)
+
+        let result: UserEntity<ID> | null = null;
+        if(newScopes.length > 0)
+        {
+            result = await this.repository.addScopes(idDto.id, newScopes);
+        }
+        
+        if(trimmedPermission.length > 0)
+        {
             result = await this.repository.addScopedPermissions(idDto.id,dto.scopes,trimmedPermission)
         }
 
         if (result === null)
         {
-            throw new NotFoundException("User not found")
+            throw new NotFoundException("No permission or scope to update")
         }
 
         return {

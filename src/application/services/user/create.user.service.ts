@@ -1,5 +1,5 @@
 /* EXTERN */
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, Scope } from '@nestjs/common';
 
 /* Domain Layer */
 import { UserCreatorRepository, ID } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
@@ -27,6 +27,28 @@ export class CreateUserService {
   
   async create(dto: CreateUserDTO): Promise<GetUserIdDTO>
   {
+    dto.scopes.forEach(scope => {
+      if(!this.userValidation.isValidScopes(scope))
+      {
+        throw new BadRequestException("Invalid scope format.");
+      }
+    })
+
+    if(!this.userValidation.isValidEmail(dto.email))
+    {
+      throw new BadRequestException("Invalid email.");
+    }
+    
+    if(!this.userValidation.isValidProjectKey(dto.projectKey))
+    {
+      throw new BadRequestException("Invalid projectKey.");
+    }
+
+    if(!this.userValidation.isValidUsername(dto.name))
+    {
+      throw new BadRequestException("Invalid username.");
+    }
+
     const user: UserEntity<ID> = {
       name: dto.name,
       email: dto.email,

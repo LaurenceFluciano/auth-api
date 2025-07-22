@@ -1,6 +1,5 @@
-import { IsNotEmpty, IsString, ArrayNotEmpty, IsArray, IsBoolean } from "@nestjs/class-validator";
+import { IsNotEmpty, IsString, ArrayNotEmpty, IsArray, IsBoolean, IsOptional } from "class-validator"
 import { ApiProperty } from "@nestjs/swagger";
-import { IsOptional } from "class-validator";
 
 class PatchUserNameDTO {
     @IsNotEmpty()

@@ -6,7 +6,7 @@ import { PatchUserService } from '../services/user/patch.user.service';
 import { GetByCredentialsDTO, GetUserIdDTO } from '../dtos/users/get.user.dto';
 import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from '../dtos/users/patch.user.dto';
 import { GetUserResponseDTO } from '../dtos/users/response.user.dto';
-import { PatchPasswordDTO } from '../dtos/users/user.password.dto';
+import { PatchPasswordDTO, RecoveryCodeDTO } from '../dtos/users/user.password.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { UserPasswordService } from '../services/user/password.user.service';
 
@@ -142,5 +142,14 @@ export class UserController {
   ){
     await this.passwordService.sendRecoveryCode(dtoBody);
     return {message: "Recovery code sent"};
+  }
+
+  @Post("/password/:id/recovery-code")
+  async getPasswordRecoveryCode(
+    @Param() dtoId: GetUserIdDTO,
+    @Body() dtoCode: RecoveryCodeDTO
+  ) {
+    const result = await this.passwordService.recoveryPassword(dtoId,dtoCode);
+    return result
   }
 }

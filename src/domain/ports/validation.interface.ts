@@ -31,5 +31,10 @@ export abstract class AbstractUserExternalValidation
         return regex.test(scope)
     }
 
+    public isValidActive(active: unknown): boolean
+    {
+        return typeof active === "boolean"
+    }
+
     public abstract isValidPassword(password: string): boolean
 }
