@@ -1,5 +1,5 @@
-import { IsArray, ArrayNotEmpty, IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString } from "@nestjs/class-validator";
 import { ApiResponseProperty, ApiProperty } from "@nestjs/swagger"
+import { IsArray, ArrayNotEmpty, IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString } from "@nestjs/class-validator";
 
 
 

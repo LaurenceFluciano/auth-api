@@ -1,6 +1,5 @@
-import { IsString } from "@nestjs/class-validator";
 import { ApiProperty, ApiResponseProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, IsOptional } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 class LoginServiceDTO {
     @IsNotEmpty()

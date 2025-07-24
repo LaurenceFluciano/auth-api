@@ -1,0 +1,2 @@
+
+export const ENCRYPT_TOKEN = "ENCRYPT_TOKEN";

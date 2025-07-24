@@ -1,17 +1,21 @@
 /* EXTERN */
-import { BadRequestException, Inject, Injectable, Scope } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 
 /* Domain Layer */
-import { UserCreatorRepository, ID } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
-import { USER_CREATOR_REPOSITORY } from 'src/domain/ports/repositories/user.repository.ports';
 import { UserEntity } from 'src/domain/entities/user.entities';
-import { AbstractUserExternalValidation } from 'src/domain/ports/validation.interface';
-import { USER_VALIDATION } from 'src/domain/ports/validations.ports';        
+
+import { UserCreatorRepository, ID } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
+import { USER_CREATOR_REPOSITORY } from 'src/domain/ports/repositories/user.repository.token';
+
+import { UserValidation } from 'src/domain/ports/validations/validation';
+import { USER_VALIDATION } from 'src/domain/ports/validations/validations.token';        
+
+import { ENCRYPT_TOKEN } from "src/domain/ports/crypto/encrypt.token";
+import { EncryptStrategy } from "src/domain/ports/crypto/encrypt";
 
 /* DTOS */
-import { CreateUserDTO } from '../../dtos/users/create.user.dto';
-import { GetUserIdDTO } from '../../dtos/users/get.user.dto';
-import { EncryptService } from 'src/infrastructure/utils/crypto.abstract';
+import { CreateUserDTO } from 'src/application/dtos/users/create.user.dto';
+import { GetUserIdDTO } from 'src/application/dtos/users/get.user.dto';
 
 @Injectable()
 export class CreateUserService {
@@ -19,10 +23,10 @@ export class CreateUserService {
   constructor(
     @Inject(USER_CREATOR_REPOSITORY)
     private readonly repository: UserCreatorRepository,
-    @Inject(EncryptService)
-    private readonly encryptService: EncryptService,
+    @Inject(ENCRYPT_TOKEN)
+    private readonly encryptService: EncryptStrategy,
     @Inject(USER_VALIDATION)
-     private userValidation: AbstractUserExternalValidation
+     private userValidation: UserValidation
   ){}
   
   async create(dto: CreateUserDTO): Promise<GetUserIdDTO>

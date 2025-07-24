@@ -1,10 +1,13 @@
+/* Framework */
 import { Module } from '@nestjs/common';
-import { AuthService } from './services/auth/auth.service';
-import { AuthServiceJWT } from './services/auth/auth.strategy.jwt.service';
-import { UserModule } from './user.module';
-import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from 'src/application/controllers/jwt.auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+
+/* Services, Modules and controllers */
+import { AuthService } from './services/auth/auth.service';
+import { AuthServiceJWT } from './services/auth/auth.jwt.service';
+import { UserModule } from './user.module';
+import { AuthController } from 'src/interface/http/controllers/jwt.auth.controller';
 
 @Module({
   imports: [

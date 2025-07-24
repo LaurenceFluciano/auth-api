@@ -1,8 +1,15 @@
-import { Body, Controller, Post, HttpCode, Headers } from '@nestjs/common';
-import { LoginDTO, LoginResponseDTO } from '../dtos/auth/auth.dto';
-import { AuthServiceJWT } from '../services/auth/auth.strategy.jwt.service';
-import { BadRequestException } from '@nestjs/common';
+/* Framework and external imports */
+import {Body, Headers, 
+        Post, HttpCode, 
+        Controller, 
+        BadRequestException } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+
+/* DTOs */
+import { LoginDTO, LoginResponseDTO } from 'src/application/dtos/auth/auth.dto';
+
+/* Services */
+import { AuthServiceJWT } from 'src/application/services/auth/auth.jwt.service';
 
 @ApiTags('auth')
 @Controller("auth")

@@ -1,18 +1,34 @@
 import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { GetByCredentialsDTO, GetUserIdDTO } from "src/application/dtos/users/get.user.dto";
-import { SEND_EMAIL_SERVICE, SendEmailService } from "src/domain/ports/email.strategy";
-import { AbstractUserExternalValidation } from "src/domain/ports/validation.interface";
-import { USER_VALIDATION } from "src/domain/ports/validations.ports";
-import { GetUserService } from "./get.user.service";
-import { CACHE_SERVICE, CacheStrategyService } from "src/domain/ports/cache.strategy";
 import { CacheCodeEntity } from "src/domain/entities/password.cache.entities";
-import { GENERATE_CODE_STRATEGY, GenerateCodeStrategy } from "src/domain/ports/recovery.code.strategy";
-import { RecoveryCodeDTO } from "src/application/dtos/users/user.password.dto";
-import { EncryptService } from "src/infrastructure/utils/crypto.abstract";
-import { USER_UPDATE_REPOSITORY } from "src/domain/ports/repositories/user.repository.ports";
-import { UserUpdateRepository } from "src/domain/ports/repositories/user.repository";
 
-// FOR TEST
+/* DTOs */
+import { RecoveryCodeDTO } from "src/application/dtos/users/user.password.dto";
+import { GetByCredentialsDTO, GetUserIdDTO } from "src/application/dtos/users/get.user.dto";
+
+/* Services */
+import { GetUserService } from "./get.user.service";
+
+/* Repository Ports and adapter */
+import { EncryptStrategy } from "src/domain/ports/crypto/encrypt";
+import { ENCRYPT_TOKEN } from "src/domain/ports/crypto/encrypt.token";
+
+import { UserUpdateRepository } from "src/domain/ports/repositories/user.repository";
+import { USER_UPDATE_REPOSITORY } from "src/domain/ports/repositories/user.repository.token";
+
+import { GenerateCodeStrategy } from "src/domain/ports/code/recovery.code";
+import { GENERATE_CODE_STRATEGY } from "src/domain/ports/code/recovery.code.token";
+
+import { UserValidation } from "src/domain/ports/validations/validation";
+import { USER_VALIDATION } from "src/domain/ports/validations/validations.token";
+
+import { CacheStrategyService } from "src/domain/ports/cache/cache.strategy";
+import { CACHE_TOKEN } from "src/domain/ports/cache/cache.token";
+
+// EXTERNAL LAYER
+import { SEND_EMAIL_SERVICE, SendEmailService } from "src/email/email.strategy";
+
+
+// .ENV
 const { SMTP_USER } = process.env;
 
 @Injectable()
@@ -24,13 +40,13 @@ export class UserPasswordService {
         @Inject(SEND_EMAIL_SERVICE)
         private readonly sendEmailService: SendEmailService,
         @Inject(USER_VALIDATION)
-        private readonly userValidation: AbstractUserExternalValidation,
-        @Inject(CACHE_SERVICE)
+        private readonly userValidation: UserValidation,
+        @Inject(CACHE_TOKEN)
         private readonly cacheService: CacheStrategyService<CacheCodeEntity,CacheCodeEntity>,
         @Inject(GENERATE_CODE_STRATEGY)
         private readonly generateCode: GenerateCodeStrategy,
-        @Inject(EncryptService)
-        private readonly encryptService: EncryptService
+        @Inject(ENCRYPT_TOKEN)
+        private readonly encryptService: EncryptStrategy
     ){}
 
     async sendRecoveryCode(dto: GetByCredentialsDTO): Promise<void>
@@ -61,16 +77,15 @@ export class UserPasswordService {
             throw new InternalServerErrorException("Could not store recovery code")
         }
 
-        // FOR TEST
         if (!SMTP_USER) {
-            throw new Error("Ambient SMTP var incomplete");
+            throw new InternalServerErrorException("Envioroment USER SMTP not defined. Impossible to send code.");
         }
 
         this.sendEmailService.sendEmail({
             from: SMTP_USER,
             subject: "Recovery Code",
             text: `Hello ${user.name}, your recovery code is: ${code}`,
-            to:  SMTP_USER
+            to:  user.email
         })
     }
 

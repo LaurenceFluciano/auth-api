@@ -1,6 +1,15 @@
 /* Domain Layer */
-import { USER_UPDATE_REPOSITORY } from "src/domain/ports/repositories/user.repository.ports";
-import { ID, UserEntity, UserUpdateRepository } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
+import { UserEntity } from "src/domain/entities/user.entities";
+
+import { UserUpdateRepository, ID }  from "src/domain/ports/repositories/user.repository";
+import { USER_UPDATE_REPOSITORY } from "src/domain/ports/repositories/user.repository.token";
+
+import { EncryptStrategy } from "src/domain/ports/crypto/encrypt";
+import { ENCRYPT_TOKEN } from "src/domain/ports/crypto/encrypt.token";
+
+import { UserValidation } from "src/domain/ports/validations/validation";
+import { USER_VALIDATION } from "src/domain/ports/validations/validations.token";
+
 
 /* Extenal */
 import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
@@ -12,12 +21,9 @@ import { GetUserService } from "./get.user.service";
 import { 
     PatchUserActiveDTO,
     PatchUserNameDTO,
-    PatchUserScopesDTO } from "../../dtos/users/patch.user.dto";
-import { GetUserIdDTO } from "../../dtos/users/get.user.dto";
+    PatchUserScopesDTO } from "src/application/dtos/users/patch.user.dto";
+import { GetUserIdDTO } from "src/application/dtos/users/get.user.dto";
 import { PatchPasswordDTO } from "src/application/dtos/users/user.password.dto";
-import { EncryptService } from "src/infrastructure/utils/crypto.abstract";
-import { USER_VALIDATION } from "src/domain/ports/validations.ports";
-import { AbstractUserExternalValidation } from "src/domain/ports/validation.interface";
 
 @Injectable()
 export class PatchUserService 
@@ -26,10 +32,10 @@ export class PatchUserService
         private readonly userGetService: GetUserService,
         @Inject(USER_UPDATE_REPOSITORY)
         private readonly repository: UserUpdateRepository,
-        @Inject(EncryptService)
-        private readonly encryptService: EncryptService,
+        @Inject(ENCRYPT_TOKEN)
+        private readonly encryptService: EncryptStrategy,
         @Inject(USER_VALIDATION)
-        private readonly userValidation: AbstractUserExternalValidation
+        private readonly userValidation: UserValidation
     ){}
 
     async updateUsername(idDto: GetUserIdDTO, dto: PatchUserNameDTO): Promise<PatchUserNameDTO>

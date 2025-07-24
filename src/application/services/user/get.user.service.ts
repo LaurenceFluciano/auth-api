@@ -3,15 +3,17 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 /* Domain Layer */
 import { UserGetterRepsitory } from 'src/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
-import { USER_GETTER_REPOSITORY } from 'src/domain/ports/repositories/user.repository.ports';
-import { ID_VALIDATION } from 'src/domain/ports/validations.ports';
-import { AbstractUserExternalValidation } from 'src/domain/ports/validation.interface';
-import { USER_VALIDATION } from 'src/domain/ports/validations.ports';        
+import { USER_GETTER_REPOSITORY } from 'src/domain/ports/repositories/user.repository.token';
+
+import { IdValidator } from 'src/domain/ports/validations/validation';
+import { ID_VALIDATION } from 'src/domain/ports/validations/validations.token';
+
+import { UserValidation } from 'src/domain/ports/validations/validation';
+import { USER_VALIDATION } from 'src/domain/ports/validations/validations.token';        
 
 /* DTOS */
 import { GetByCredentialsDTO, GetUserIdDTO } from '../../dtos/users/get.user.dto';
-import { IdValidator } from 'src/domain/ports/validation.interface';
-import { GetUserResponseDTO } from '../../dtos/users/response.user.dto';
+import { GetUserResponseDTO } from 'src/application/dtos/users/response.user.dto';
 
 @Injectable()
 export class GetUserService {
@@ -21,7 +23,7 @@ export class GetUserService {
         @Inject(ID_VALIDATION) 
         private readonly externalValidation: IdValidator,
         @Inject(USER_VALIDATION)
-        private readonly userValidation: AbstractUserExternalValidation
+        private readonly userValidation: UserValidation
     ){}
     
     async getUserById(dto: GetUserIdDTO): Promise<GetUserResponseDTO>

@@ -1,7 +1,6 @@
 import { Module } from "@nestjs/common";
-import { SEND_EMAIL_SERVICE } from "src/domain/ports/email.strategy";
+import { SEND_EMAIL_SERVICE } from "src/email/email.strategy";
 import { SendGmailNodemailerService } from "./nodemailer.service";
-
 
 @Module({
     providers: [

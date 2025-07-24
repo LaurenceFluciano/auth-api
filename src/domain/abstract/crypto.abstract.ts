@@ -1,4 +1,6 @@
-export abstract class EncryptService
+import { EncryptStrategy } from "../ports/crypto/encrypt"
+
+export abstract class EncryptService implements EncryptStrategy
 {
     async  hash(password: string): Promise<string>
     {

@@ -1,5 +1,5 @@
-import { GenerateCodeStrategy } from "src/domain/ports/recovery.code.strategy";
-import { RandomUtil } from "./random";
+import { GenerateCodeStrategy } from "src/domain/ports/code/recovery.code";
+import { RandomUtil } from "src/domain/util/random.util";
 
 export type RecoveryCodeType = string;
 const SIZE_CODE_FIELD = 6;

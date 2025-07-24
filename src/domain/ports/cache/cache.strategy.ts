@@ -3,5 +3,3 @@ export interface CacheStrategyService<Input, Output> {
   get(key: string): Output | undefined;
   del(key: string[]): boolean;
 }
-
-export const CACHE_SERVICE = "CACHE_SERVICE";

@@ -5,9 +5,9 @@ import { CreateUserService } from "./create.user.service";
 import { PatchUserService } from "./patch.user.service";
 import { GetUserService } from "./get.user.service";
 import { UserValidationModule } from "src/infrastructure/validation/user.validation.module";
-import { EmailServiceModule } from "src/infrastructure/email/email.service.module";
+import { EmailServiceModule } from "src/email/email.service.module";
 import { CacheModule } from "src/infrastructure/cache/cache.module";
-import { GenerateCodeModule } from "src/infrastructure/utils/generate.code.module";
+import { GenerateCodeModule } from "src/infrastructure/generate.code.module";
 import { UserPasswordService } from "./password.user.service";
 
 @Module({

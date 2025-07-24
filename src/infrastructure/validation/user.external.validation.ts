@@ -1,6 +1,9 @@
 import validator from "validator";
-import { AbstractUserExternalValidation } from "src/domain/ports/validation.interface";
 import { PasswordValidator } from "./password.validation";
+
+// Utilize uma pré-implementação de dominio para evitar erros e repetição!
+import { AbstractUserExternalValidation } from "src/domain/abstract/user.validation.abstract";
+
 
 export class ExternalUserValidation extends AbstractUserExternalValidation {
   public isValidEmail(email: string): boolean {
@@ -16,6 +19,4 @@ export class ExternalUserValidation extends AbstractUserExternalValidation {
   {
     return PasswordValidator.isValid(password);
   }
-
-
 }

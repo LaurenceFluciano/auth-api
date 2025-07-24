@@ -3,12 +3,11 @@ import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 
-
 /* DTOs */
 import { LoginServiceDTO, LoginResponseDTO } from "src/application/dtos/auth/auth.dto";
 
 /* AuthService */
-import { AuthService } from "./auth.service";
+import { AuthService } from "src/application/services/auth/auth.service";
 
 @Injectable()
 export class AuthServiceJWT {

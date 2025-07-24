@@ -4,8 +4,10 @@ import { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<UserMongoose>;
 
-/* Entity Fields */
-/**
+/********************** 
+ * User Entity Fields *
+ **********************
+ *
  *      public projectKey: string,
  *      public name: string,
  *      public email: string,
@@ -15,6 +17,8 @@ export type UserDocument = HydratedDocument<UserMongoose>;
  *      public password?: string,
  *      public createdAt?: Date,
  *      public updatedAt?: Date
+ * 
+ * 
  **/
 
 

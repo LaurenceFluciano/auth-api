@@ -13,7 +13,7 @@ import { UserIDMapper, UserSimpleMapper } from "../mapper/user.simple.mapper.mon
 import { Model } from "mongoose";
 import { Injectable, Options } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { SimpleMapper } from "src/domain/ports/mapper.interface";
+import { SimpleMapper } from "src/domain/ports/mapper/mapper.interface";
 import { Types } from "mongoose";
 
 @Injectable()

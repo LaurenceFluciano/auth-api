@@ -1,5 +1,5 @@
 import nodemailer, { Transporter } from "nodemailer";
-import { SendEmailService, EmailBody } from "src/domain/ports/email.strategy";
+import { SendEmailService, EmailBody } from "src/email/email.strategy";
 
 const { GMAIL_SMTP_TRANSPORTER, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
 
