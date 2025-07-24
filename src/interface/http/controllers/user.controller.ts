@@ -6,7 +6,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDTO } from 'src/application/dtos/users/create.user.dto';
 import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from 'src/application/dtos/users/patch.user.dto';
 import { GetByCredentialsDTO, GetUserIdDTO } from 'src/application/dtos/users/get.user.dto';
-import { GetUserResponseDTO } from 'src/application/dtos/users/response.user.dto';
+import { GetUserResponseDTO, SafeUserResponseDTO } from 'src/application/dtos/users/response.user.dto';
 import { PatchPasswordDTO, RecoveryCodeDTO } from 'src/application/dtos/users/user.password.dto';
 
 /* Services */
@@ -52,10 +52,11 @@ export class UserController {
     @Get("by-credentials")
     async getUserByCredentials(
       @Query() dtoQuery: GetByCredentialsDTO
-    ): Promise<GetUserResponseDTO>
+    ): Promise<SafeUserResponseDTO>
     {
       const user = await this.getUserService.getUserByCredentials(dtoQuery);
-      return user;
+      const {password, ...safeUser} = user
+      return safeUser;
     }
   
   /** [GET METHOD] getUserById
@@ -68,10 +69,11 @@ export class UserController {
   @HttpCode(200)
   async getUserById(
     @Param() dtoParam: GetUserIdDTO
-  ): Promise<GetUserResponseDTO>
+  ): Promise<SafeUserResponseDTO>
   {
     const user = await this.getUserService.getUserById(dtoParam);
-    return user;
+    const {password, ...safeUser} = user;
+    return safeUser;
   }
 
   /** [PATCH METHOD] updateUserName

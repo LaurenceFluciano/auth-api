@@ -1,15 +1,15 @@
 import { Module } from "@nestjs/common";
-import { SEND_EMAIL_SERVICE } from "src/email/email.strategy";
-import { SendGmailNodemailerService } from "./nodemailer.service";
+import { CONTEXT_SEND_EMAIL_TOKEN } from "src/email/email.token";
+import { ContextEmailService } from "./context.send.email";
 
 @Module({
     providers: [
         {
-            provide: SEND_EMAIL_SERVICE,
-            useClass: SendGmailNodemailerService
+            provide: CONTEXT_SEND_EMAIL_TOKEN,
+            useClass: ContextEmailService
         }
     ],
-    exports: [SEND_EMAIL_SERVICE]
+    exports: [CONTEXT_SEND_EMAIL_TOKEN]
 })
 export class EmailServiceModule {
 

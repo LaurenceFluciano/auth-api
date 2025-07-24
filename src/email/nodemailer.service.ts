@@ -1,15 +1,30 @@
 import nodemailer, { Transporter } from "nodemailer";
-import { SendEmailService, EmailBody } from "src/email/email.strategy";
+import { SendEmailStrategy, EmailBody, EmailProvidersType } from "src/email/email.strategy";
 
-const { GMAIL_SMTP_TRANSPORTER, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
+const { GMAIL_SMTP_TRANSPORTER, OUTLOOK_SMTP_TRANSPORTER, SMTP_PORT, SMTP_USER, SMTP_PASS, NODE_ENV } = process.env;
 
-if (!GMAIL_SMTP_TRANSPORTER || !SMTP_PORT || !SMTP_USER || !SMTP_PASS) {
+if (
+    !GMAIL_SMTP_TRANSPORTER || 
+    !OUTLOOK_SMTP_TRANSPORTER ||
+    !SMTP_PORT || 
+    !SMTP_USER || 
+    !SMTP_PASS
+    ) {
   throw new Error("Ambient SMTP var incomplete");
 }
 
-export class SendGmailNodemailerService implements SendEmailService {
-    private transporter: Transporter = nodemailer.createTransport({
-        host: GMAIL_SMTP_TRANSPORTER,
+export class SendEmailNodemailerService implements SendEmailStrategy {
+    private providers: Record<EmailProvidersType, any> = {
+        "gmail": GMAIL_SMTP_TRANSPORTER,
+        "outlook": OUTLOOK_SMTP_TRANSPORTER
+    }
+
+    private transporter: Transporter; 
+
+    constructor(context: EmailProvidersType)
+    {
+        this.transporter = nodemailer.createTransport({
+        host: this.providers[context],
         port: parseInt(SMTP_PORT || "587", 10),
         secure: false,
         auth: {
@@ -17,6 +32,7 @@ export class SendGmailNodemailerService implements SendEmailService {
             pass: SMTP_PASS,
         },
     });
+    }
     
     async sendEmail(message: EmailBody): Promise<void> {
         const info = await this.transporter.sendMail({
@@ -27,7 +43,9 @@ export class SendGmailNodemailerService implements SendEmailService {
             html: message.html, 
         })
 
-        console.log("Message sent:", info.messageId);
+        if (NODE_ENV !== "production") {
+            console.log("Message sent:", info.messageId);
+        }
     }
 }
 

@@ -6,8 +6,12 @@ export type EmailBody = {
     html?: string
 }
 
-export interface SendEmailService {
-    sendEmail(message: EmailBody): void   
+export type EmailProvidersType = 'gmail' | 'outlook';
+
+export interface SendEmailStrategy {
+    sendEmail(mesage: EmailBody): Promise<void>
 }
 
-export const SEND_EMAIL_SERVICE = "SEND_EMAIL_SERVICE"
+export interface ContextEmailStrategy {
+    executeSendEmail(message: EmailBody, provider: EmailProvidersType): Promise<void>
+}

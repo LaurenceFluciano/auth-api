@@ -1,8 +1,6 @@
 import { ApiResponseProperty, ApiProperty } from "@nestjs/swagger"
 import { IsArray, ArrayNotEmpty, IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString } from "@nestjs/class-validator";
 
-
-
 export class GetUserResponseDTO {
   @IsNotEmpty()
   @IsString()
@@ -44,5 +42,37 @@ export class GetUserResponseDTO {
   @IsBoolean()
   @ApiProperty()
   @ApiResponseProperty()
+  active: boolean;
+}
+
+export class SafeUserResponseDTO {
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  id: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  projectKey: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  name: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  @ApiProperty()
+  email: string;
+
+  @IsArray()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  @ApiProperty()
+  scopes: string[];
+
+  @IsBoolean()
+  @ApiProperty()
   active: boolean;
 }

@@ -25,8 +25,10 @@ import { CacheStrategyService } from "src/domain/ports/cache/cache.strategy";
 import { CACHE_TOKEN } from "src/domain/ports/cache/cache.token";
 
 // EXTERNAL LAYER
-import { SEND_EMAIL_SERVICE, SendEmailService } from "src/email/email.strategy";
+import { CONTEXT_SEND_EMAIL_TOKEN } from "src/email/email.token";
+import { ContextEmailStrategy } from "src/email/email.strategy";
 
+import { EmailProviderResolver } from "src/email/email.provider.resolve";
 
 // .ENV
 const { SMTP_USER } = process.env;
@@ -37,8 +39,8 @@ export class UserPasswordService {
         private readonly getUserService: GetUserService,
         @Inject(USER_UPDATE_REPOSITORY)
         private readonly repository: UserUpdateRepository,
-        @Inject(SEND_EMAIL_SERVICE)
-        private readonly sendEmailService: SendEmailService,
+        @Inject(CONTEXT_SEND_EMAIL_TOKEN)
+        private readonly sendEmailService: ContextEmailStrategy,
         @Inject(USER_VALIDATION)
         private readonly userValidation: UserValidation,
         @Inject(CACHE_TOKEN)
@@ -81,12 +83,19 @@ export class UserPasswordService {
             throw new InternalServerErrorException("Envioroment USER SMTP not defined. Impossible to send code.");
         }
 
-        this.sendEmailService.sendEmail({
+        const provider = EmailProviderResolver.resolveProvider(user.email);
+
+        if(provider === null)
+        {
+            throw new InternalServerErrorException("Unable to resolve email provider for the given address.");
+        }
+
+        this.sendEmailService.executeSendEmail({
             from: SMTP_USER,
             subject: "Recovery Code",
             text: `Hello ${user.name}, your recovery code is: ${code}`,
             to:  user.email
-        })
+        }, provider)
     }
 
 
