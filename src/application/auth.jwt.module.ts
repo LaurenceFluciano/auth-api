@@ -7,10 +7,15 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './services/auth/auth.service';
 import { AuthServiceJWT } from './services/auth/auth.jwt.service';
 import { UserModule } from './user.module';
-import { AuthController } from 'src/interface/http/controllers/jwt.auth.controller';
+import { JWTAuthController } from 'src/http/controllers/jwt.auth.controller';
+import { AuthCacheModule } from 'src/infrastructure/cache/cache.auth.module';
+import { SimpleDeviceAuthJWT } from './services/auth/simple.device.login.service';
+import { GenerateIdModule } from 'src/infrastructure/code/id.generate.module';
 
 @Module({
   imports: [
+    AuthCacheModule,
+    GenerateIdModule,
     UserModule,
     ConfigModule,
     JwtModule.registerAsync({
@@ -18,12 +23,11 @@ import { AuthController } from 'src/interface/http/controllers/jwt.auth.controll
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('SECRET_TOKEN_JWT'),
-        signOptions: { expiresIn: configService.get('JWT_EXPIRES_IN') || '1h' },
       }),
     }),
   ],
-  providers: [AuthService, AuthServiceJWT],
-  controllers: [AuthController],
-  exports: [AuthServiceJWT],
+  providers: [AuthService, AuthServiceJWT, SimpleDeviceAuthJWT],
+  controllers: [JWTAuthController],
+  exports: [AuthServiceJWT,SimpleDeviceAuthJWT],
 })
-export class AuthModule {}
+export class JWTAuthModule {}

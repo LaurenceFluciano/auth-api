@@ -4,23 +4,25 @@ import { CacheStrategyService } from 'src/domain/ports/cache/cache.strategy';
 export class NodeCacheService<Input, Output> implements CacheStrategyService<Input, Output> {
   private cache: NodeCache;
 
-  constructor(ttlSeconds: number = 900) {
-    this.cache = new NodeCache({ stdTTL: ttlSeconds });
+  async init(options: {ttlSeconds: 900}) {
+    this.cache =new NodeCache({ stdTTL: options.ttlSeconds });
   }
 
-  set(key: string, data: Input): boolean {
-    return this.cache.set(key, data);
+  async set(key: string, data: Input, expireIn: number = 900):  Promise<boolean> {
+    const result = this.cache.set(key, data);
+    if(result) this.cache.ttl(key, expireIn)
+    return Promise.resolve(result)
   }
 
-  get(key: string): Output | undefined {
-    return this.cache.get(key) as Output | undefined;
+  async get(key: string): Promise<Output | undefined> {
+    return Promise.resolve(this.cache.get(key)) as Output | undefined;
   }
 
-  del(keys: string[]): boolean {
+  async del(keys: string[]):  Promise<boolean> {
     if(this.cache.del([...keys]) >= 1)
     {
       return true;
     }
-    return false;
+    return Promise.resolve(false);
   }
 }

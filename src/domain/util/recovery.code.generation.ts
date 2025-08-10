@@ -1,7 +1,7 @@
 import { GenerateCodeStrategy } from "src/domain/ports/code/recovery.code";
 import { RandomUtil } from "src/domain/util/random.util";
+import { RecoveryCodeType } from "src/domain/ports/code/recovery.code";
 
-export type RecoveryCodeType = string;
 const SIZE_CODE_FIELD = 6;
 const MIN_CODE = 100000;
 const MAX_CODE = 999999;

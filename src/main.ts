@@ -5,7 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {cors: true});
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
@@ -16,7 +16,7 @@ async function bootstrap() {
       enableImplicitConversion: false,
     }
   }));
-  
+
   const config = new DocumentBuilder()
     .setTitle('User Auth API')
     .setDescription('A simple Auth API')

@@ -1,0 +1,1 @@
+export const ID_GENERATE = 'ID_GENERATE';

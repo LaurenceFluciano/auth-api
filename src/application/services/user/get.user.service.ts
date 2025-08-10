@@ -52,9 +52,28 @@ export class GetUserService {
         } as GetUserResponseDTO
     }
 
+    async getUserByIdWithoutValidation(dto: GetUserIdDTO): Promise<GetUserResponseDTO>
+    {
+        const userEntity = await this.repository.getUserById(dto.id);
+        
+        if(userEntity === null)
+        {
+            throw new NotFoundException("User not found");
+        }
+
+        return {
+            id: userEntity.id,
+            name: userEntity.name,
+            email: userEntity.email,
+            active: userEntity.active,
+            projectKey: userEntity.projectKey,
+            scopes: userEntity.scopes,
+            password: userEntity?.password
+        } as GetUserResponseDTO
+    }
+
     async getUserByCredentials(dto: GetByCredentialsDTO): Promise<GetUserResponseDTO>
     {
-        console.log("TEST: ", dto)
         if(!this.userValidation.isValidEmail(dto.email))
         {   
             console.log(dto.email)

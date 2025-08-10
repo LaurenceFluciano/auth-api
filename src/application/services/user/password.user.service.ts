@@ -66,9 +66,9 @@ export class UserPasswordService {
         {
             throw new BadRequestException("This context application don't have password auth.")
         }
-        
         const code = this.generateCode.generate()
-
+        
+        await this.cacheService.init()
         const isCacheGenerated = this.cacheService.set(
             user.id, 
             new CacheCodeEntity(code,user.projectKey)
@@ -103,28 +103,29 @@ export class UserPasswordService {
         dtoId: GetUserIdDTO,
         dtoRecoveryCode: RecoveryCodeDTO,
     ): Promise<{ message: string }> {
-    if(!this.userValidation.isValidPassword(dtoRecoveryCode.newPassword))
-    {
-        throw new BadRequestException("Invalid password format.");
-    }
+        if(!this.userValidation.isValidPassword(dtoRecoveryCode.newPassword))
+        {
+            throw new BadRequestException("Invalid password format.");
+        }
 
-    const cacheUser = this.cacheService.get(dtoId.id);
+        await this.cacheService.init()
+        const cacheUser = await this.cacheService.get(dtoId.id);
 
-    if (!cacheUser || cacheUser.code !== dtoRecoveryCode.code) {
-        throw new NotFoundException("Invalid code or expired.");
-    }
+        if (!cacheUser || cacheUser.code !== dtoRecoveryCode.code) {
+            throw new NotFoundException("Invalid code or expired.");
+        }
 
 
-    if(dtoRecoveryCode.newPassword === dtoRecoveryCode.confirmNewPassword)
-    {
-        const hash = await this.encryptService.hash(dtoRecoveryCode.newPassword);
-        await this.repository.updatePassword(dtoId.id,hash);
-    } else {
+        if(dtoRecoveryCode.newPassword === dtoRecoveryCode.confirmNewPassword)
+        {
+            const hash = await this.encryptService.hash(dtoRecoveryCode.newPassword);
+            await this.repository.updatePassword(dtoId.id,hash);
+        } else {
+            this.cacheService.del([dtoId.id]);
+            throw new BadRequestException("Invalid password generate a new code to try again.")
+        }
         this.cacheService.del([dtoId.id]);
-        throw new BadRequestException("Invalid password generate a new code to try again.")
-    }
-    this.cacheService.del([dtoId.id]);
 
-    return { message: "Senha redefinida com sucesso." };
+        return { message: "Senha redefinida com sucesso." };
     }
 }
