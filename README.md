@@ -71,6 +71,35 @@ pnpm run test
 pnpm run test:cov
 ```
 
+### Documentação Swagger UI
+
+Após iniciar o projeto, acesse a documentação da API pelo seguinte endereço:
+
+- [http://localhost:8000/api](http://localhost:8000/api)
+
+> **Observação:** A porta `8000` está configurada diretamente no código (hardcoded). Recomendo utilizar uma variável de ambiente para definir a porta, garantindo maior flexibilidade e segurança em diferentes ambientes.
+
+# Tabela das Variáveis de Configuração necessárias
+
+| Variável                   | Descrição                                            | Exemplo / Observação                       |
+|---------------------------|-----------------------------------------------------|-------------------------------------------|
+| `DATABASE_URI`             | String de conexão ao banco MongoDB                     | `mongodb+srv://user:pass@cluster.mongodb.net` |
+| `SECRET_TOKEN_JWT`         | Chave secreta para assinatura dos tokens JWT           | Deve ser forte e secreta                   |
+| `SMTP_USER`                | Usuário para autenticação SMTP                         | Normalmente um e-mail                      |
+| `SMTP_PASS`                | Senha para autenticação SMTP                           | `<senha_smtp>`                               |
+| `SMTP_PORT`                | Porta do servidor SMTP                                 | `587` (STARTTLS padrão)                    |
+| `GMAIL_SMTP_TRANSPORTER`   | Endereço SMTP do Gmail                                 | `smtp.gmail.com`                           |
+| `OUTLOOK_SMTP_TRANSPORTER` | Endereço SMTP do Outlook                               | `smtp.outlook.com`                         |
+| `NODE_ENV`                 | Ambiente de execução da aplicação                      | `development`, `production`, `test`        |
+| `ACCESS_TOKEN_EXPIRE_IN`   | Tempo de expiração do token de acesso                  | `15m` (15 minutos)                         |
+| `REFRESH_TOKEN_EXPIRE_IN`  | Tempo de expiração do token de atualização             | `1h` (1 hora)                              |
+| `REDIS_USER`               | Usuário para autenticação no Redis                     | `<redis_username>`                           |
+| `REDIS_PASSWORD`           | Senha para autenticação no Redis                       | `<redis_password>`                           |
+| `REDIS_HOST`               | Endereço do servidor Redis                             | `<redis_host>`                               |
+| `REDIS_PORT`               | Porta do servidor Redis                                | `<redis_port>`                               |
+
+
 ## Licença:
 
 O framework NestJs está licenciado sob a [licença MIT](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT
