@@ -2,13 +2,17 @@
 import {Post, HttpCode, 
         Controller,
         UseGuards,
-        Body, Req, Headers
+        Body, Req, Headers,
+        HttpStatus
         } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express'; 
 
 /* DTOs */
-import { LoginDTO, JWTLoginResponseDTO, JWTSimpleLoginResponseDTO, RefreshTokenDto, AccessTokenReponse } from 'src/application/dtos/auth/auth.dto';
+import { LoginDTO, RefreshTokenRequest, AccessTokenReponse } from 'src/application/dtos/auth/auth.dto';
+import { JWTLoginResponse, JWTSimpleLoginResponse } from 'src/application/dtos/auth/jwt.dto';
+
+/* GUARDS */
 import { ProjectKeyGuard } from 'src/application/guard/auth.login.middleware';
 
 /* Services */
@@ -16,7 +20,7 @@ import { AuthServiceJWT } from 'src/application/services/auth/auth.jwt.service';
 import { SimpleDeviceAuthJWT } from 'src/application/services/auth/simple.device.login.service';
 
 @ApiTags('auth')
-@Controller("auth")
+@Controller("v1/auth")
 export class JWTAuthController {
   constructor(
     private authService: AuthServiceJWT,
@@ -28,16 +32,16 @@ export class JWTAuthController {
    * 
    * @param dtoBody 
    * @param projectKey
-   * @returns Promise<JWTSimpleLoginResponseDTO>
+   * @returns Promise<JWTSimpleLoginResponse>
    */
 
   @Post("jwt/basic/login/")
-  @UseGuards(new ProjectKeyGuard())
-  @HttpCode(200)
+  @UseGuards(ProjectKeyGuard)
+  @HttpCode(HttpStatus.OK)
   async login(
     @Body() dtoBody: LoginDTO,
     @Req() req: Request
-  ): Promise<JWTSimpleLoginResponseDTO>
+  ): Promise<JWTSimpleLoginResponse>
   {
     const projectKey = req.projectKey;
     const result = await this.authService.simpleLogin(
@@ -50,14 +54,22 @@ export class JWTAuthController {
     return result;
   }
 
+  /** [POST METHOD] Login with device
+   * 
+   * @param dtoBody 
+   * @param req 
+   * @param deviceDto 
+   * @returns JWTLoginResponseDTO
+   */
+
   @Post("jwt/simple-device/login/")
-  @UseGuards(new ProjectKeyGuard())
-  @HttpCode(200)
+  @UseGuards(ProjectKeyGuard)
+  @HttpCode(HttpStatus.OK)
   async loginSimpleDevice(
     @Body() dtoBody: LoginDTO,
     @Req() req: Request,
     @Headers("device-id") deviceDto: string
-  ): Promise<JWTLoginResponseDTO>
+  ): Promise<JWTLoginResponse>
   {
     const projectKey = req.projectKey;
     const result = await this.authServiceSimpleDevice.login(
@@ -78,12 +90,18 @@ export class JWTAuthController {
     }
   }
 
+  /**
+   * 
+   * @param dtoBody 
+   * @param deviceDto 
+   * @returns AccessTokenReponse
+   */
 
   
   @Post("jwt/simple-device/refresh-token/")
-  @HttpCode(200)
+  @HttpCode(HttpStatus.CREATED)
   async generateRefreshSimpleDevice(
-    @Body() dtoBody: RefreshTokenDto,
+    @Body() dtoBody: RefreshTokenRequest,
     @Headers("device-id") deviceDto: string
   ): Promise<AccessTokenReponse>
   {

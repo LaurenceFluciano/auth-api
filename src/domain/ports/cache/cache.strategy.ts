@@ -3,4 +3,5 @@ export interface CacheStrategyService<Input, Output> {
   get(key: string): Promise<Output | undefined>;
   del(key: string[]): Promise<boolean>;
   init(options?: any): Promise<void>;
+  multiExec?(operations: (pipeline: any) => void): Promise<any>;
 }

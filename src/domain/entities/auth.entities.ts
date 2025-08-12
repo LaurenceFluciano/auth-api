@@ -12,10 +12,10 @@ type Device = {
     lastLogin?: string;
 }
 
-export type SimpleDevice = {
+export type SimpleDevice = Record<string, {
     accessJti: string;
     refreshJti: string;
     primaryAccount?: boolean;
     scopes?: string[];
     lastLogin?: string;
-}
+}>

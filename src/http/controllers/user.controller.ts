@@ -1,6 +1,6 @@
 /* Framework and external import */
-import { Body, Controller, Post, Get, Patch, Param, HttpCode, Query, Logger } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, Get, Patch, Param, HttpCode, Query, Logger, HttpStatus } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 /* DTOs */
 import { CreateUserDTO } from 'src/application/dtos/users/create.user.dto';
@@ -16,9 +16,8 @@ import { PatchUserService } from 'src/application/services/user/patch.user.servi
 import { UserPasswordService } from 'src/application/services/user/password.user.service';
 
 @ApiTags('user')
-@Controller("users")
+@Controller("v1/users")
 export class UserController {
-  private readonly logger = new Logger(UserController.name);
   constructor(
     private readonly createUserService: CreateUserService,
     private readonly getUserService: GetUserService,
@@ -34,7 +33,10 @@ export class UserController {
    */
 
   @Post()
-  @HttpCode(201)
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOkResponse({ description: 'User created and id returned successfully.' })
+  @ApiBadRequestResponse({ description: 'Invalid input data. Possible causes: invalid scope, email, projectKey, username or password.' })
+  @ApiInternalServerErrorResponse({description: "Internal server error."})
   async createUser(
     @Body() dtoBody: CreateUserDTO
   ): Promise<GetUserIdDTO>
@@ -43,21 +45,25 @@ export class UserController {
     return id;
   }
   
-    /** [GET METHOD] getUserByCredentials
-     * 
-     * @param dtoQuery 
-     * @returns GetUserResponseDTO
-     */
+  /** [GET METHOD] getUserByCredentials
+   * 
+   * @param dtoQuery 
+   * @returns GetUserResponseDTO
+   */
   
-    @Get("by-credentials")
-    async getUserByCredentials(
-      @Query() dtoQuery: GetByCredentialsDTO
-    ): Promise<SafeUserResponseDTO>
-    {
-      const user = await this.getUserService.getUserByCredentials(dtoQuery);
-      const {password, ...safeUser} = user
-      return safeUser;
-    }
+  @Get("by-credentials")
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'User found and returned successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  @ApiInternalServerErrorResponse({description: "Internal server error."})
+  async getUserByCredentials(
+    @Query() dtoQuery: GetByCredentialsDTO
+  ): Promise<SafeUserResponseDTO>
+  {
+    const user = await this.getUserService.getUserByCredentials(dtoQuery);
+    const {password, ...safeUser} = user
+    return safeUser;
+  }
   
   /** [GET METHOD] getUserById
    * 
@@ -66,7 +72,10 @@ export class UserController {
    */
 
   @Get(":id")
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'User found and returned successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  @ApiInternalServerErrorResponse({description: "Internal server error."})
   async getUserById(
     @Param() dtoParam: GetUserIdDTO
   ): Promise<SafeUserResponseDTO>
@@ -84,7 +93,11 @@ export class UserController {
    */
 
   @Patch(":id")
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'User updated and name returned successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  @ApiBadRequestResponse({ description: 'Invalid username.' })
+  @ApiInternalServerErrorResponse({description: "Internal server error."})
   async updateUserName(
     @Param() dtoParam: GetUserIdDTO,
     @Body() dtoBody: PatchUserNameDTO
@@ -102,7 +115,11 @@ export class UserController {
    */
 
   @Patch(":id/scopes/")
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'User updated and scopes returned successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  @ApiBadRequestResponse({ description: 'Invalid scopes.' })
+  @ApiInternalServerErrorResponse({description: "Internal server error."})
   async updateUserScopes(
     @Param() dtoParam: GetUserIdDTO,
     @Body() dtoBody: PatchUserScopesDTO
@@ -120,7 +137,11 @@ export class UserController {
    */
 
   @Patch(":id/status/")
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'User updated and status returned successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  @ApiBadRequestResponse({ description: 'Invalid status.' })
+  @ApiInternalServerErrorResponse({description: "Internal server error."})
   async updateUserActive(
     @Param() dtoParam: GetUserIdDTO,
     @Body() dtoBody: PatchUserActiveDTO
@@ -132,7 +153,12 @@ export class UserController {
 
 
   @Patch(":id/password") 
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'User password successfully.' })
+  @ApiNotFoundResponse({ description: "User not found or your auth service context doesn't have password." })
+  @ApiBadRequestResponse({ description: '"Invalid input or password mismatch.' })
+  @ApiForbiddenResponse({description: "Current password incorrect."})
+  @ApiInternalServerErrorResponse({description: "Internal server error."})
   async updateUserPassword(
     @Param() dtoParam: GetUserIdDTO,
     @Body() dtoBody: PatchPasswordDTO
@@ -143,7 +169,11 @@ export class UserController {
 
 
   @Post("/password") 
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ description: 'User password successfully.' })
+  @ApiNotFoundResponse({ description: 'User not found.' })
+  @ApiBadRequestResponse({description: "This context application don't have password auth."})
+  @ApiInternalServerErrorResponse({description: "Internal server error."})
   async getRecoveryCode(
     @Body() dtoBody: GetByCredentialsDTO
   ){
@@ -152,6 +182,10 @@ export class UserController {
   }
 
   @Post("/password/:id/recovery-code")
+  @ApiOkResponse({ description: 'User password successfully.' })
+  @ApiNotFoundResponse({ description: '"Invalid code or expired.' })
+  @ApiBadRequestResponse({description: "Invalid password generate a new code to try again or Invalid password format."})
+  @ApiInternalServerErrorResponse({description: "Internal server error."})
   async getPasswordRecoveryCode(
     @Param() dtoId: GetUserIdDTO,
     @Body() dtoCode: RecoveryCodeDTO

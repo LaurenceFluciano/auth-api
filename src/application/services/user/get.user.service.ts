@@ -27,8 +27,7 @@ export class GetUserService {
     ){}
     
     async getUserById(dto: GetUserIdDTO): Promise<GetUserResponseDTO>
-    {
-        
+    {  
         if(!this.externalValidation.isValidId(dto.id))
         {
             throw new NotFoundException("User not found");

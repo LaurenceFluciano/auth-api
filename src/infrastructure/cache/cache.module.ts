@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { CACHE_TOKEN } from 'src/domain/ports/cache/cache.token';
-import { NodeCacheService } from './node.cache.service';
+import { NodeCacheService } from './node.cache';
 
 @Module({
   providers: [

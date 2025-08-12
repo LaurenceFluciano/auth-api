@@ -34,117 +34,7 @@ class LoginDTO {
     password: string
 }
 
-class JWTLoginDTO {
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    accessToken: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    refreshToken: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    refreshJti: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    accessJti: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    accessTokenExpiresIn: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    refreshTokenExpiresIn: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    userId: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    tokenType: string
-}
-
-
-class JWTLoginResponseDTO {
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    accessToken: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    refreshToken: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    accessTokenExpiresIn: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    refreshTokenExpiresIn: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    userId: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    tokenType: string
-}
-
-class JWTSimpleLoginResponseDTO {
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    accessToken: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    accessTokenExpiresIn: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    tokenType: string
-}
-
-
-class RefreshTokenDto
+class RefreshTokenRequest
 {
     @IsNotEmpty()
     @IsString()
@@ -152,7 +42,6 @@ class RefreshTokenDto
     @ApiResponseProperty()
     refreshToken: string
 }
-
 
 class AccessTokenReponse
 {
@@ -169,10 +58,9 @@ class AccessTokenReponse
     userId: string
 }
 
-export {LoginDTO,
-    JWTLoginResponseDTO,
+export {
+    LoginDTO,
     LoginServiceDTO, 
-    JWTSimpleLoginResponseDTO, 
-    RefreshTokenDto,
+    RefreshTokenRequest,
     AccessTokenReponse,
-    JWTLoginDTO}
+}

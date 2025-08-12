@@ -3,9 +3,9 @@ import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
 
-
 /* DTOs */
-import { LoginServiceDTO, JWTLoginDTO, JWTSimpleLoginResponseDTO } from "src/application/dtos/auth/auth.dto";
+import { LoginServiceDTO } from "src/application/dtos/auth/auth.dto";
+import { JWTResponse, JWTSimpleLoginResponse } from "src/application/dtos/auth/jwt.dto";
 
 /* AuthService */
 import { AuthService } from "src/application/services/auth/auth.service";
@@ -22,36 +22,37 @@ export class AuthServiceJWT {
         private readonly generatorId: IdGenerator,
     ){}
 
-    async login(dto: LoginServiceDTO): Promise<JWTLoginDTO> {
+    async login(dto: LoginServiceDTO): Promise<JWTResponse> {
         const user = await this.authService.validateUser(dto);
 
-        const accessTokenJti: string = this.generatorId.generateId();
-        const refreshTokenJti: string = this.generatorId.generateId();
+        const [accessTokenJti, refreshTokenJti] = await Promise.all([
+            this.generatorId.generateId(),
+            this.generatorId.generateId()
+        ])
 
-        const payload = {
-            sub: user.id,
-            email: user.email,
-            projectKey: user.projectKey,
-            scopes: user.scopes,
-            name: user.name,
-            jti: accessTokenJti
-        };
-
-        const accessToken = await this.jwtService.signAsync(
-            payload,
-            
-            {
-                expiresIn: this.config.get("ACCESS_TOKEN_EXPIRE_IN") || "15m",
-            }
-        );
-        const refreshToken = await this.jwtService.signAsync(
-            {
-                sub: user.id,
-                jti: refreshTokenJti
-            },
-            {
-                expiresIn: this.config.get("REFRESH_TOKEN_EXPIRE_IN") || "1h",
-            }
+        const [accessToken, refreshToken] = await Promise.all(
+            [
+                this.jwtService.signAsync(
+                    {
+                        sub: user.id,
+                        email: user.email,
+                        projectKey: user.projectKey,
+                        scopes: user.scopes,
+                        name: user.name,
+                        jti: accessTokenJti,
+                    },
+                    {
+                        expiresIn: this.config.get("ACCESS_TOKEN_EXPIRE_IN") || "15m"
+                    }),
+                this.jwtService.signAsync(
+                    {
+                        sub: user.id,
+                        jti: refreshTokenJti
+                    },
+                    {
+                         expiresIn: this.config.get("REFRESH_TOKEN_EXPIRE_IN") || "1h",
+                    })
+            ]
         )
 
         return {
@@ -66,7 +67,7 @@ export class AuthServiceJWT {
         };
     }
 
-    async simpleLogin(dto: LoginServiceDTO): Promise<JWTSimpleLoginResponseDTO> {
+    async simpleLogin(dto: LoginServiceDTO): Promise<JWTSimpleLoginResponse> {
         const user = await this.authService.validateUser(dto);
 
         const payload = {
