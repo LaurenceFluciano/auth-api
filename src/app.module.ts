@@ -1,11 +1,11 @@
 import 'dotenv/config'; 
 import { Module } from '@nestjs/common';
-import { MongooseDatabaseConnection } from './infrastructure/mongodb/modules/mongoose.connection.module';
-import { MongooseSchemaModule } from './infrastructure/mongodb/modules/mongoose.schema.module';
-import { UserModule } from './application/user.module';
-import { JWTAuthModule } from './application/auth.jwt.module';
-import { CryptoModule } from './infrastructure/crypto/crypto.module';
-import { ApplicationGuard } from './application/guard/application.guard';
+import { MongooseDatabaseConnection } from './user/infrastructure/mongodb/modules/mongoose.connection.module';
+import { MongooseSchemaModule } from './user/infrastructure/mongodb/modules/mongoose.schema.module';
+import { UserModule } from './user/user.module';
+import { JWTAuthModule } from './auth/auth.jwt.module';
+import { CryptoModule } from './shared/infrastructure/crypto/crypto.module';
+import { ApplicationGuard } from './guard/application.guard';
 
 @Module({
   imports: [
