@@ -10,6 +10,7 @@ export interface UserGetterRepsitory
 {
   getUserById(id: ID, options?: {}): Promise<UserEntity<ID> | null>;
   getUserByCredential(email: string, projectKey: string, options?: {}): Promise<UserEntity<ID> | null>;
+  getUserByScopeAndName?(scopes: string[], name: string, options?: {}): Promise<UserEntity<ID>[] | null>; 
 }
 
 export interface UserUpdateRepository

@@ -97,9 +97,10 @@ Após iniciar o projeto, acesse a documentação da API pelo seguinte endereço:
 | `REDIS_PASSWORD`           | Senha para autenticação no Redis                       | `<redis_password>`                           |
 | `REDIS_HOST`               | Endereço do servidor Redis                             | `<redis_host>`                               |
 | `REDIS_PORT`               | Porta do servidor Redis                                | `<redis_port>`                               |
+| `ROOT_KEY`               | Senha secreta para validar as aplicações conectadas                                | `<SECRET_TOKEN>`                               |
+
 
 
 ## Licença:
 
 O framework NestJs está licenciado sob a [licença MIT](https://github.com/nestjs/nest/blob/master/LICENSE).
-MIT

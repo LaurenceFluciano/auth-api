@@ -1,13 +1,17 @@
 /* Framework and external import */
-import { Body, Controller, Post, Get, Patch, Param, HttpCode, Query, Logger, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Post, Get, Patch, Param, HttpCode, Query, Logger, HttpStatus, UseGuards } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 /* DTOs */
 import { CreateUserDTO } from 'src/application/dtos/users/create.user.dto';
 import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from 'src/application/dtos/users/patch.user.dto';
 import { GetByCredentialsDTO, GetUserIdDTO } from 'src/application/dtos/users/get.user.dto';
-import { GetUserResponseDTO, SafeUserResponseDTO } from 'src/application/dtos/users/response.user.dto';
+import { SafeUserResponseDTO } from 'src/application/dtos/users/response.user.dto';
 import { PatchPasswordDTO, RecoveryCodeDTO } from 'src/application/dtos/users/user.password.dto';
+
+
+/* Guards */
+import { ApplicationGuard } from 'src/application/guard/application.guard';
 
 /* Services */
 import { CreateUserService } from 'src/application/services/user/create.user.service';

@@ -13,11 +13,13 @@ import { LoginDTO, RefreshTokenRequest, AccessTokenReponse } from 'src/applicati
 import { JWTLoginResponse, JWTSimpleLoginResponse } from 'src/application/dtos/auth/jwt.dto';
 
 /* GUARDS */
-import { ProjectKeyGuard } from 'src/application/guard/auth.login.middleware';
+import { ProjectKeyGuard } from 'src/application/guard/auth.login.guard';
+import { ApplicationGuard } from 'src/application/guard/application.guard';
 
 /* Services */
 import { AuthServiceJWT } from 'src/application/services/auth/auth.jwt.service';
 import { SimpleDeviceAuthJWT } from 'src/application/services/auth/simple.device.login.service';
+
 
 @ApiTags('auth')
 @Controller("v1/auth")

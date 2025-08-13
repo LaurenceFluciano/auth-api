@@ -53,8 +53,21 @@ implements UserGetterRepsitory
             return null;
         }
 
-        console.log(result)
-
         return this.simpleMapper.toDomain(result, {ignorePassword: options?.ignorePassword});
+    }
+
+    async getUserByScopeAndName(
+        scopes: string[], 
+        name: string, 
+        options?: {
+            ignorePassword: false
+        }): Promise<UserEntity<ID>[] | null> 
+    {
+        const results = await this.userModel.find({
+            scopes:  { $in: scopes } ,
+            name: name
+        })
+        
+        return results.map(result => this.simpleMapper.toDomain(result, {ignorePassword: options?.ignorePassword}))
     }
 }

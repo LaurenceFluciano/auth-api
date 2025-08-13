@@ -5,6 +5,7 @@ import { MongooseSchemaModule } from './infrastructure/mongodb/modules/mongoose.
 import { UserModule } from './application/user.module';
 import { JWTAuthModule } from './application/auth.jwt.module';
 import { CryptoModule } from './infrastructure/crypto/crypto.module';
+import { ApplicationGuard } from './application/guard/application.guard';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { CryptoModule } from './infrastructure/crypto/crypto.module';
     UserModule,
     JWTAuthModule
   ],
+  providers: [ApplicationGuard]
 })
 
 export class AppModule {}
