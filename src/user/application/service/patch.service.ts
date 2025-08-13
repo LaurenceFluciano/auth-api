@@ -1,29 +1,29 @@
 /* Domain Layer */
 import { UserEntity } from "src/user/domain/entities/user.entities";
 
-import { UserUpdateRepository, ID }  from "src/user/domain/interfaces/user.repository";
-import { USER_UPDATE_REPOSITORY } from "src/user/domain/interfaces/user.repository.token";
+import { UserUpdateRepository, ID }  from "src/user/domain/interface/repository";
+import { USER_UPDATE_REPOSITORY } from "src/user/domain/interface/repository.token";
 
-import { EncryptStrategy } from "src/shared/interfaces/crypto/encrypt";
-import { ENCRYPT_TOKEN } from "src/shared/interfaces/crypto/encrypt.token";
+import { EncryptStrategy } from "src/shared/interface/crypto/encrypt";
+import { ENCRYPT_TOKEN } from "src/shared/interface/crypto/encrypt.token";
 
-import { UserValidation } from "src/user/domain/validations/validation";
-import { USER_VALIDATION } from "src/user/domain/validations/validations.token";
+import { UserValidation } from "src/user/domain/validation/validation";
+import { USER_VALIDATION } from "src/user/domain/validation/validations.token";
 
 
 /* Extenal */
 import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
 
 /* Services layer */
-import { GetUserService } from "./get.user.service";
+import { GetUserService } from "./get.service";
 
 /* DTOS */
 import { 
     PatchUserActiveDTO,
     PatchUserNameDTO,
-    PatchUserScopesDTO } from "src/user/dto/patch.user.dto";
-import { GetUserIdDTO } from "src/user/dto/get.user.dto";
-import { PatchPasswordDTO } from "src/user/dto/user.password.dto";
+    PatchUserScopesDTO } from "src/user/dto/patch.dto";
+import { GetUserIdDTO } from "src/user/dto/get.dto";
+import { PatchPasswordDTO } from "src/user/dto/password.dto";
 
 @Injectable()
 export class PatchUserService 

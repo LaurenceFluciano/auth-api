@@ -8,9 +8,9 @@ import { LoginServiceDTO } from "src/auth/dto/auth.dto";
 import { JWTResponse, JWTSimpleLoginResponse } from "src/auth/dto/jwt.dto";
 
 /* AuthService */
-import { AuthService } from "src/auth/services/auth.service";
-import { ID_GENERATE } from "src/shared/interfaces/code/id.generate.token";
-import { IdGenerator } from "src/shared/interfaces/code/id.generate";
+import { AuthService } from "src/auth/service/auth.service";
+import { ID_GENERATE } from "src/shared/interface/code/id.generate.token";
+import { IdGenerator } from "src/shared/interface/code/id.generate";
 
 @Injectable()
 export class AuthServiceJWT {

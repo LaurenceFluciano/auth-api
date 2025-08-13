@@ -1,5 +1,5 @@
 import NodeCache from 'node-cache';
-import { CacheStrategyService } from 'src/cache/interface/cache.strategy';
+import { CacheStrategyService } from 'src/cache/domain/interface/cache.strategy';
 
 export class NodeCacheService<Input, Output> implements CacheStrategyService<Input, Output> {
   private cache: NodeCache;

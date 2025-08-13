@@ -1,5 +1,5 @@
-import { UpdateUserMongoDBRepository } from "../user.update.repository";
-import { CreateUserMongoDBRepository } from "../user.create.repository";
+import { UpdateUserMongoDBRepository } from "../update.repository";
+import { CreateUserMongoDBRepository } from "../create.repository";
 import { simpleUserFactory } from "./user.test.kit";
 /*
  * O módulo abaixo contem de forma organizada os imports, 

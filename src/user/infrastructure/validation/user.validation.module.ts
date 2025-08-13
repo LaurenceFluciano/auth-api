@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { USER_VALIDATION } from 'src/user/domain/validations/validations.token';
+import { USER_VALIDATION } from 'src/user/domain/validation/validations.token';
 import { ExternalUserValidation } from './user.external.validation';
 
 @Module({

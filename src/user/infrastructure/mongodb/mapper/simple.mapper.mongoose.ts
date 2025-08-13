@@ -1,5 +1,5 @@
 import { UserEntity } from "src/user/domain/entities/user.entities";
-import { SimpleMapper } from "src/shared/interfaces/mapper.interface";
+import { SimpleMapper } from "src/shared/interface/mapper.interface";
 import { UserDocument, UserMongoose } from "../schema/user.schema.mongodb";
 import { isValidObjectId, Types } from "mongoose";
 import { ID } from "../repository/test/user.repo.basic.test.kit";

@@ -1,6 +1,6 @@
 import { RedisClientType } from 'redis';
 import { RedisConnect } from 'src/config/redis.config';
-import { CacheStrategyService } from 'src/cache/interface/cache.strategy';
+import { CacheStrategyService } from 'src/cache/domain/interface/cache.strategy';
 import { OnModuleInit } from '@nestjs/common';
 
 export class RedisCacheService<Input, Output> implements CacheStrategyService<Input, Output>, OnModuleInit {

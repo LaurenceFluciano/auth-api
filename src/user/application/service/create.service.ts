@@ -5,17 +5,17 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { UserEntity } from 'src/user/domain/entities/user.entities';
 
 import { UserCreatorRepository, ID } from 'src/user/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
-import { USER_CREATOR_REPOSITORY } from 'src/user/domain/interfaces/user.repository.token';
+import { USER_CREATOR_REPOSITORY } from 'src/user/domain/interface/repository.token';
 
-import { UserValidation } from 'src/user/domain/validations/validation';
-import { USER_VALIDATION } from 'src/user/domain/validations/validations.token';        
+import { UserValidation } from 'src/user/domain/validation/validation';
+import { USER_VALIDATION } from 'src/user/domain/validation/validations.token';        
 
-import { ENCRYPT_TOKEN } from "src/shared/interfaces/crypto/encrypt.token";
-import { EncryptStrategy } from "src/shared/interfaces/crypto/encrypt";
+import { ENCRYPT_TOKEN } from "src/shared/interface/crypto/encrypt.token";
+import { EncryptStrategy } from "src/shared/interface/crypto/encrypt";
 
 /* DTOS */
-import { CreateUserDTO } from 'src/user/dto/create.user.dto';
-import { GetUserIdDTO } from 'src/user/dto/get.user.dto';
+import { CreateUserDTO } from 'src/user/dto/create.dto';
+import { GetUserIdDTO } from 'src/user/dto/get.dto';
 
 @Injectable()
 export class CreateUserService {

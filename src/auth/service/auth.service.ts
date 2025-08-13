@@ -2,17 +2,17 @@
 import { BadRequestException, Injectable, Inject } from "@nestjs/common";
 
 /* Services */
-import { GetUserService } from "src/user/application/services/get.user.service";
+import { GetUserService } from "src/user/application/service/get.service";
 
 /* DTOs */
 import { LoginServiceDTO } from "src/auth/dto/auth.dto";
 
 /* Domain */
-import { UserValidation } from 'src/user/domain/validations/validation';
-import { USER_VALIDATION } from 'src/user/domain/validations/validations.token';        
+import { UserValidation } from 'src/user/domain/validation/validation';
+import { USER_VALIDATION } from 'src/user/domain/validation/validations.token';        
 
-import { EncryptStrategy } from "src/shared/interfaces/crypto/encrypt";
-import { ENCRYPT_TOKEN } from "src/shared/interfaces/crypto/encrypt.token";
+import { EncryptStrategy } from "src/shared/interface/crypto/encrypt";
+import { ENCRYPT_TOKEN } from "src/shared/interface/crypto/encrypt.token";
 
 @Injectable()
 export class AuthService {

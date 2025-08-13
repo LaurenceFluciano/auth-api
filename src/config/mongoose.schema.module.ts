@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { UserMongoose, UserSchema } from "../schema/user.schema.mongodb";
+import { UserMongoose, UserSchema } from "../user/infrastructure/mongodb/schema/user.schema.mongodb";
 import { MongooseModule } from "@nestjs/mongoose";
 
 @Module({

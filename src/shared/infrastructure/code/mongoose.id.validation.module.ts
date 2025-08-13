@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { MongooseIdValidation } from "../../validations/objectid.validation";
-import { ID_VALIDATION } from "src/user/domain/validations/validations.token";
+import { MongooseIdValidation } from "./objectid.validation";
+import { ID_VALIDATION } from "src/user/domain/validation/validations.token";
 
 @Module({
     providers: [

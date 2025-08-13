@@ -1,15 +1,15 @@
 import { Module } from "@nestjs/common";
 
 /* Schema */
-import { MongooseSchemaModule } from "./mongoose.schema.module";
+import { MongooseSchemaModule } from "../../../../config/mongoose.schema.module";
 
 /* Domain */
-import { USER_CREATOR_REPOSITORY, USER_GETTER_REPOSITORY, USER_UPDATE_REPOSITORY } from "src/user/domain/interfaces/user.repository.token";
+import { USER_CREATOR_REPOSITORY, USER_GETTER_REPOSITORY, USER_UPDATE_REPOSITORY } from "src/user/domain/interface/repository.token";
 
 /* Repository */
-import { CreateUserMongoDBRepository } from "src/user/infrastructure/mongodb/repository/user.create.repository";
-import { GetUserMongoDBRepository } from "src/user/infrastructure/mongodb/repository/user.getter.repository";
-import { UpdateUserMongoDBRepository } from "src/user/infrastructure/mongodb/repository/user.update.repository";
+import { CreateUserMongoDBRepository } from "src/user/infrastructure/mongodb/repository/create.repository";
+import { GetUserMongoDBRepository } from "src/user/infrastructure/mongodb/repository/getter.repository";
+import { UpdateUserMongoDBRepository } from "src/user/infrastructure/mongodb/repository/update.repository";
 
 @Module({
     imports: [

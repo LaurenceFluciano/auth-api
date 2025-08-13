@@ -1,8 +1,8 @@
 import validator from "validator";
-import { PasswordValidator } from "../../domain/validations/password.validation";
+import { PasswordValidator } from "../../domain/validation/password.validation";
 
 // Utilize uma pré-implementação de dominio para evitar erros e repetição!
-import { AbstractUserExternalValidation } from "src/user/domain/validations/user.validation.abstract";
+import { AbstractUserExternalValidation } from "src/user/domain/validation/user.validation.abstract";
 
 
 export class ExternalUserValidation extends AbstractUserExternalValidation {

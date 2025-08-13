@@ -7,7 +7,7 @@ import mongoose, { Model } from "mongoose";
 import { UserMongoose, UserSchema } from "../../schema/user.schema.mongodb";
 
 // Domínio
-import { ID, UserCreatorRepository, UserUpdateRepository, UserGetterRepsitory } from "../../../../domain/interfaces/user.repository";
+import { ID, UserCreatorRepository, UserUpdateRepository, UserGetterRepsitory } from "../../../../domain/interface/repository";
 import { UserEntity } from "../../../../domain/entities/user.entities";
 
 // Factory para inicializar tudo

@@ -1,5 +1,5 @@
 import { ContextEmailStrategy, EmailBody, EmailProvidersType, SendEmailStrategy } from "../interfaces/email.strategy";
-import { SendEmailNodemailerService } from "../services/nodemailer.service";
+import { SendEmailNodemailerService } from "../service/nodemailer.service";
 
 export class ContextEmailService implements ContextEmailStrategy
 {

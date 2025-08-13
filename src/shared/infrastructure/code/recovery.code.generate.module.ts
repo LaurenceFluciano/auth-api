@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { GenerateCode } from 'src/shared/infrastructure/code/recovery.code.generation';
-import { GENERATE_CODE_STRATEGY } from 'src/shared/interfaces/code/recovery.code.token';
+import { GenerateCode } from 'src/shared/infrastructure/code/recovery.code.generate';
+import { GENERATE_CODE_STRATEGY } from 'src/shared/interface/code/recovery.code.token';
 
 @Module({
   providers: [

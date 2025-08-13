@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UuidGenerator } from './uuid.id.generate';
-import { ID_GENERATE } from 'src/shared/interfaces/code/id.generate.token';
+import { ID_GENERATE } from 'src/shared/interface/code/id.generate.token';
 
 @Module({
   providers: [

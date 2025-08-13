@@ -1,6 +1,6 @@
-import { GenerateCodeStrategy } from "src/shared/interfaces/code/recovery.code";
-import { RandomUtil } from "../../interfaces/random.util";
-import { RecoveryCodeType } from "src/shared/interfaces/code/recovery.code";
+import { GenerateCodeStrategy } from "src/shared/interface/code/recovery.code";
+import { RandomUtil } from "../../interface/random.util";
+import { RecoveryCodeType } from "src/shared/interface/code/recovery.code";
 
 const SIZE_CODE_FIELD = 6;
 const MIN_CODE = 100000;

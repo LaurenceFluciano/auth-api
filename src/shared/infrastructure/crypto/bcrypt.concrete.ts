@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcryptjs';
-import { EncryptService } from 'src/shared/interfaces/crypto/crypto.abstract';
+import { EncryptService } from 'src/shared/interface/crypto/crypto.abstract';
 
 export class BcryptEncryptService extends EncryptService {
   private readonly saltRounds = 10;

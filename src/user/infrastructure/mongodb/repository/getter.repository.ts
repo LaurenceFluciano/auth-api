@@ -7,13 +7,13 @@ import { UserMongoose, UserDocument } from "../schema/user.schema.mongodb";
 import { ID, UserGetterRepsitory } from "./test/user.repo.basic.test.kit";
 
 /* Mappers */
-import { UserIDMapper, UserSimpleMapper } from "../mapper/user.simple.mapper.mongoose";
+import { UserIDMapper, UserSimpleMapper } from "../mapper/simple.mapper.mongoose";
 
 /* External */
 import { Model } from "mongoose";
 import { Injectable, Options } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { SimpleMapper } from "src/shared/interfaces/mapper.interface";
+import { SimpleMapper } from "src/shared/interface/mapper.interface";
 import { Types } from "mongoose";
 
 @Injectable()

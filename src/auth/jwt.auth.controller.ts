@@ -17,8 +17,8 @@ import { ProjectKeyGuard } from 'src/guard/auth.login.guard';
 import { ApplicationGuard } from 'src/guard/application.guard';
 
 /* Services */
-import { AuthServiceJWT } from 'src/auth/services/auth.jwt.service';
-import { SimpleDeviceAuthJWT } from 'src/auth/services/simple.device.login.service';
+import { AuthServiceJWT } from 'src/auth/service/jwt.service';
+import { SimpleDeviceAuthJWT } from 'src/auth/service/simple.device.service';
 
 
 @ApiTags('auth')

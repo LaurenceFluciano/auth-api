@@ -1,4 +1,4 @@
-import { CreateUserMongoDBRepository } from "../user.create.repository"
+import { CreateUserMongoDBRepository } from "../create.repository"
 import { simpleUserFactory, isUserEntityComplete } from "./user.test.kit";
 /*
  * O módulo abaixo contem de forma organizada os imports, 

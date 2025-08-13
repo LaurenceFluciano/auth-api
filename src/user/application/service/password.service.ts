@@ -1,28 +1,28 @@
 import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { CacheCodeEntity } from "src/cache/infrastructure/password.cache.entities";
+import { CacheCodeEntity } from "src/cache/domain/cache.code.entity";
 
 /* DTOs */
-import { RecoveryCodeDTO } from "src/user/dto/user.password.dto";
-import { GetByCredentialsDTO, GetUserIdDTO } from "src/user/dto/get.user.dto";
+import { RecoveryCodeDTO } from "src/user/dto/password.dto";
+import { GetByCredentialsDTO, GetUserIdDTO } from "src/user/dto/get.dto";
 
 /* Services */
-import { GetUserService } from "./get.user.service";
+import { GetUserService } from "./get.service";
 
 /* Repository Ports and adapter */
-import { EncryptStrategy } from "src/shared/interfaces/crypto/encrypt";
-import { ENCRYPT_TOKEN } from "src/shared/interfaces/crypto/encrypt.token";
+import { EncryptStrategy } from "src/shared/interface/crypto/encrypt";
+import { ENCRYPT_TOKEN } from "src/shared/interface/crypto/encrypt.token";
 
-import { UserUpdateRepository } from "src/user/domain/interfaces/user.repository";
-import { USER_UPDATE_REPOSITORY } from "src/user/domain/interfaces/user.repository.token";
+import { UserUpdateRepository } from "src/user/domain/interface/repository";
+import { USER_UPDATE_REPOSITORY } from "src/user/domain/interface/repository.token";
 
-import { GenerateCodeStrategy } from "src/shared/interfaces/code/recovery.code";
-import { GENERATE_CODE_STRATEGY } from "src/shared/interfaces/code/recovery.code.token";
+import { GenerateCodeStrategy } from "src/shared/interface/code/recovery.code";
+import { GENERATE_CODE_STRATEGY } from "src/shared/interface/code/recovery.code.token";
 
-import { UserValidation } from "src/user/domain/validations/validation";
-import { USER_VALIDATION } from "src/user/domain/validations/validations.token";
+import { UserValidation } from "src/user/domain/validation/validation";
+import { USER_VALIDATION } from "src/user/domain/validation/validations.token";
 
-import { CacheStrategyService } from "src/cache/interface/cache.strategy";
-import { CACHE_TOKEN } from "src/cache/interface/cache.token";
+import { CacheStrategyService } from "src/cache/domain/interface/cache.strategy";
+import { CACHE_TOKEN } from "src/cache/domain/interface/cache.token";
 
 // EXTERNAL LAYER
 import { CONTEXT_SEND_EMAIL_TOKEN } from "src/email/interfaces/email.token";

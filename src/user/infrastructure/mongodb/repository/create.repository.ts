@@ -3,16 +3,16 @@ import { UserEntity } from "src/user/domain/entities/user.entities";
 import { UserMongoose, UserDocument } from "../schema/user.schema.mongodb";
 
 /* Repository */
-import { ID, UserCreatorRepository } from "src/user/domain/interfaces/user.repository";
+import { ID, UserCreatorRepository } from "src/user/domain/interface/repository";
 
 /* Mappers */
-import { UserSimpleMapper } from "../mapper/user.simple.mapper.mongoose";
+import { UserSimpleMapper } from "../mapper/simple.mapper.mongoose";
 
 /* External */
 import { Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { SimpleMapper } from "src/shared/interfaces/mapper.interface";
+import { SimpleMapper } from "src/shared/interface/mapper.interface";
 
 
 @Injectable()

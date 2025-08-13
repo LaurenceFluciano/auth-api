@@ -17,8 +17,6 @@ export type UserDocument = HydratedDocument<UserMongoose>;
  *      public password?: string,
  *      public createdAt?: Date,
  *      public updatedAt?: Date
- * 
- * 
  **/
 
 

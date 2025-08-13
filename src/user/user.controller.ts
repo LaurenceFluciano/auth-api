@@ -3,17 +3,17 @@ import { Body, Controller, Post, Get, Patch, Param, HttpCode, Query, Logger, Htt
 import { ApiBadRequestResponse, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 /* DTOs */
-import { CreateUserDTO } from 'src/user/dto/create.user.dto';
-import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from 'src/user/dto/patch.user.dto';
-import { GetByCredentialsDTO, GetUserIdDTO } from 'src/user/dto/get.user.dto';
-import { SafeUserResponseDTO } from 'src/user/dto/response.user.dto';
-import { PatchPasswordDTO, RecoveryCodeDTO } from 'src/user/dto/user.password.dto';
+import { CreateUserDTO } from 'src/user/dto/create.dto';
+import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from 'src/user/dto/patch.dto';
+import { GetByCredentialsDTO, GetUserIdDTO } from 'src/user/dto/get.dto';
+import { SafeUserResponseDTO } from 'src/user/dto/response.dto';
+import { PatchPasswordDTO, RecoveryCodeDTO } from 'src/user/dto/password.dto';
 
 /* Services */
-import { CreateUserService } from 'src/user/application/services/create.user.service';
-import { GetUserService } from 'src/user/application/services/get.user.service';
-import { PatchUserService } from 'src/user/application/services/patch.user.service';
-import { UserPasswordService } from 'src/user/application/services/password.user.service';
+import { CreateUserService } from 'src/user/application/service/create.service';
+import { GetUserService } from 'src/user/application/service/get.service';
+import { PatchUserService } from 'src/user/application/service/patch.service';
+import { UserPasswordService } from 'src/user/application/service/password.service';
 
 @ApiTags('user')
 @Controller("v1/users")

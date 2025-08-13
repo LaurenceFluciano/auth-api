@@ -5,16 +5,16 @@ import { BadRequestException, Inject, Injectable, InternalServerErrorException, 
 import { LoginServiceDTO, AccessTokenReponse, RefreshTokenRequest } from "src/auth/dto/auth.dto";
 
 /* AuthService */
-import { AuthServiceJWT } from "./auth.jwt.service";
-import { CACHE_AUTH_TOKEN } from "src/cache/interface/cache.token";
-import { CacheStrategyService } from "src/cache/interface/cache.strategy";
+import { AuthServiceJWT } from "./jwt.service";
+import { CACHE_AUTH_TOKEN } from "src/cache/domain/interface/cache.token";
+import { CacheStrategyService } from "src/cache/domain/interface/cache.strategy";
 import { SimpleDevice } from "src/auth/domain/auth.entities";
 import { JwtService } from "@nestjs/jwt";
-import { ID_GENERATE } from "src/shared/interfaces/code/id.generate.token";
-import { IdGenerator } from "src/shared/interfaces/code/id.generate";
+import { ID_GENERATE } from "src/shared/interface/code/id.generate.token";
+import { IdGenerator } from "src/shared/interface/code/id.generate";
 import { ConfigService } from "@nestjs/config";
-import { GetUserService } from "src/user/application/services/get.user.service"
-import { GetUserIdDTO } from "src/user/dto/get.user.dto";
+import { GetUserService } from "src/user/application/service/get.service"
+import { GetUserIdDTO } from "src/user/dto/get.dto";
 import { JWTLoginResponse } from "src/auth/dto/jwt.dto";
 
 
