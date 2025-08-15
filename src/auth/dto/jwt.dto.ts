@@ -1,5 +1,5 @@
 import { ApiProperty, ApiResponseProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 class JWTResponse {
     @IsNotEmpty()
@@ -30,18 +30,6 @@ class JWTResponse {
     @IsString()
     @ApiProperty()
     @ApiResponseProperty()
-    accessTokenExpiresIn: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    refreshTokenExpiresIn: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
     userId: string
 
     @IsNotEmpty()
@@ -49,48 +37,57 @@ class JWTResponse {
     @ApiProperty()
     @ApiResponseProperty()
     tokenType: string
+
+    @IsNotEmpty()
+    @IsNumber()
+    @ApiProperty({ description: 'Issued at timestamp (seconds)' })
+    @ApiResponseProperty()
+    iat: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    @ApiProperty({ description: 'Expiration timestamp (seconds)' })
+    @ApiResponseProperty()
+    exp: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    @ApiProperty({ description: 'Issued at timestamp (seconds)' })
+    @ApiResponseProperty()
+    refreshTokenIat?: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    @ApiProperty({ description: 'Expiration timestamp (seconds)' })
+    @ApiResponseProperty()
+    refreshTokenExp?: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    @ApiProperty({ description: 'Issued at timestamp (seconds)' })
+    @ApiResponseProperty()
+    accessTokenIat?: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    @ApiProperty({ description: 'Expiration timestamp (seconds)' })
+    @ApiResponseProperty()
+    accessTokenExp?: number;
 }
 
+import { IRefreshTokenRequest, IAccessTokenReponse } from "../interface/jwt-token.interface";
 
-class JWTLoginResponse {
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    accessToken: string
-
+class RefreshTokenRequest implements IRefreshTokenRequest
+{
     @IsNotEmpty()
     @IsString()
     @ApiProperty()
     @ApiResponseProperty()
     refreshToken: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    accessTokenExpiresIn: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    refreshTokenExpiresIn: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    userId: string
-
-    @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
-    @ApiResponseProperty()
-    tokenType: string
 }
 
-class JWTSimpleLoginResponse {
+class AccessTokenReponse implements IAccessTokenReponse
+{
     @IsNotEmpty()
     @IsString()
     @ApiProperty()
@@ -101,17 +98,24 @@ class JWTSimpleLoginResponse {
     @IsString()
     @ApiProperty()
     @ApiResponseProperty()
-    accessTokenExpiresIn: string
+    userId: string
 
     @IsNotEmpty()
-    @IsString()
-    @ApiProperty()
+    @IsNumber()
+    @ApiProperty({ description: 'Issued at timestamp (seconds)' })
     @ApiResponseProperty()
-    tokenType: string
+    iat: number;
+
+    @IsNotEmpty()
+    @IsNumber()
+    @ApiProperty({ description: 'Expiration timestamp (seconds)' })
+    @ApiResponseProperty()
+    exp: number;
+
 }
 
 export {
     JWTResponse,
-    JWTLoginResponse,
-    JWTSimpleLoginResponse,
+    RefreshTokenRequest,
+    AccessTokenReponse
 }

@@ -1,16 +1,14 @@
 /* External */
-import { BadRequestException, Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ConfigService } from "@nestjs/config";
-
-/* DTOs */
-import { LoginServiceDTO } from "src/auth/dto/auth.dto";
-import { JWTResponse, JWTSimpleLoginResponse } from "src/auth/dto/jwt.dto";
 
 /* AuthService */
 import { AuthService } from "src/auth/service/auth.service";
 import { ID_GENERATE } from "src/shared/interface/code/id.generate.token";
 import { IdGenerator } from "src/shared/interface/code/id.generate";
+import { JWTTokenPayload } from "../interface/jwt-payload.interface";
+import { ILoginInput } from "../interface/input.user.interface";
 
 @Injectable()
 export class AuthServiceJWT {
@@ -22,8 +20,11 @@ export class AuthServiceJWT {
         private readonly generatorId: IdGenerator,
     ){}
 
-    async login(dto: LoginServiceDTO): Promise<JWTResponse> {
+    async login(dto: ILoginInput): Promise<JWTTokenPayload> {
         const user = await this.authService.validateUser(dto);
+
+        const accessExpireIn = this.config.get("ACCESS_TOKEN_EXPIRE_IN") || "15m";
+        const refreshExpireIn = this.config.get("REFRESH_TOKEN_EXPIRE_IN") || "1h";
 
         const [accessTokenJti, refreshTokenJti] = await Promise.all([
             this.generatorId.generateId(),
@@ -42,7 +43,7 @@ export class AuthServiceJWT {
                         jti: accessTokenJti,
                     },
                     {
-                        expiresIn: this.config.get("ACCESS_TOKEN_EXPIRE_IN") || "15m"
+                        expiresIn: accessExpireIn
                     }),
                 this.jwtService.signAsync(
                     {
@@ -50,24 +51,30 @@ export class AuthServiceJWT {
                         jti: refreshTokenJti
                     },
                     {
-                         expiresIn: this.config.get("REFRESH_TOKEN_EXPIRE_IN") || "1h",
+                         expiresIn: refreshExpireIn
                     })
             ]
         )
 
+        const accessTokenDecode = this.jwtService.decode(accessToken);
+        const refreshTokenDecode = this.jwtService.decode(refreshToken);
+
         return {
-            userId: user.id,
+            sub: user.id,
             accessToken,
             refreshToken,
             tokenType: "JWT",
-            accessJti: accessTokenJti,
-            refreshJti: refreshTokenJti,
-            accessTokenExpiresIn: this.config.get('ACCESS_TOKEN_EXPIRE_IN') || '15m',
-            refreshTokenExpiresIn: this.config.get('REFRESH_TOKEN_EXPIRE_IN') || '1h'
+            accessJti: accessTokenJti!,
+            refreshJti: refreshTokenJti!,
+            refreshTokenIat: refreshTokenDecode.iat,
+            refreshTokenExp: refreshTokenDecode.exp,
+            accessTokenIat: accessTokenDecode.iat,
+            accessTokenExp: accessTokenDecode.exp
+            
         };
     }
 
-    async simpleLogin(dto: LoginServiceDTO): Promise<JWTSimpleLoginResponse> {
+    async simpleLogin(dto: ILoginInput): Promise<Partial<JWTTokenPayload>> {
         const user = await this.authService.validateUser(dto);
 
         const payload = {
@@ -80,16 +87,18 @@ export class AuthServiceJWT {
 
         const accessToken = await this.jwtService.signAsync(
             payload,
-            
             {
                 expiresIn: this.config.get("ACCESS_TOKEN_EXPIRE_IN") || "15m",
             }
         );
 
+        const decode = this.jwtService.decode(accessToken);
+
         return {
             accessToken,
             tokenType: "JWT",
-            accessTokenExpiresIn: this.config.get('ACCESS_TOKEN_EXPIRE_IN') || '15m',
+            iat: decode.iat,
+            exp: decode.exp
         };
     }
 

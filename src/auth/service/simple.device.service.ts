@@ -1,8 +1,8 @@
 /* External */
-import { BadRequestException, Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 
-/* DTOs */
-import { LoginServiceDTO, AccessTokenReponse, RefreshTokenRequest } from "src/auth/dto/auth.dto";
+import { IAccessTokenReponse, IRefreshTokenRequest } from "../interface/jwt-token.interface";
+
 
 /* AuthService */
 import { AuthServiceJWT } from "./jwt.service";
@@ -15,7 +15,8 @@ import { IdGenerator } from "src/shared/interface/code/id.generate";
 import { ConfigService } from "@nestjs/config";
 import { GetUserService } from "src/user/application/service/get.service"
 import { GetUserIdDTO } from "src/user/dto/get.dto";
-import { JWTLoginResponse } from "src/auth/dto/jwt.dto";
+import { JWTTokenPayload } from "../interface/jwt-payload.interface";
+import { ILoginInput } from "../interface/input.user.interface";
 
 
 @Injectable()
@@ -31,7 +32,7 @@ export class SimpleDeviceAuthJWT {
         private readonly userGetService: GetUserService,
     ){}
 
-    async login(dto: LoginServiceDTO, deviceDtoId: string): Promise<JWTLoginResponse> {
+    async login(dto: ILoginInput, deviceDtoId: string): Promise<JWTTokenPayload> {
         const result = await this.authService.login(dto);
 
         const cached: SimpleDevice = {
@@ -40,12 +41,12 @@ export class SimpleDeviceAuthJWT {
                 refreshJti: result.refreshJti,
             }
         };
-        await this.cache.set(result.userId, cached);
+        await this.cache.set(result.sub, cached);
 
         return result
     }
 
-    async generateAccessToken(refreshTokenDto: RefreshTokenRequest, deviceDto: string): Promise<AccessTokenReponse>
+    async generateAccessToken(refreshTokenDto: IRefreshTokenRequest, deviceDto: string): Promise<IAccessTokenReponse>
     {
         try {
             const result = await this.jwtService.verifyAsync(refreshTokenDto.refreshToken);
@@ -78,9 +79,13 @@ export class SimpleDeviceAuthJWT {
 
             await this.cache.set(userDb.id, userCache);
 
+            const decode = this.jwtService.decode(accessToken)
+
             return {
                 accessToken,
                 userId: userDb.id,
+                exp: decode.exp,
+                iat: decode.iat
             };
         } catch (err) {
             if (err instanceof BadRequestException || err instanceof NotFoundException) throw err;

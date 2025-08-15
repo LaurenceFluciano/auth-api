@@ -4,15 +4,13 @@ import { BadRequestException, Injectable, Inject } from "@nestjs/common";
 /* Services */
 import { GetUserService } from "src/user/application/service/get.service";
 
-/* DTOs */
-import { LoginServiceDTO } from "src/auth/dto/auth.dto";
-
 /* Domain */
 import { UserValidation } from 'src/user/domain/validation/validation';
 import { USER_VALIDATION } from 'src/user/domain/validation/validations.token';        
 
 import { EncryptStrategy } from "src/shared/interface/crypto/encrypt";
 import { ENCRYPT_TOKEN } from "src/shared/interface/crypto/encrypt.token";
+import { ILoginInput } from "../interface/input.user.interface";
 
 @Injectable()
 export class AuthService {
@@ -25,7 +23,7 @@ export class AuthService {
         private userValidation: UserValidation
     ){}
 
-    async validateUser(dto: LoginServiceDTO) {
+    async validateUser(dto: ILoginInput) {
         const user = await this.userGetService.getUserByCredentials({
             projectKey: dto.projectKey,
             email: dto.email

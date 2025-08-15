@@ -3,18 +3,19 @@ import {Post, HttpCode,
         Controller,
         UseGuards,
         Body, Req, Headers,
-        HttpStatus
+        HttpStatus,
+        Get
         } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express'; 
 
 /* DTOs */
-import { LoginDTO, RefreshTokenRequest, AccessTokenReponse } from 'src/auth/dto/auth.dto';
-import { JWTLoginResponse, JWTSimpleLoginResponse } from 'src/auth/dto/jwt.dto';
+import { LoginDTO } from 'src/auth/dto/auth.dto';
+import { JWTResponse, RefreshTokenRequest, AccessTokenReponse } from 'src/auth/dto/jwt.dto';
 
 /* GUARDS */
 import { ProjectKeyGuard } from 'src/guard/auth.login.guard';
-import { ApplicationGuard } from 'src/guard/application.guard';
+import { SimpleDeviceLoginProfileGuard } from 'src/guard/profile.jwt.guard';
 
 /* Services */
 import { AuthServiceJWT } from 'src/auth/service/jwt.service';
@@ -43,7 +44,7 @@ export class JWTAuthController {
   async login(
     @Body() dtoBody: LoginDTO,
     @Req() req: Request
-  ): Promise<JWTSimpleLoginResponse>
+  ): Promise<Partial<JWTResponse>>
   {
     const projectKey = req.projectKey;
     const result = await this.authService.simpleLogin(
@@ -71,7 +72,7 @@ export class JWTAuthController {
     @Body() dtoBody: LoginDTO,
     @Req() req: Request,
     @Headers("device-id") deviceDto: string
-  ): Promise<JWTLoginResponse>
+  ): Promise<Partial<JWTResponse>>
   {
     const projectKey = req.projectKey;
     const result = await this.authServiceSimpleDevice.login(
@@ -82,14 +83,7 @@ export class JWTAuthController {
         },
         deviceDto
       )
-    return {
-      refreshToken: result.refreshToken,
-      accessToken: result.accessToken,
-      accessTokenExpiresIn: result.accessTokenExpiresIn,
-      refreshTokenExpiresIn: result.refreshTokenExpiresIn,
-      tokenType: result.tokenType,
-      userId: result.userId
-    }
+    return result
   }
 
   /**
@@ -112,5 +106,17 @@ export class JWTAuthController {
       deviceDto)
     return result;
   }
+
+
+  @Get("jwt/simple-device/me/")
+  @UseGuards(SimpleDeviceLoginProfileGuard)
+  @HttpCode(HttpStatus.OK)
+  async profile(
+    @Req() req: Request
+  )
+  {
+    const user = req.user;
+    return user;
+  } 
 
 }
