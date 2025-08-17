@@ -4,6 +4,11 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { ApplicationGuard } from './guard/application.guard';
+import dotenv from "dotenv";
+import { DomainExceptionFilter } from './utils/infrastructure/filters/domain.exception.filter';
+import { UseCaseExceptionFilter } from './utils/infrastructure/filters/usecase.exception.filter';
+dotenv.config()
+
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {cors: true});
@@ -19,6 +24,8 @@ async function bootstrap() {
   }));
 
   app.useGlobalGuards(app.get(ApplicationGuard));
+  app.useGlobalFilters(new DomainExceptionFilter());
+  app.useGlobalFilters(new UseCaseExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('User Auth API')
@@ -30,6 +37,6 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
-  await app.listen(8000);
+  await app.listen(process.env.PORT || 8000);
 }
 bootstrap();

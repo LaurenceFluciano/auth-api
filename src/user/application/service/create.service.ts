@@ -2,20 +2,24 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 
 /* Domain Layer */
-import { UserEntity } from 'src/user/domain/entities/user.entities';
+import { UserEntity } from 'src/user/domain/entities/user.entitie';
+import { UserCreatorRepository, UserGetterRepsitory } from 'src/user/domain/interface/repository';
+import { USER_CREATOR_REPOSITORY, USER_GETTER_REPOSITORY } from 'src/user/domain/interface/repository.token';   
 
-import { UserCreatorRepository, ID } from 'src/user/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
-import { USER_CREATOR_REPOSITORY } from 'src/user/domain/interface/repository.token';
-
-import { UserValidation } from 'src/user/domain/validation/validation';
-import { USER_VALIDATION } from 'src/user/domain/validation/validations.token';        
-
-import { ENCRYPT_TOKEN } from "src/shared/interface/crypto/encrypt.token";
-import { EncryptStrategy } from "src/shared/interface/crypto/encrypt";
+import { ENCRYPT_TOKEN } from "src/utils/interface/crypto/encrypt.token";
+import { EncryptStrategy } from "src/utils/interface/crypto/encrypt";
 
 /* DTOS */
-import { CreateUserDTO } from 'src/user/dto/create.dto';
-import { GetUserIdDTO } from 'src/user/dto/get.dto';
+import { CreateUserDTO } from 'src/user/application/dtos/create.dto';
+import { GetUserIdDTO } from 'src/user/application/dtos/get.dto';
+import { ProjectKey } from 'src/user/domain/domain-types/ProjectKey';
+import { Name } from 'src/user/domain/domain-types/Name';
+import { Email } from 'src/user/domain/domain-types/Email';
+import { Scope } from 'src/user/domain/domain-types/Scope';
+import { Password } from 'src/user/domain/domain-types/Password';
+import { UseCaseException } from '../errors/usecase.exception';
+import { UseCaseErrorType } from '../errors/usecase.exeception.enum';
+
 
 @Injectable()
 export class CreateUserService {
@@ -25,48 +29,39 @@ export class CreateUserService {
     private readonly repository: UserCreatorRepository,
     @Inject(ENCRYPT_TOKEN)
     private readonly encryptService: EncryptStrategy,
-    @Inject(USER_VALIDATION)
-     private userValidation: UserValidation
+    @Inject(USER_GETTER_REPOSITORY)
+    private readonly getRepo: UserGetterRepsitory
   ){}
   
   async create(dto: CreateUserDTO): Promise<GetUserIdDTO>
   {
-    dto.scopes.forEach(scope => {
-      if(!this.userValidation.isValidScopes(scope))
-        throw new BadRequestException("Invalid scope format.");
-      
-    })
+    const user = new UserEntity<string>(
+      new ProjectKey(dto.projectKey),
+      new Name(dto.name),
+      new Email(dto.email),
+      dto.scopes.map(s => new Scope(s)),
+      true
+    );
 
-    if(!this.userValidation.isValidEmail(dto.email))
-        throw new BadRequestException("Invalid email.");
-    
-    if(!this.userValidation.isValidProjectKey(dto.projectKey))
-      throw new BadRequestException("Invalid projectKey.");
+    const userExist = await this.getRepo.getUserByCredential(user.getEmail(),user.getProjectKey())
 
-    if(!this.userValidation.isValidUsername(dto.name))
-      throw new BadRequestException("Invalid username.");
+    if(userExist)
+      throw new UseCaseException("User already exists", UseCaseErrorType.CONFLICT_ERROR)
 
-    const user: UserEntity<ID> = {
-      name: dto.name,
-      email: dto.email,
-      projectKey: dto.projectKey,
-      scopes: dto.scopes,
-      active: true,
-    }
+    let passwordHash: string | undefined;
 
-    if(dto?.password) 
-    {
-      if(!this.userValidation.isValidPassword(dto.password))
-      {
-        throw new BadRequestException("Invalid input");
-      }
+    if(dto.password) 
+      passwordHash = await (new Password(dto.password)).generateHash(this.encryptService);
 
-      const encryptPassword = await this.encryptService.hash(dto?.password);
+    const id = await this.repository.create({
+      active: user.active,
+      email: user.getEmail(),
+      name: user.getUsername(),
+      projectKey: user.getProjectKey(),
+      scopes: user.getScopes(),
+      password: passwordHash
+    });
 
-      user.password = encryptPassword;
-    }
-
-    const result: string = await this.repository.create(user);
-    return { id: result };
+    return { id };
   }
 }

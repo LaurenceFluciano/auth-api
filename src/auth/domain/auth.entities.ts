@@ -1,3 +1,4 @@
+// Just definition, I must implemented this
 type Account = {
     accountName: string;
     accountScopes: string[];
@@ -7,6 +8,7 @@ type Account = {
     lastLogin?: string;
 }
 
+// Just definition, I must implemented this
 type Device = {
     accounts: string[] | Account[];
     lastLogin?: string;

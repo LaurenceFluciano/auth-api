@@ -1,11 +1,11 @@
-import { UserEntity } from "src/user/domain/entities/user.entities";
-import { SimpleMapper } from "src/shared/interface/mapper.interface";
+import { UserDTO } from "src/user/domain/dtos/user.entity.dto";
+import { SimpleMapper } from "src/utils/interface/mapper.interface";
 import { UserDocument, UserMongoose } from "../schema/user.schema.mongodb";
 import { isValidObjectId, Types } from "mongoose";
-import { ID } from "../repository/test/user.repo.basic.test.kit";
+import { Id } from "src/utils/interface/id/abstract.id";
 
 export class UserSimpleMapper 
-implements SimpleMapper<UserEntity<ID>, UserDocument | Partial<UserMongoose>>
+implements SimpleMapper<UserDTO, UserDocument | Partial<UserMongoose>>
 {
     toDomain(
         external: UserDocument, 
@@ -13,14 +13,14 @@ implements SimpleMapper<UserEntity<ID>, UserDocument | Partial<UserMongoose>>
             ignoreId?: boolean, 
             ignorePassword?: boolean,
             ignoreTimeStamp?: boolean
-        }): UserEntity<ID> {
+        }): UserDTO {
             const entity = {
                 name: external.name,
                 projectKey: external.projectKey,
                 email: external.email,
                 scopes: external.scopes,
                 active: external.active,
-            } as UserEntity<ID>
+            } as UserDTO
 
             if(!options?.ignoreId && external._id)
             {
@@ -44,7 +44,7 @@ implements SimpleMapper<UserEntity<ID>, UserDocument | Partial<UserMongoose>>
     }
 
     toPersistence(
-        domain: UserEntity<ID>, 
+        domain: UserDTO, 
         options?: 
         {
             ignoreId?: boolean, 
@@ -84,16 +84,14 @@ implements SimpleMapper<UserEntity<ID>, UserDocument | Partial<UserMongoose>>
 } 
 
 export class UserIDMapper
-implements SimpleMapper<ID, Types.ObjectId>
+implements SimpleMapper<Id, Types.ObjectId>
 {
-    toDomain(external: Types.ObjectId): ID {
+    toDomain(external: Types.ObjectId): Id {
         return external.toString()
     }
     toPersistence(domain: string): Types.ObjectId {
         if(!isValidObjectId(domain))
-        {
             throw new Error("[Simple Mapper] Id obtido é inválido");
-        }
         return new Types.ObjectId(domain);
     }
 }

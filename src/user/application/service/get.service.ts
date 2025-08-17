@@ -2,18 +2,20 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 /* Domain Layer */
-import { UserGetterRepsitory } from 'src/user/infrastructure/mongodb/repository/test/user.repo.basic.test.kit';
+import { UserGetterRepsitory } from 'src/user/domain/interface/repository';
 import { USER_GETTER_REPOSITORY } from 'src/user/domain/interface/repository.token';
 
-import { IdValidator } from 'src/user/domain/validation/validation';
-import { ID_VALIDATION } from 'src/user/domain/validation/validations.token';
-
-import { UserValidation } from 'src/user/domain/validation/validation';
-import { USER_VALIDATION } from 'src/user/domain/validation/validations.token';        
+import { IdValidator } from 'src/utils/interface/id/abstract.id';
+import { ID_VALIDATION } from 'src/utils/interface/validations.tokens';
+   
 
 /* DTOS */
-import { GetByCredentialsDTO, GetUserIdDTO } from 'src/user/dto/get.dto';
-import { GetUserResponseDTO } from 'src/user/dto/response.dto';
+import { GetByCredentialsDTO, GetUserIdDTO } from 'src/user/application/dtos/get.dto';
+import { GetUserResponseDTO } from 'src/user/application/dtos/response.dto';
+import { Email } from 'src/user/domain/domain-types/Email';
+import { ProjectKey } from 'src/user/domain/domain-types/ProjectKey';
+import { UseCaseException } from '../errors/usecase.exception';
+import { UseCaseErrorType } from '../errors/usecase.exeception.enum';
 
 @Injectable()
 export class GetUserService {
@@ -22,23 +24,18 @@ export class GetUserService {
         private readonly repository: UserGetterRepsitory,
         @Inject(ID_VALIDATION) 
         private readonly externalValidation: IdValidator,
-        @Inject(USER_VALIDATION)
-        private readonly userValidation: UserValidation
     ){}
     
     async getUserById(dto: GetUserIdDTO): Promise<GetUserResponseDTO>
     {  
         if(!this.externalValidation.isValidId(dto.id))
-        {
-            throw new NotFoundException("User not found");
-        }
+            throw new UseCaseException("User not found", UseCaseErrorType.NOT_FOUND);
 
         const userEntity = await this.repository.getUserById(dto.id);
         
         if(userEntity === null)
-        {
-            throw new NotFoundException("User not found");
-        }
+            throw new UseCaseException("User not found", UseCaseErrorType.NOT_FOUND);
+        
 
         return {
             id: userEntity.id,
@@ -56,9 +53,11 @@ export class GetUserService {
         const userEntity = await this.repository.getUserById(dto.id);
         
         if(userEntity === null)
-        {
-            throw new NotFoundException("User not found");
-        }
+            throw new UseCaseException("User not found", UseCaseErrorType.NOT_FOUND);
+        
+        if(!userEntity.id)
+            throw new UseCaseException("Fatal error, can't find an id for user " + userEntity.email + " in " + userEntity.projectKey + " project.")
+
 
         return {
             id: userEntity.id,
@@ -68,31 +67,21 @@ export class GetUserService {
             projectKey: userEntity.projectKey,
             scopes: userEntity.scopes,
             password: userEntity?.password
-        } as GetUserResponseDTO
+        } 
     }
 
     async getUserByCredentials(dto: GetByCredentialsDTO): Promise<GetUserResponseDTO>
     {
-        if(!this.userValidation.isValidEmail(dto.email))
-        {   
-            console.log(dto.email)
-            throw new NotFoundException("User not found");
-        }
+        const email = new Email(dto.email);
+        const projectKey = new ProjectKey(dto.projectKey);
 
-        if(!this.userValidation.isValidProjectKey(dto.projectKey))
-        {
-            console.log(dto.projectKey)
-            throw new NotFoundException("User not found");
-        }
-
-
-        const userEntity = await this.repository.getUserByCredential(dto.email, dto.projectKey);
+        const userEntity = await this.repository.getUserByCredential(email.getValue(), projectKey.getValue());
 
         if(userEntity === null)
-        {
-            console.log(userEntity)
-            throw new NotFoundException("User not found");
-        }
+            throw new UseCaseException("User not found", UseCaseErrorType.NOT_FOUND)
+        
+        if(!userEntity.id)
+            throw new UseCaseException("Fatal error, can't find an id for user " + userEntity.email + " in " + userEntity.projectKey + " project.")
 
         return {
             id: userEntity.id,
@@ -102,6 +91,6 @@ export class GetUserService {
             projectKey: userEntity.projectKey,
             scopes: userEntity.scopes,
             password: userEntity?.password
-        } as GetUserResponseDTO
+        }
     }
 }

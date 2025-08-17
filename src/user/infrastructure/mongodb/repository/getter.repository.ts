@@ -1,28 +1,29 @@
 
 /* Entity Schemas */
-import { UserEntity } from "src/user/domain/entities/user.entities";
 import { UserMongoose, UserDocument } from "../schema/user.schema.mongodb";
+import { UserDTO } from "src/user/domain/dtos/user.entity.dto";
 
 /* Repository */
-import { ID, UserGetterRepsitory } from "./test/user.repo.basic.test.kit";
+import { UserGetterRepsitory } from "src/user/domain/interface/repository";
 
 /* Mappers */
 import { UserIDMapper, UserSimpleMapper } from "../mapper/simple.mapper.mongoose";
 
 /* External */
+import { Id } from "src/utils/interface/id/abstract.id";
 import { Model } from "mongoose";
-import { Injectable, Options } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { SimpleMapper } from "src/shared/interface/mapper.interface";
+import { SimpleMapper } from "src/utils/interface/mapper.interface";
 import { Types } from "mongoose";
 
 @Injectable()
 export class GetUserMongoDBRepository 
 implements UserGetterRepsitory
 {
-    private simpleMapper: SimpleMapper<UserEntity<ID>, Partial<UserMongoose> | UserDocument>
+    private simpleMapper: SimpleMapper<UserDTO, Partial<UserMongoose> | UserDocument>
     = new UserSimpleMapper()
-    private idMapper: SimpleMapper<ID, Types.ObjectId>
+    private idMapper: SimpleMapper<Id, Types.ObjectId>
     = new UserIDMapper()
 
 
@@ -32,20 +33,18 @@ implements UserGetterRepsitory
     )
     {}
 
-    async getUserById(id: ID, options?: {ignorePassword: false} ): Promise<UserEntity<ID> | null> {
+    async getUserById(id: Id, options?: {ignorePassword: false} ): Promise<UserDTO | null> {
         const persistenceId = this.idMapper.toPersistence(id);
 
         const userPersistence = await this.userModel.findById(persistenceId);
 
         if(!userPersistence)
-        {
             return null;
-        }
 
         return this.simpleMapper.toDomain(userPersistence, {ignorePassword: options?.ignorePassword});
     }
     async getUserByCredential(email: string, projectKey: string, options?: {ignorePassword: false}): 
-    Promise<UserEntity<ID> | null> {
+    Promise<UserDTO | null> {
         const result = await this.userModel.findOne({ email: email, projectKey: projectKey });
         
         if(!result)
@@ -61,7 +60,7 @@ implements UserGetterRepsitory
         name: string, 
         options?: {
             ignorePassword: false
-        }): Promise<UserEntity<ID>[] | null> 
+        }): Promise<UserDTO[] | null> 
     {
         const results = await this.userModel.find({
             scopes:  { $in: scopes } ,

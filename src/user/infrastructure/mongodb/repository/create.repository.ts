@@ -1,25 +1,27 @@
 /* Entity Schemas */
-import { UserEntity } from "src/user/domain/entities/user.entities";
 import { UserMongoose, UserDocument } from "../schema/user.schema.mongodb";
+import { UserDTO } from "src/user/domain/dtos/user.entity.dto";
 
 /* Repository */
-import { ID, UserCreatorRepository } from "src/user/domain/interface/repository";
+import { UserCreatorRepository } from "src/user/domain/interface/repository";
 
 /* Mappers */
 import { UserSimpleMapper } from "../mapper/simple.mapper.mongoose";
 
 /* External */
+import { Id } from "src/utils/interface/id/abstract.id";
 import { Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { SimpleMapper } from "src/shared/interface/mapper.interface";
+import { SimpleMapper } from "src/utils/interface/mapper.interface";
+
 
 
 @Injectable()
 export class CreateUserMongoDBRepository 
 implements UserCreatorRepository
 {
-    private simpleMapper: SimpleMapper<UserEntity<ID>, Partial<UserMongoose> | UserDocument>
+    private simpleMapper: SimpleMapper<UserDTO, Partial<UserMongoose> | UserDocument>
     = new UserSimpleMapper()
 
     constructor(
@@ -28,7 +30,7 @@ implements UserCreatorRepository
     )
     {}
 
-    async create(entity: UserEntity<ID>, options?: {ignorePassword: false}): Promise<ID> {
+    async create(entity: UserDTO, options?: {ignorePassword: false}): Promise<Id> {
         const doc= this.simpleMapper.toPersistence(entity, {
             ignoreId: true, 
             ignorePassword: options?.ignorePassword});

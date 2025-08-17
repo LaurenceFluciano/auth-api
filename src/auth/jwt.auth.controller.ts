@@ -10,16 +10,16 @@ import { ApiTags } from '@nestjs/swagger';
 import { Request } from 'express'; 
 
 /* DTOs */
-import { LoginDTO } from 'src/auth/dto/auth.dto';
-import { JWTResponse, RefreshTokenRequest, AccessTokenReponse } from 'src/auth/dto/jwt.dto';
+import { LoginDTO } from 'src/auth/application/dtos/auth.dto';
+import { JWTResponse, RefreshTokenRequest, AccessTokenReponse } from 'src/auth/application/dtos/jwt.dto';
 
 /* GUARDS */
 import { ProjectKeyGuard } from 'src/guard/auth.login.guard';
 import { SimpleDeviceLoginProfileGuard } from 'src/guard/profile.jwt.guard';
 
 /* Services */
-import { AuthServiceJWT } from 'src/auth/service/jwt.service';
-import { SimpleDeviceAuthJWT } from 'src/auth/service/simple.device.service';
+import { AuthServiceJWT } from 'src/auth/application/service/jwt.service';
+import { SimpleDeviceAuthJWT } from 'src/auth/application/service/simple.device.service';
 
 
 @ApiTags('auth')

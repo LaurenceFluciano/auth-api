@@ -4,8 +4,9 @@ import { CacheStrategyService } from 'src/cache/domain/interface/cache.strategy'
 export class NodeCacheService<Input, Output> implements CacheStrategyService<Input, Output> {
   private cache: NodeCache;
 
-  async init(options: {ttlSeconds: 900}) {
-    this.cache =new NodeCache({ stdTTL: options.ttlSeconds });
+  async init(options: { ttlSeconds?: number } = {}) {
+    const ttl = options.ttlSeconds ?? 900;
+    this.cache = new NodeCache({ stdTTL: ttl });
   }
 
   async set(key: string, data: Input, expireIn: number = 900):  Promise<boolean> {

@@ -4,7 +4,7 @@ import { MongooseDatabaseConnection } from './config/mongoose.connection.module'
 import { MongooseSchemaModule } from './config/mongoose.schema.module';
 import { UserModule } from './user/user.module';
 import { JWTAuthModule } from './auth/auth.jwt.module';
-import { CryptoModule } from './shared/infrastructure/crypto/crypto.module';
+import { CryptoModule } from './utils/infrastructure/crypto/crypto.module';
 import { ApplicationGuard } from './guard/application.guard';
 
 @Module({

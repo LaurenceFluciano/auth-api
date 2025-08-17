@@ -3,11 +3,11 @@ import { Body, Controller, Post, Get, Patch, Param, HttpCode, Query, Logger, Htt
 import { ApiBadRequestResponse, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 /* DTOs */
-import { CreateUserDTO } from 'src/user/dto/create.dto';
-import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from 'src/user/dto/patch.dto';
-import { GetByCredentialsDTO, GetUserIdDTO } from 'src/user/dto/get.dto';
-import { SafeUserResponseDTO } from 'src/user/dto/response.dto';
-import { PatchPasswordDTO, RecoveryCodeDTO } from 'src/user/dto/password.dto';
+import { CreateUserDTO } from 'src/user/application/dtos/create.dto';
+import { PatchUserNameDTO, PatchUserScopesDTO, PatchUserActiveDTO } from 'src/user/application/dtos/patch.dto';
+import { GetByCredentialsDTO, GetUserIdDTO } from 'src/user/application/dtos/get.dto';
+import { SafeUserResponseDTO } from 'src/user/application/dtos/response.dto';
+import { PatchPasswordDTO, RecoveryCodeDTO } from 'src/user/application/dtos/password.dto';
 
 /* Services */
 import { CreateUserService } from 'src/user/application/service/create.service';

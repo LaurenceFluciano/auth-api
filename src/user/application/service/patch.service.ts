@@ -1,18 +1,17 @@
 /* Domain Layer */
-import { UserEntity } from "src/user/domain/entities/user.entities";
+import { UserEntity } from "src/user/domain/entities/user.entitie";
 
-import { UserUpdateRepository, ID }  from "src/user/domain/interface/repository";
+import { Id } from "src/utils/interface/id/abstract.id";
+
+import { UserUpdateRepository }  from "src/user/domain/interface/repository";
 import { USER_UPDATE_REPOSITORY } from "src/user/domain/interface/repository.token";
 
-import { EncryptStrategy } from "src/shared/interface/crypto/encrypt";
-import { ENCRYPT_TOKEN } from "src/shared/interface/crypto/encrypt.token";
-
-import { UserValidation } from "src/user/domain/validation/validation";
-import { USER_VALIDATION } from "src/user/domain/validation/validations.token";
+import { EncryptStrategy } from "src/utils/interface/crypto/encrypt";
+import { ENCRYPT_TOKEN } from "src/utils/interface/crypto/encrypt.token";
 
 
 /* Extenal */
-import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException, Scope } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 
 /* Services layer */
 import { GetUserService } from "./get.service";
@@ -21,9 +20,15 @@ import { GetUserService } from "./get.service";
 import { 
     PatchUserActiveDTO,
     PatchUserNameDTO,
-    PatchUserScopesDTO } from "src/user/dto/patch.dto";
-import { GetUserIdDTO } from "src/user/dto/get.dto";
-import { PatchPasswordDTO } from "src/user/dto/password.dto";
+    PatchUserScopesDTO } from "src/user/application/dtos/patch.dto";
+import { GetUserIdDTO } from "src/user/application/dtos/get.dto";
+import { PatchPasswordDTO } from "src/user/application/dtos/password.dto";
+import { UseCaseException } from "../errors/usecase.exception";
+import { UseCaseErrorType } from "../errors/usecase.exeception.enum";
+import { Name } from "src/user/domain/domain-types/Name";
+import { Scope } from "src/user/domain/domain-types/Scope";
+import { UserDTO } from "src/user/domain/dtos/user.entity.dto";
+import { Password } from "src/user/domain/domain-types/Password";
 
 @Injectable()
 export class PatchUserService 
@@ -33,24 +38,17 @@ export class PatchUserService
         @Inject(USER_UPDATE_REPOSITORY)
         private readonly repository: UserUpdateRepository,
         @Inject(ENCRYPT_TOKEN)
-        private readonly encryptService: EncryptStrategy,
-        @Inject(USER_VALIDATION)
-        private readonly userValidation: UserValidation
+        private readonly encryptService: EncryptStrategy
     ){}
 
     async updateUsername(idDto: GetUserIdDTO, dto: PatchUserNameDTO): Promise<PatchUserNameDTO>
     {
-        if(!this.userValidation.isValidUsername(dto.name))
-        {
-            throw new BadRequestException("Invalid username!")
-        }
+        const name = new Name(dto.name);
 
-        const result = await this.repository.updateUsername(idDto.id, dto.name);
+        const result = await this.repository.updateUsername(idDto.id, name.getValue());
 
         if (result === null)
-        {
-            throw new NotFoundException("User not found")
-        }
+            throw new UseCaseException("User not found", UseCaseErrorType.NOT_FOUND)     
 
         return {
             name: result.name
@@ -59,18 +57,11 @@ export class PatchUserService
 
     async updateActive(idDto: GetUserIdDTO, dto: PatchUserActiveDTO): Promise<PatchUserActiveDTO>
     {
-        if(!this.userValidation.isValidActive(dto.active))
-        {
-            throw new BadRequestException("The body must to be a real boolean!");
-        }
-
         const result = await this.repository.updateStatus(idDto.id, dto.active);
 
         if (result === null)
-        {
-            throw new NotFoundException("User not found")
-        }
-
+            throw new UseCaseException("User not found",UseCaseErrorType.NOT_FOUND)
+        
         return {
             active: result.active
         } as PatchUserActiveDTO
@@ -78,17 +69,9 @@ export class PatchUserService
 
     async updateUserScopes(idDto: GetUserIdDTO, dto: PatchUserScopesDTO): Promise<PatchUserScopesDTO>
     {
-        const trimmedPermission = dto.permissions?.trim();
-
-        dto.scopes.forEach(scope => {
-            if (!this.userValidation.isValidScopes(scope)) {
-                throw new BadRequestException("Invalid scope format");
-            }
-
-            if (trimmedPermission && !this.userValidation.isValidScopes(scope + ":" + trimmedPermission)) {
-                throw new BadRequestException("Invalid scope with permission");
-            }
-        });
+        const permissionsSanization = dto.permissions?.trim()
+        const scopes = dto.scopes.map(scopeStr => new Scope(scopeStr));
+        const permissions = permissionsSanization ? new Scope(permissionsSanization) : null;
 
         const user = await this.userGetService.getUserById(idDto);
 
@@ -98,60 +81,47 @@ export class PatchUserService
                 return parts.length === 2 ? parts[1] : parts[0];
             })
         );
-        console.log(existingBaseScopes)
-        const newScopes = dto.scopes.filter(scope => !existingBaseScopes.has(scope));
-        
-        console.log(newScopes)
 
-        let result: UserEntity<ID> | null = null;
+        const newScopes = scopes.filter(scope => !existingBaseScopes.has(scope.getValue()));
+
+        let result: UserDTO | null = null;
+
         if(newScopes.length > 0)
-        {
-            result = await this.repository.addScopes(idDto.id, newScopes);
-        }
+            result = await this.repository.addScopes(
+                idDto.id, 
+                dto.scopes);
         
-        if(trimmedPermission.length > 0)
-        {
-            result = await this.repository.addScopedPermissions(idDto.id,dto.scopes,trimmedPermission)
-        }
+        
+        if(permissions)
+            result = await this.repository.addScopedPermissions(
+                idDto.id,
+                dto.scopes,
+                permissions.getValue())
+        
 
-        if (result === null)
-        {
-            throw new NotFoundException("No permission or scope to update")
-        }
+        if (!result)
+            throw new UseCaseException("No permission or scope to update", UseCaseErrorType.NOT_FOUND)
+        
 
         return {
-            scopes: result.scopes
+            scopes: result.scopes,
         } as PatchUserScopesDTO
     }
 
     async updateUserPassword(idDto: GetUserIdDTO, dto: PatchPasswordDTO): Promise<void> {
-        if(
-            dto.confirmPassword.trim() !== dto.newPassword.trim() 
-            ||
-            !this.userValidation.isValidPassword(dto.newPassword)
-        )
-        {
-            throw new BadRequestException("Invalid input or password mismatch");     
-        }
-        
+        const confirmPassword = new Password(dto.confirmPassword.trim())
+        const newPassword = new Password(dto.newPassword.trim())
+        const currentPassword = new Password(dto.currentPassword.trim())
+
+        Password.match(confirmPassword, newPassword)
+
         const user = await this.userGetService.getUserById(idDto);
 
         if(user.password === undefined)
-        {
-            throw new NotFoundException("Your auth service context doesn't have password")
-        }
-
-        const isCurrentPasswordCorrect = await this.encryptService.compare(
-            dto.currentPassword,
-            user.password
-        );
-
-        if(!isCurrentPasswordCorrect)
-        {
-            throw new ForbiddenException("Current password incorrect");
-        }
-
-        const hashedPassword = await this.encryptService.hash(dto.newPassword);
+            throw new UseCaseException("Your auth service context doesn't have password", UseCaseErrorType.NOT_FOUND);
+        
+        await currentPassword.hashMatch(this.encryptService,user.password);
+        const hashedPassword = await newPassword.generateHash(this.encryptService);
 
         await this.repository.updatePassword(idDto.id,hashedPassword);
     }

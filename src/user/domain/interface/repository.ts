@@ -1,23 +1,22 @@
-import { UserEntity } from "src/user/domain/entities/user.entities";
-
-export type ID = string
+import { UserDTO } from "../dtos/user.entity.dto";
+import { Id } from "src/utils/interface/id/abstract.id";
  
 export interface UserCreatorRepository {
-  create(entity: UserEntity<ID>, options?: {}): Promise<ID>;
+  create(entity:UserDTO, options?: {}): Promise<Id>;
 }
 
 export interface UserGetterRepsitory 
 {
-  getUserById(id: ID, options?: {}): Promise<UserEntity<ID> | null>;
-  getUserByCredential(email: string, projectKey: string, options?: {}): Promise<UserEntity<ID> | null>;
-  getUserByScopeAndName?(scopes: string[], name: string, options?: {}): Promise<UserEntity<ID>[] | null>; 
+  getUserById(id: Id, options?: {}): Promise<UserDTO | null>;
+  getUserByCredential(email: string, projectKey: string, options?: {}): Promise<UserDTO | null>;
+  getUserByScopeAndName?(scopes: string[], name: string, options?: {}): Promise<UserDTO[] | null>; 
 }
 
 export interface UserUpdateRepository
 {
-  addScopes(id: ID, scopes: string[], options?: {}): Promise<UserEntity<ID> | null>;
-  updateUsername(id: ID, name: string, options?: {}): Promise<UserEntity<ID> | null>;
-  updateStatus(id: ID, status: boolean, options?: {}): Promise<UserEntity<ID> | null>;
-  updatePassword(id: ID, password: string, options?: {}): Promise<void | null>;
-  addScopedPermissions(id: ID, name: string[], permissions: string , options?: {}): Promise<UserEntity<ID>>;
+  addScopes(id: Id, scopes: string[], options?: {}): Promise<UserDTO | null>;
+  updateUsername(id: Id, name: string, options?: {}): Promise<UserDTO | null>;
+  updateStatus(id: Id, status: boolean, options?: {}): Promise<UserDTO | null>;
+  updatePassword(id: Id, password: string, options?: {}): Promise<void | null>;
+  addScopedPermissions(id: Id, name: string[], permissions: string , options?: {}): Promise<UserDTO>;
 }

@@ -1,28 +1,29 @@
 
 /* Entity Schemas */
-import { UserEntity } from "src/user/domain/entities/user.entities";
 import { UserMongoose, UserDocument } from "../schema/user.schema.mongodb";
+import { UserDTO } from "src/user/domain/dtos/user.entity.dto";
 
 /* Repository */
-import { UserUpdateRepository, ID } from "./test/user.repo.basic.test.kit";
+import { UserUpdateRepository } from "src/user/domain/interface/repository";
 
 /* Mappers */
 import { UserIDMapper, UserSimpleMapper } from "../mapper/simple.mapper.mongoose";
 
 /* External */
+import { Id } from "src/utils/interface/id/abstract.id";
 import { Model } from "mongoose";
-import { Injectable, Scope } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { SimpleMapper } from "src/shared/interface/mapper.interface";
+import { SimpleMapper } from "src/utils/interface/mapper.interface";
 import { Types } from "mongoose";
 
 @Injectable()
 export class UpdateUserMongoDBRepository 
 implements UserUpdateRepository
 {
-    private simpleMapper: SimpleMapper<UserEntity<ID>, Partial<UserMongoose> | UserDocument>
+    private simpleMapper: SimpleMapper<UserDTO, Partial<UserMongoose> | UserDocument>
     = new UserSimpleMapper()
-    private idMapper: SimpleMapper<ID, Types.ObjectId>
+    private idMapper: SimpleMapper<Id, Types.ObjectId>
     = new UserIDMapper()
 
 
@@ -32,7 +33,7 @@ implements UserUpdateRepository
     )
     {}
 
-    async addScopes(id: ID, scopes: string[]): Promise<UserEntity<ID> | null> {
+    async addScopes(id: Id, scopes: string[]): Promise<UserDTO | null> {
         const persistenceId = this.idMapper.toPersistence(id);
 
         scopes.forEach(scope => {
@@ -57,7 +58,7 @@ implements UserUpdateRepository
         return domainUpdated;
     }
 
-    async addScopedPermissions(id: ID, name: string[], permissions: string, options?: {}): Promise<UserEntity<ID>> {
+    async addScopedPermissions(id: Id, name: string[], permissions: string, options?: {}): Promise<UserDTO> {
         if(options !== undefined)
         {
             throw new Error("This method don't have options yet")
@@ -109,7 +110,7 @@ implements UserUpdateRepository
         return domainUpdated;
     }
 
-    async updateStatus(id: ID, status: boolean): Promise<UserEntity<ID> | null> {
+    async updateStatus(id: Id, status: boolean): Promise<UserDTO | null> {
         const persistenceId = this.idMapper.toPersistence(id);
 
         if (status === undefined)
@@ -133,13 +134,12 @@ implements UserUpdateRepository
         return domainUpdated;
     }
 
-    async updateUsername(id: ID, name: string): Promise<UserEntity<ID> | null> {
+    async updateUsername(id: Id, name: string): Promise<UserDTO | null> {
         const persistenceId = this.idMapper.toPersistence(id);
 
         if (name === undefined || name === null)
-        {
             throw new Error("Username must to be a string!")
-        }
+        
 
         const persitenceUpdated = await this.userModel.findOneAndUpdate(
             {_id: persistenceId},
@@ -157,7 +157,7 @@ implements UserUpdateRepository
         return domainUpdated;
     }
 
-    async updatePassword(id: ID, password: string, options?: {}): Promise<void | null> {
+    async updatePassword(id: Id, password: string, options?: {}): Promise<void | null> {
             const persistenceId = this.idMapper.toPersistence(id);
 
             if(password === undefined || password === null)
