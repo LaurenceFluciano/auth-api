@@ -1,0 +1,20 @@
+import { Either, Left, Right } from 'src/error/either';
+import { ValidatorProjectKey } from '../validations/projectkey.validator';
+import { InvalidProjectKeyException } from '../errors/projectkey.error';
+
+export class ProjectKey {
+  protected constructor(private projectKey: string) {}
+
+  public static create(
+    projectKey: string,
+    validator: ValidatorProjectKey,
+  ): Either<InvalidProjectKeyException, ProjectKey> {
+    if (validator.hasErrors())
+      return Left.create(new InvalidProjectKeyException(validator.getErrors()));
+    return Right.create(new ProjectKey(projectKey));
+  }
+
+  public getValue(): string {
+    return this.projectKey;
+  }
+}
