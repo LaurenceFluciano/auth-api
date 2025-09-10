@@ -8,5 +8,6 @@ export type TInvalidUserResponse = {
 export class InvalidUserException extends DomainException {
   constructor(public errors: TInvalidUserResponse) {
     super('Invalid User.');
+    Object.setPrototypeOf(this, InvalidUserException.prototype);
   }
 }

@@ -1,3 +1,4 @@
+import { DomainException } from 'src/error/domain.error';
 import { User } from 'src/user/domain/entities/user';
 import { InvalidUserException } from 'src/user/domain/errors/user.error';
 
@@ -35,6 +36,7 @@ describe('User Entity', () => {
 
     if (result.isLeft()) {
       const error = result.value;
+      expect(error).toBeInstanceOf(DomainException);
       expect(error).toBeInstanceOf(InvalidUserException);
       expect(error.errors.fields.length).toBeGreaterThan(0);
     }
