@@ -30,7 +30,7 @@ export class RedisConnect {
 
             client.on('error', (err) => {
                 console.error('Redis Client Error:', err);
-                throw new Error("Redis can't be connected! Using im-memory default cache")
+                // throw new Error("Redis can't be connected! Using im-memory default cache")
             });
 
             await client.connect();
