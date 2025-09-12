@@ -14,7 +14,6 @@ import { GenerateIdModule } from 'src/utils/infrastructure/id/id.generate.module
 
 @Module({
   imports: [
-    AuthCacheModule,
     GenerateIdModule,
     UserModule,
     ConfigModule,
@@ -26,8 +25,8 @@ import { GenerateIdModule } from 'src/utils/infrastructure/id/id.generate.module
       }),
     }),
   ],
-  providers: [AuthService, AuthServiceJWT, SimpleDeviceAuthJWT],
+  providers: [AuthService, AuthServiceJWT],
   controllers: [JWTAuthController],
-  exports: [AuthServiceJWT,SimpleDeviceAuthJWT],
+  exports: [AuthServiceJWT],
 })
 export class JWTAuthModule {}
