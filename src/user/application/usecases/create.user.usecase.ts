@@ -6,11 +6,14 @@ import { IUserRepository } from 'src/user/domain/ports/user.repository';
 import { InvalidUserUseCaseError } from '../errors/invalid.user.error';
 import { RegisterUserDto } from '../dto/register.user.dto';
 import { AlreadyExistsUserUseCaseError } from '../errors/exist.user.error';
+import { IEventBus } from 'src/base/events/event.interface';
+import { UserRegisteredEvent } from '../events/registered.user.event';
 
 export class CreateUserUseCase {
   constructor(
     private repo: IUserRepository,
     private validator: TUserValidators,
+    private eventBus: IEventBus,
   ) {}
 
   public async execute(
@@ -34,6 +37,15 @@ export class CreateUserUseCase {
       return Left.create(
         new UseCaseException('Ocorreu um erro ao criar o usuário!'),
       );
+
+    const event = UserRegisteredEvent.forProject(
+      dto.projectKey,
+      id,
+      dto.name,
+      dto.email,
+    );
+    await this.eventBus.publish(event);
+
     return Right.create(id);
   }
 }
