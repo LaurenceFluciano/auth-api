@@ -1,14 +1,16 @@
 import { Either, Left, Right } from 'src/error/either';
 import { ValidatorEmail } from '../validations/email.validator';
 import { InvalidEmailException } from '../errors/email.error';
+import { IExternalValidators } from '../validations/validator';
 
 export class Email {
   protected constructor(private readonly email: string) {}
 
   public static create(
     email: string,
-    validator: ValidatorEmail,
+    externalValidator?: IExternalValidators,
   ): Either<InvalidEmailException, Email> {
+    const validator = new ValidatorEmail(email, externalValidator);
     if (validator.hasErrors())
       return Left.create(new InvalidEmailException(validator.getErrors()));
     return Right.create(new Email(email));

@@ -5,10 +5,8 @@ import { InvalidNameException } from '../errors/name.error';
 export class Name {
   protected constructor(private name: string) {}
 
-  public static create(
-    name: string,
-    validator: ValidatorName,
-  ): Either<InvalidNameException, Name> {
+  public static create(name: string): Either<InvalidNameException, Name> {
+    const validator = new ValidatorName(name);
     if (validator.hasErrors())
       return Left.create(new InvalidNameException(validator.getErrors()));
     return Right.create(new Name(name));

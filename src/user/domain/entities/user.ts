@@ -4,12 +4,6 @@ import { Name } from '../values-objects/name.vo';
 import { ProjectKey } from '../values-objects/projectkey.vo';
 import { Scope } from '../values-objects/scope.vo';
 
-// Validations
-import { ValidatorName } from '../validations/name.validator';
-import { ValidatorEmail } from '../validations/email.validator';
-import { ValidatorProjectKey } from '../validations/projectkey.validator';
-import { ValidatorScope } from '../validations/scopes.validator';
-
 // Types
 import { TUser, TUserValidators } from './type.user';
 
@@ -31,16 +25,13 @@ export class User {
 
   public static create(
     user: TUser,
-    _validators: TUserValidators = {
-      name: new ValidatorName(user.name),
-      email: new ValidatorEmail(user.email),
-    },
+    externalValidators?: TUserValidators,
   ): Either<InvalidUserException, User> {
     const errors: TInvalidUserResponse = {
       fields: [],
     };
-    const nameOrError = Name.create(user.name, _validators.name);
-    const emailOrError = Email.create(user.email, _validators.email);
+    const nameOrError = Name.create(user.name);
+    const emailOrError = Email.create(user.email, externalValidators?.email);
 
     if (nameOrError.isLeft()) errors.fields.push(nameOrError.value);
     if (emailOrError.isLeft()) errors.fields.push(emailOrError.value);
@@ -51,10 +42,7 @@ export class User {
     const scopes: Scope[] = [];
 
     if (user.projectKey) {
-      projectKeyOrError = ProjectKey.create(
-        user.projectKey,
-        new ValidatorProjectKey(user.projectKey),
-      );
+      projectKeyOrError = ProjectKey.create(user.projectKey);
 
       if (projectKeyOrError.isLeft())
         errors.fields.push(projectKeyOrError.value);
@@ -62,7 +50,7 @@ export class User {
 
     if (user.scopes) {
       for (const scope of user.scopes) {
-        const scopeOrError = Scope.create(scope, new ValidatorScope(scope));
+        const scopeOrError = Scope.create(scope);
 
         if (scopeOrError.isLeft()) {
           errors.fields.push(scopeOrError.value);

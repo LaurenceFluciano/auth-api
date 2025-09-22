@@ -7,8 +7,8 @@ export class ProjectKey {
 
   public static create(
     projectKey: string,
-    validator: ValidatorProjectKey,
   ): Either<InvalidProjectKeyException, ProjectKey> {
+    const validator = new ValidatorProjectKey(projectKey);
     if (validator.hasErrors())
       return Left.create(new InvalidProjectKeyException(validator.getErrors()));
     return Right.create(new ProjectKey(projectKey));

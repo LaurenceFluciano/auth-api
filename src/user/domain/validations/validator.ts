@@ -2,17 +2,20 @@ import { TObjectValueError } from 'src/error/value-object.error';
 
 export abstract class ObjectValueValidator {
   private errors: TObjectValueError[] = [];
-  protected value: string;
+  protected value: PrimitiveType;
 
-  constructor(value: string) {
+  constructor(value: PrimitiveType) {
     this.value = value;
-    this.runValidations();
   }
 
   protected abstract runValidations(): void;
 
   protected addError(error: TObjectValueError): void {
     this.errors.push(error);
+  }
+
+  protected addManyErrors(...errors: TObjectValueError[]): void {
+    this.errors.push(...errors);
   }
 
   public getErrors(): TObjectValueError[] {
@@ -25,5 +28,5 @@ export abstract class ObjectValueValidator {
 }
 
 export interface IExternalValidators {
-  runValidations(context: ObjectValueValidator): void;
+  runValidations(field: PrimitiveType): TObjectValueError[];
 }

@@ -6,6 +6,7 @@ export class ValidatorEmail extends ObjectValueValidator {
     private readonly externalValidator?: IExternalValidators,
   ) {
     super(value);
+    this.runValidations();
   }
 
   protected runValidations(): void {
@@ -31,7 +32,7 @@ export class ValidatorEmail extends ObjectValueValidator {
     }
 
     if (this.externalValidator) {
-      this.externalValidator.runValidations(this);
+      this.addManyErrors(...this.externalValidator.runValidations(this.value));
     }
   }
 }

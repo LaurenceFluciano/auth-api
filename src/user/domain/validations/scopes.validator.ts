@@ -3,6 +3,7 @@ import { ObjectValueValidator } from './validator';
 export class ValidatorScope extends ObjectValueValidator {
   constructor(protected value: string) {
     super(value);
+    this.runValidations();
   }
 
   static isValidScopePrefix(value: string) {

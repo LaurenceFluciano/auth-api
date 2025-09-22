@@ -24,10 +24,46 @@ describe('User Entity', () => {
     }
   });
 
-  it('should fail if the name is invalid', () => {
+  it('should fail if the name is not defined', () => {
     const userInput = {
       name: '',
       email: 'laurence@example.com',
+    };
+
+    const result = User.create(userInput);
+
+    expect(result.isLeft()).toBe(true);
+
+    if (result.isLeft()) {
+      const error = result.value;
+      expect(error).toBeInstanceOf(DomainException);
+      expect(error).toBeInstanceOf(InvalidUserException);
+      expect(error.errors.fields.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('should fail if the email is no defined', () => {
+    const userInput = {
+      name: 'Laurence',
+      email: '',
+    };
+
+    const result = User.create(userInput);
+
+    expect(result.isLeft()).toBe(true);
+
+    if (result.isLeft()) {
+      const error = result.value;
+      expect(error).toBeInstanceOf(DomainException);
+      expect(error).toBeInstanceOf(InvalidUserException);
+      expect(error.errors.fields.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('should fail if the email and name is no defined', () => {
+    const userInput = {
+      name: '',
+      email: '',
     };
 
     const result = User.create(userInput);

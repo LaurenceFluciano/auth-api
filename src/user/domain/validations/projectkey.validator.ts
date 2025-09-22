@@ -3,6 +3,7 @@ import { ObjectValueValidator } from './validator';
 export class ValidatorProjectKey extends ObjectValueValidator {
   constructor(protected value: string) {
     super(value);
+    this.runValidations();
   }
 
   protected runValidations(): void {

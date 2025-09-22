@@ -16,4 +16,5 @@ declare global {
       return this.value;
     }
   }
+  type PrimitiveType = string | number;
 }

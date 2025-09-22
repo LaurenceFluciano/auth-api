@@ -4,10 +4,8 @@ import { ValidatorScope } from '../validations/scopes.validator';
 export class Scope {
   protected constructor(private scope: string) {}
 
-  public static create(
-    scope: string,
-    validator: ValidatorScope,
-  ): Either<InvalidScopesException, Scope> {
+  public static create(scope: string): Either<InvalidScopesException, Scope> {
+    const validator = new ValidatorScope(scope);
     if (validator.hasErrors())
       return Left.create(new InvalidScopesException(validator.getErrors()));
     return Right.create(new Scope(scope));

@@ -1,5 +1,4 @@
-import { ValidatorEmail } from '../validations/email.validator';
-import { ValidatorName } from '../validations/name.validator';
+import { IExternalValidators } from '../validations/validator';
 
 export type TUser = {
   name: string;
@@ -10,6 +9,5 @@ export type TUser = {
 };
 
 export type TUserValidators = {
-  name: ValidatorName;
-  email: ValidatorEmail;
+  email?: IExternalValidators;
 };
