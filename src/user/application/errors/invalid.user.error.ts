@@ -1,0 +1,28 @@
+import { UseCaseException } from 'src/error/usecase.error';
+import { InvalidValueObjectException } from 'src/error/value-object.error';
+import { InvalidUserException } from 'src/user/domain/errors/user.error';
+
+export class InvalidUserUseCaseError extends UseCaseException {
+  constructor(private entity: InvalidUserException) {
+    super('Impossible to create an invalid user.');
+  }
+
+  toDto(): {
+    message: string;
+    fields: Record<string, Omit<InvalidValueObjectException, 'name'>>;
+  } {
+    const dto = {
+      message: 'Invalid User.',
+      fields: {} as Record<string, Omit<InvalidValueObjectException, 'name'>>,
+    };
+
+    for (const [field, voError] of Object.entries(this.entity.errors.fields)) {
+      dto.fields[field] = {
+        message: voError.message,
+        errors: voError.errors,
+      };
+    }
+
+    return dto;
+  }
+}

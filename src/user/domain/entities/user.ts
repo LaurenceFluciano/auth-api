@@ -1,40 +1,40 @@
+// Values Objects
 import { Email } from '../values-objects/email.vo';
 import { Name } from '../values-objects/name.vo';
 import { ProjectKey } from '../values-objects/projectkey.vo';
-import { Either, Left, Right } from 'src/error/either';
+import { Scope } from '../values-objects/scope.vo';
+
+// Validations
+import { ValidatorName } from '../validations/name.validator';
+import { ValidatorEmail } from '../validations/email.validator';
+import { ValidatorProjectKey } from '../validations/projectkey.validator';
+import { ValidatorScope } from '../validations/scopes.validator';
+
+// Types
+import { TUser, TUserValidators } from './type.user';
+
+// Exceptions
+import { InvalidValueObjectException } from 'src/error/value-object.error';
 import {
   InvalidUserException,
   TInvalidUserResponse,
 } from '../errors/user.error';
-import { ValidatorName } from '../validations/name.validator';
-import { ValidatorEmail } from '../validations/email.validator';
-import { ValidatorProjectKey } from '../validations/projectkey.validator';
-import { Scope } from '../values-objects/scope.vo';
-import { ValidatorScope } from '../validations/scopes.validator';
-import { InvalidValueObjectException } from 'src/error/value-object.error';
+import { Either, Left, Right } from 'src/error/either';
+import { Entity } from 'src/base/base.entity';
 
-export type TUserInput = {
-  name: string;
-  email: string;
-  projectKey?: string;
-  scopes?: string[];
-};
-
-export type TUserValidators = {
-  name: ValidatorName;
-  email: ValidatorEmail;
-};
-
-export class User {
+export class User extends Entity {
   private constructor(
     private name: Name,
     private email: Email,
     private projectKey?: ProjectKey,
     private scopes?: Scope[],
-  ) {}
+    public readonly id?: Id,
+  ) {
+    super(id);
+  }
 
   public static create(
-    user: TUserInput,
+    user: TUser,
     _validators: TUserValidators = {
       name: new ValidatorName(user.name),
       email: new ValidatorEmail(user.email),
