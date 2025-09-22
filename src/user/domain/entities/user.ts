@@ -20,18 +20,14 @@ import {
   TInvalidUserResponse,
 } from '../errors/user.error';
 import { Either, Left, Right } from 'src/error/either';
-import { Entity } from 'src/base/base.entity';
 
-export class User extends Entity {
+export class User {
   private constructor(
     private name: Name,
     private email: Email,
     private projectKey?: ProjectKey,
     private scopes?: Scope[],
-    public readonly id?: Id,
-  ) {
-    super(id);
-  }
+  ) {}
 
   public static create(
     user: TUser,
