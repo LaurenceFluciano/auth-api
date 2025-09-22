@@ -1,4 +1,4 @@
-import { DomainException } from 'src/error/domain.error';
+import { DomainException } from 'src/share/error/domain/domain.error';
 import { User } from 'src/user/domain/entities/user';
 import { InvalidUserException } from 'src/user/domain/errors/user.error';
 

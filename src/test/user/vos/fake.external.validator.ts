@@ -1,5 +1,5 @@
-import { TObjectValueError } from 'src/error/value-object.error';
-import { IExternalValidators } from 'src/user/domain/validations/validator';
+import { TObjectValueError } from 'src/share/error/domain/value-object.error';
+import { IExternalValidators } from 'src/share/base/validator';
 
 export class FakeValidator implements IExternalValidators {
   runValidations(field: PrimitiveType): TObjectValueError[] {

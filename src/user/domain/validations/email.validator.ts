@@ -1,4 +1,4 @@
-import { IExternalValidators, ObjectValueValidator } from './validator';
+import { IExternalValidators, ObjectValueValidator } from '../../../share/base/validator';
 
 export class ValidatorEmail extends ObjectValueValidator {
   constructor(

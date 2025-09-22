@@ -1,5 +1,5 @@
-import { Either, Left, Right } from 'src/error/either';
-import { NotDefinedFieldDtoException } from 'src/error/invalid.dto.error';
+import { Either, Left, Right } from 'src/share/error/either';
+import { NotDefinedFieldDtoException } from 'src/share/error/application/invalid.dto.error';
 
 export class RegisterUserDto {
   public readonly name: string;

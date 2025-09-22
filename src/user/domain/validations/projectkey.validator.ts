@@ -1,4 +1,4 @@
-import { ObjectValueValidator } from './validator';
+import { ObjectValueValidator } from '../../../share/base/validator';
 
 export class ValidatorProjectKey extends ObjectValueValidator {
   constructor(protected value: string) {

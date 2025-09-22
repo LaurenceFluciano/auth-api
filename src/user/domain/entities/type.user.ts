@@ -1,4 +1,4 @@
-import { IExternalValidators } from '../validations/validator';
+import { IExternalValidators } from '../../../share/base/validator';
 
 export type TUser = {
   name: string;

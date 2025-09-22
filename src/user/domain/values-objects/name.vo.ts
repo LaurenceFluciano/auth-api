@@ -1,4 +1,4 @@
-import { Either, Left, Right } from 'src/error/either';
+import { Either, Left, Right } from 'src/share/error/either';
 import { ValidatorName } from '../validations/name.validator';
 import { InvalidNameException } from '../errors/name.error';
 

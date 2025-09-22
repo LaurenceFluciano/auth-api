@@ -1,5 +1,5 @@
-import { UseCaseException } from 'src/error/usecase.error';
-import { InvalidValueObjectException } from 'src/error/value-object.error';
+import { UseCaseException } from 'src/share/error/application/usecase.error';
+import { InvalidValueObjectException } from 'src/share/error/domain/value-object.error';
 import { InvalidUserException } from 'src/user/domain/errors/user.error';
 
 export class InvalidUserUseCaseError extends UseCaseException {

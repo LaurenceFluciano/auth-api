@@ -1,4 +1,4 @@
-import { Either, Left, Right } from 'src/error/either';
+import { Either, Left, Right } from 'src/share/error/either';
 import { ValidatorProjectKey } from '../validations/projectkey.validator';
 import { InvalidProjectKeyException } from '../errors/projectkey.error';
 

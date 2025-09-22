@@ -1,7 +1,7 @@
 import {
   TObjectValueError,
   InvalidValueObjectException,
-} from 'src/error/value-object.error';
+} from 'src/share/error/domain/value-object.error';
 
 export class InvalidNameException extends InvalidValueObjectException {
   constructor(public errors: TObjectValueError[]) {
