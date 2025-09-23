@@ -12,7 +12,7 @@ export type TUserEntity = {
   name: string;
   email: string;
   scopes?: string[];
-}
+};
 
 export type TUserValidators = {
   email?: IExternalValidators;

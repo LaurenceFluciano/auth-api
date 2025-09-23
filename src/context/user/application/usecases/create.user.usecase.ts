@@ -14,15 +14,15 @@ export class CreateUserUseCase {
   ) {}
 
   public async execute(
-  /**
-   * projectKey must be validated in an external layer.
-   * The User use case does not need to know whether the projectKey is valid or not.
-   * This is the responsibility of another bounded context.
-   */
+    /**
+     * projectKey must be validated in an external layer.
+     * The User use case does not need to know whether the projectKey is valid or not.
+     * This is the responsibility of another bounded context.
+     */
     dto: RegisterUserDto,
   ): Promise<Either<UseCaseException, Id>> {
     const { name, email } = dto;
-    const userOrError = User.create({name,email}, this.validator);
+    const userOrError = User.create({ name, email }, this.validator);
 
     if (userOrError.isLeft())
       return Left.create(new InvalidUserUseCaseError(userOrError.value));
@@ -40,8 +40,8 @@ export class CreateUserUseCase {
       return Left.create(
         new UseCaseException('Ocorreu um erro ao criar o usuário!'),
       );
-    
-    userOrError.value.register(id, dto.projectKey);
+
+    await userOrError.value.register(id, dto.projectKey);
 
     return Right.create(id);
   }

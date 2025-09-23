@@ -7,7 +7,6 @@ import { Scope } from '../values-objects/scope.vo';
 import { TUserEntity, TUserValidators } from './type.user';
 
 // Exceptions
-import { InvalidValueObjectException } from 'src/share/error/domain/value-object.error';
 import {
   InvalidUserException,
   TInvalidUserResponse,
@@ -15,7 +14,6 @@ import {
 import { Either, Left, Right } from 'src/share/error/either';
 import { DomainEvents } from 'src/share/events/domain.events';
 import { UserRegisteredEvent } from '../events/user.registered.event';
-import { ProjectKey } from '../../../projects/domain/values-objects/projectkey.vo';
 
 export class User {
   private constructor(
@@ -56,11 +54,7 @@ export class User {
       return Left.create(new InvalidUserException(errors));
 
     return Right.create(
-      new User(
-        nameOrError.value as Name,
-        emailOrError.value as Email,
-        scopes,
-      ),
+      new User(nameOrError.value as Name, emailOrError.value as Email, scopes),
     );
   }
 
@@ -77,11 +71,8 @@ export class User {
   }
 
   public async register(id: Id, projectKey: string) {
-    await DomainEvents.dispatch(new UserRegisteredEvent(
-      id, 
-      this.getName(),
-      this.getEmail(),
-      projectKey
-    ));
+    await DomainEvents.dispatch(
+      new UserRegisteredEvent(id, this.getName(), this.getEmail(), projectKey),
+    );
   }
 }
