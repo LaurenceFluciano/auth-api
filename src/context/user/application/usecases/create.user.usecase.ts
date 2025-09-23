@@ -1,8 +1,8 @@
 import { Either, Left, Right } from 'src/share/error/either';
 import { UseCaseException } from 'src/share/error/application/usecase.error';
-import { TUserValidators } from 'src/user/domain/entities/type.user';
-import { User } from 'src/user/domain/entities/user';
-import { IUserRepository } from 'src/user/domain/ports/user.repository';
+import { TUserValidators } from 'src/context/user/domain/entities/type.user';
+import { User } from 'src/context/user/domain/entities/user';
+import { IUserRepository } from 'src/context/user/domain/ports/user.repository';
 import { InvalidUserUseCaseError } from '../errors/invalid.user.error';
 import { RegisterUserDto } from '../dto/register.user.dto';
 import { AlreadyExistsUserUseCaseError } from '../errors/exist.user.error';
@@ -14,9 +14,15 @@ export class CreateUserUseCase {
   ) {}
 
   public async execute(
+  /**
+   * projectKey must be validated in an external layer.
+   * The User use case does not need to know whether the projectKey is valid or not.
+   * This is the responsibility of another bounded context.
+   */
     dto: RegisterUserDto,
   ): Promise<Either<UseCaseException, Id>> {
-    const userOrError = User.create(dto, this.validator);
+    const { name, email } = dto;
+    const userOrError = User.create({name,email}, this.validator);
 
     if (userOrError.isLeft())
       return Left.create(new InvalidUserUseCaseError(userOrError.value));
@@ -35,7 +41,7 @@ export class CreateUserUseCase {
         new UseCaseException('Ocorreu um erro ao criar o usuário!'),
       );
     
-    userOrError.value.register(id);
+    userOrError.value.register(id, dto.projectKey);
 
     return Right.create(id);
   }

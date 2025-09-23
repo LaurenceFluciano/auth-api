@@ -1,6 +1,6 @@
 import { DomainException } from 'src/share/error/domain/domain.error';
-import { User } from 'src/user/domain/entities/user';
-import { InvalidUserException } from 'src/user/domain/errors/user.error';
+import { User } from 'src/context/user/domain/entities/user';
+import { InvalidUserException } from 'src/context/user/domain/errors/user.error';
 
 describe('User Entity', () => {
   it('should create a valid user with all fields', () => {

@@ -1,6 +1,6 @@
 import { UseCaseException } from 'src/share/error/application/usecase.error';
 import { InvalidValueObjectException } from 'src/share/error/domain/value-object.error';
-import { InvalidUserException } from 'src/user/domain/errors/user.error';
+import { InvalidUserException } from 'src/context/user/domain/errors/user.error';
 
 export class InvalidUserUseCaseError extends UseCaseException {
   constructor(private entity: InvalidUserException) {

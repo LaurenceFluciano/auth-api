@@ -14,5 +14,5 @@ export interface IDeleteRepository<TEntity> {
 
 export interface IFindRepository<TEntity> {
   findById(id: Id): MaybePromise<TEntity | null>;
-  findAll(pagination: TOffsetPagination): TEntity;
+  findAll(pagination: TOffsetPagination): MaybePromise<TEntity[]>;
 }

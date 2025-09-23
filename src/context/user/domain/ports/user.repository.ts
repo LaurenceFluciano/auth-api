@@ -1,0 +1,11 @@
+import {
+  ICreateRepository,
+  IFindRepository,
+} from 'src/share/base/domain/base.repository';
+import { TUserDto } from '../entities/type.user';
+
+export interface IUserRepository
+  extends ICreateRepository<TUserDto>,
+    IFindRepository<TUserDto> {
+  findByCredential(email: string, projectKey: string): MaybePromise<TUserDto>;
+}

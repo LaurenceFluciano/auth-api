@@ -1,4 +1,4 @@
-import { Scope } from 'src/user/domain/values-objects/scope.vo';
+import { Scope } from 'src/context/user/domain/values-objects/scope.vo';
 
 describe('Scope Value Object', () => {
   it("Should create a scope without ':'", () => {

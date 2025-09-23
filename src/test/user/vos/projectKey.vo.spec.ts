@@ -1,4 +1,4 @@
-import { ProjectKey } from 'src/user/domain/values-objects/projectkey.vo';
+import { ProjectKey } from 'src/context/projects/domain/values-objects/projectkey.vo';
 
 describe('ProjectKey Value Object', () => {
   it('Should create a projectKey', () => {
