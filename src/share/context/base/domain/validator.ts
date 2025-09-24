@@ -1,4 +1,4 @@
-import { TObjectValueError } from 'src/share/error/domain/value-object.error';
+import { TObjectValueError } from 'src/share/context/error/domain/value-object.error';
 
 export abstract class ObjectValueValidator {
   private errors: TObjectValueError[] = [];

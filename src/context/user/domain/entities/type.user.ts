@@ -1,4 +1,4 @@
-import { IExternalValidators } from '../../../../share/base/validator';
+import { IExternalValidators } from '../../../../share/context/base/domain/validator';
 
 export type TUserDto = {
   name: string;

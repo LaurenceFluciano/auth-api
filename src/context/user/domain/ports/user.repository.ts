@@ -1,7 +1,7 @@
 import {
   ICreateRepository,
   IFindRepository,
-} from 'src/share/base/domain/base.repository';
+} from 'src/share/context/base/domain/base.repository';
 import { TUserDto } from '../entities/type.user';
 
 export interface IUserRepository

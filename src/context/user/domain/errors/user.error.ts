@@ -1,5 +1,5 @@
-import { DomainException } from 'src/share/error/domain/domain.error';
-import { InvalidValueObjectException } from 'src/share/error/domain/value-object.error';
+import { DomainException } from 'src/share/context/error/domain/domain.error';
+import { InvalidValueObjectException } from 'src/share/context/error/domain/value-object.error';
 
 export type TInvalidUserResponse = {
   fields: InvalidValueObjectException[];

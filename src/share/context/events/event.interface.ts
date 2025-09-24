@@ -6,6 +6,6 @@ export interface IDomainEventsObserver {
   dispatch(event: DomainEvent): Promise<void>;
   register<T extends DomainEvent>(
     eventName: string,
-    handler: (event: T) => Promise<void>
-  ): Promise<void>;
+    handler: (event: T) => Promise<void>,
+  ): Promise<void> | void;
 }
