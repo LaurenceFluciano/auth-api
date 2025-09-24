@@ -1,4 +1,4 @@
-import { DomainEvent } from 'src/share/context/events/event.interface';
+import { DomainEvent } from 'src/templates/context/events/event.interface';
 
 export class UserRegisteredEvent implements DomainEvent {
   public readonly occurredAt: Date;

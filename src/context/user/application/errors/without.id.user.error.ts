@@ -1,4 +1,4 @@
-import { UseCaseException } from 'src/share/context/error/application/usecase.error';
+import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
 
 export class IdNotDefinedUseCaseError extends UseCaseException {
   constructor() {

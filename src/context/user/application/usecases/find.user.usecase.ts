@@ -1,9 +1,9 @@
-import { TOffsetPagination } from 'src/share/global/types/base.pagination';
+import { TOffsetPagination } from 'src/templates/global/types/base.pagination';
 import { IUserRepository } from '../../domain/ports/user.repository';
 import { ResponseUserDto } from '../dto/find.user.dto';
-import { UseCaseException } from 'src/share/context/error/application/usecase.error';
+import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
 import { IdNotDefinedUseCaseError } from '../errors/without.id.user.error';
-import { Either, Left, Right } from 'src/share/context/error/others/either';
+import { Either, Left, Right } from 'src/templates/context/error/others/either';
 import { NotFoundUserUseCaseError } from '../errors/notfound.user.error';
 import { TUserDto } from '../../domain/entities/type.user';
 

@@ -11,8 +11,8 @@ import {
   InvalidUserException,
   TInvalidUserResponse,
 } from '../errors/user.error';
-import { Either, Left, Right } from 'src/share/context/error/others/either';
-import { DomainEvents } from 'src/share/context/events/domain.events';
+import { Either, Left, Right } from 'src/templates/context/error/others/either';
+import { DomainEvents } from 'src/templates/context/events/domain.events';
 import { UserRegisteredEvent } from '../events/user.registered.event';
 
 export class User {

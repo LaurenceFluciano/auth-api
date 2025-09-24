@@ -1,7 +1,7 @@
 import {
   IExternalValidators,
   ObjectValueValidator,
-} from '../../../../share/context/base/domain/validator';
+} from '../../../../templates/context/base/domain/validator';
 
 export class ValidatorEmail extends ObjectValueValidator {
   constructor(

@@ -1,4 +1,4 @@
-import { Either, Left, Right } from 'src/share/context/error/others/either';
+import { Either, Left, Right } from 'src/templates/context/error/others/either';
 import { InvalidScopesException } from '../errors/scopes.error';
 import { ValidatorScope } from '../validations/scopes.validator';
 export class Scope {

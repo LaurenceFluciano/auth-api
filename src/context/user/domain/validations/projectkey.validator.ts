@@ -1,4 +1,4 @@
-import { ObjectValueValidator } from '../../../../share/context/base/domain/validator';
+import { ObjectValueValidator } from '../../../../templates/context/base/domain/validator';
 
 export class ValidatorProjectKey extends ObjectValueValidator {
   constructor(protected value: string) {

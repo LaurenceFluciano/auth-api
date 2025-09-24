@@ -1,4 +1,4 @@
-import { ApplicationException } from 'src/share/context/error/application/application.error';
+import { ApplicationException } from 'src/templates/context/error/application/application.error';
 
 export class NotDefinedFieldDtoException extends ApplicationException {
   constructor(public fields: string[]) {

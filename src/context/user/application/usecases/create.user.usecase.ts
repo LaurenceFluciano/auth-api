@@ -1,5 +1,5 @@
-import { Either, Left, Right } from 'src/share/context/error/others/either';
-import { UseCaseException } from 'src/share/context/error/application/usecase.error';
+import { Either, Left, Right } from 'src/templates/context/error/others/either';
+import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
 import { TUserValidators } from 'src/context/user/domain/entities/type.user';
 import { User } from 'src/context/user/domain/entities/user';
 import { IUserRepository } from 'src/context/user/domain/ports/user.repository';
