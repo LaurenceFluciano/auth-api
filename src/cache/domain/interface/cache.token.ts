@@ -1,0 +1,2 @@
+export const CACHE_TOKEN = "CACHE_TOKEN";
+export const CACHE_AUTH_TOKEN = "CACHE_AUTH_TOKEN";
