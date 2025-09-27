@@ -3,16 +3,16 @@ import { IUserRepository } from 'src/context/user/domain/ports/user.repository';
 import { TOffsetPagination } from 'src/templates/global/types/base.pagination';
 import { IUserMongo, MongoUserModel } from '../schema/user.schema.mongodb';
 import {
-  MongoUserMapperEntity,
-  MongoUserMapperId,
+  UserMapperEntityMongo,
+  UserMapperIdMongo,
 } from '../mapper/mongo.mapper';
 import { HydratedDocument } from 'mongoose';
 import { injectable } from 'tsyringe';
 
 @injectable()
-export class MongoUserRepository implements IUserRepository {
-  private mapper: MongoUserMapperEntity = new MongoUserMapperEntity();
-  private mapperId: MongoUserMapperId = new MongoUserMapperId();
+export class UserRepositoryMongo implements IUserRepository {
+  private mapper: UserMapperEntityMongo = new UserMapperEntityMongo();
+  private mapperId: UserMapperIdMongo = new UserMapperIdMongo();
 
   async add(input: TUserDto): Promise<Id | null> {
     const documentInput = this.mapper.toSchema(input);

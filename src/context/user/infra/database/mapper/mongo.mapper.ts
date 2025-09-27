@@ -3,7 +3,7 @@ import { IMapper } from 'src/templates/global/mapper/mapper.interface';
 import { IUserMongo } from '../schema/user.schema.mongodb';
 import mongoose from 'mongoose';
 
-export class MongoUserMapperEntity implements IMapper<TUserDto, IUserMongo> {
+export class UserMapperEntityMongo implements IMapper<TUserDto, IUserMongo> {
   toPersistence(schema: IUserMongo): TUserDto {
     return {
       email: schema.email,
@@ -25,7 +25,7 @@ export class MongoUserMapperEntity implements IMapper<TUserDto, IUserMongo> {
   }
 }
 
-export class MongoUserMapperId implements IMapper<Id, mongoose.Types.ObjectId> {
+export class UserMapperIdMongo implements IMapper<Id, mongoose.Types.ObjectId> {
   toPersistence(schema: mongoose.Types.ObjectId): Id {
     return schema.toString();
   }
