@@ -12,17 +12,17 @@ export class RegisterUserDto {
     this.projectKey = projectKey;
   }
 
-  public static create(
-    name: string,
-    email: string,
-    projectKey: string,
-  ): Either<NotDefinedFieldDtoException, RegisterUserDto> {
+  public static create(_dto: {
+    name: string;
+    email: string;
+    projectKey: string;
+  }): Either<NotDefinedFieldDtoException, RegisterUserDto> {
     const missingFields: string[] = [];
 
     const normalized: Record<string, string> = {
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      projectKey: projectKey.trim(),
+      name: _dto.name.trim(),
+      email: _dto.email.trim().toLowerCase(),
+      projectKey: _dto.projectKey.trim(),
     };
 
     for (const [key, value] of Object.entries(normalized)) {
