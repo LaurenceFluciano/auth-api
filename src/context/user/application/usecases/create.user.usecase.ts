@@ -10,7 +10,7 @@ import { AlreadyExistsUserUseCaseError } from '../errors/exist.user.error';
 export class CreateUserUseCase {
   constructor(
     private repo: IUserRepository,
-    private validator: TUserValidators,
+    private validator?: TUserValidators,
   ) {}
 
   public async execute(

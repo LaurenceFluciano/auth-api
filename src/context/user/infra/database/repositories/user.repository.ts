@@ -7,7 +7,9 @@ import {
   MongoUserMapperId,
 } from '../mapper/mongo.mapper';
 import { HydratedDocument } from 'mongoose';
+import { injectable } from 'tsyringe';
 
+@injectable()
 export class MongoUserRepository implements IUserRepository {
   private mapper: MongoUserMapperEntity = new MongoUserMapperEntity();
   private mapperId: MongoUserMapperId = new MongoUserMapperId();

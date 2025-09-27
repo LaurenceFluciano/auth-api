@@ -1,1 +1,1 @@
-export type TDatabases = 'fake';
+export type TDatabases = 'fake' | 'mongoose';
