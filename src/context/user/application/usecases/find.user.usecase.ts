@@ -1,8 +1,8 @@
 import { TOffsetPagination } from 'src/templates/global/types/base.pagination';
 import { IUserRepository } from '../../domain/ports/user.repository';
 import { ResponseUserDto } from '../dto/find.user.dto';
-import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
-import { IdNotDefinedUseCaseError } from '../errors/without.id.user.error';
+import { UserUseCaseException } from '../errors/usecase.exception';
+import { UserIdNotDefinedUseCaseError } from '../errors/without.id.user.error';
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
 import { NotFoundUserUseCaseError } from '../errors/notfound.user.error';
 import { TUserDto } from '../../domain/entities/type.user';
@@ -22,11 +22,11 @@ export class FindUserUseCase {
 
   async findAll(
     pagination: TOffsetPagination,
-  ): Promise<Either<UseCaseException, ResponseUserDto[]>> {
+  ): Promise<Either<UserUseCaseException, ResponseUserDto[]>> {
     const users = await this.repo.findAll(pagination);
     const invalidUsers = users.filter((u) => u.id === undefined);
     if (invalidUsers.length > 0) {
-      return Left.create(new IdNotDefinedUseCaseError());
+      return Left.create(new UserIdNotDefinedUseCaseError());
     }
     const response = users.map((user) => this.mapperToResponse(user));
     return Right.create(response);
@@ -34,7 +34,7 @@ export class FindUserUseCase {
 
   async findOneById(
     id: Id,
-  ): Promise<Either<UseCaseException, ResponseUserDto>> {
+  ): Promise<Either<UserUseCaseException, ResponseUserDto>> {
     const user = await this.repo.findById(id);
     if (!user) return Left.create(new NotFoundUserUseCaseError());
     return Right.create(this.mapperToResponse(user));
@@ -43,7 +43,7 @@ export class FindUserUseCase {
   async findByCredential(
     email: string,
     projectKey: string,
-  ): Promise<Either<UseCaseException, ResponseUserDto>> {
+  ): Promise<Either<UserUseCaseException, ResponseUserDto>> {
     const user = await this.repo.findByCredential(email, projectKey);
     if (!user) return Left.create(new NotFoundUserUseCaseError());
     return Right.create(this.mapperToResponse(user));

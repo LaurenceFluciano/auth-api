@@ -6,6 +6,7 @@ import { IUserRepository } from 'src/context/user/domain/ports/user.repository';
 import { InvalidUserUseCaseError } from '../errors/invalid.user.error';
 import { RegisterUserDto } from '../dto/register.user.dto';
 import { AlreadyExistsUserUseCaseError } from '../errors/exist.user.error';
+import { UserUseCaseException } from '../errors/usecase.exception';
 
 export class CreateUserUseCase {
   constructor(
@@ -20,7 +21,7 @@ export class CreateUserUseCase {
      * This is the responsibility of another bounded context.
      */
     dto: RegisterUserDto,
-  ): Promise<Either<UseCaseException, Id>> {
+  ): Promise<Either<UserUseCaseException, Id>> {
     const { name, email } = dto;
     const userOrError = User.create({ name, email }, this.validator);
 

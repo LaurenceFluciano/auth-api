@@ -3,6 +3,7 @@ import { ApplicationException } from 'src/templates/context/error/application/ap
 export class NotDefinedFieldDtoException extends ApplicationException {
   constructor(public fields: string[]) {
     super('Some fields not defined.');
+    Object.setPrototypeOf(this, NotDefinedFieldDtoException.prototype);
   }
 
   toDto() {

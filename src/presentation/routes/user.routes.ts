@@ -1,10 +1,19 @@
 import express from 'express';
-const router = express.Router();
-import { Request, Response } from 'express';
+const userRouter = express.Router();
+import { asyncRoute } from '../middlewares/async.handler.middleware';
+import { userController } from '../container/user.container';
+import { projectKeyMiddleware } from '../middlewares/projectkey.middleware';
+import { paginationMiddleware } from '../middlewares/pagination.middleware.control';
 
-const testRoute = (req: Request, res: Response) =>
-  res.status(200).json({ message: 'Test Route: Must to be implmented' });
+userRouter
+  .route('/credentials')
+  .get(projectKeyMiddleware, asyncRoute(userController.getUserByCredential));
 
-router.route('/').get(testRoute).post(testRoute);
+userRouter.route('/:id').get(asyncRoute(userController.getById));
 
-router.route('/:id').get(testRoute);
+userRouter
+  .route('/')
+  .get(paginationMiddleware, asyncRoute(userController.getUsers))
+  .post(projectKeyMiddleware, asyncRoute(userController.register));
+
+export { userRouter };

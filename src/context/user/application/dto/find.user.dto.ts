@@ -5,5 +5,5 @@ export class ResponseUserDto {
     public readonly projectKey: string,
     public readonly scopes: string[],
     public readonly id: Id,
- ) {}
+  ) {}
 }

@@ -1,7 +1,8 @@
-import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
+import { UserUseCaseException } from './usecase.exception';
 
-export class IdNotDefinedUseCaseError extends UseCaseException {
+export class UserIdNotDefinedUseCaseError extends UserUseCaseException {
   constructor() {
     super('Have users with id not defined!');
+    Object.setPrototypeOf(this, UserIdNotDefinedUseCaseError.prototype);
   }
 }

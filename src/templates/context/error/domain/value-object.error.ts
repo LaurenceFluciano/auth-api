@@ -13,5 +13,6 @@ export class InvalidValueObjectException extends DomainException {
     public errors: TObjectValueError[],
   ) {
     super(message);
+    Object.setPrototypeOf(this, InvalidValueObjectException.prototype);
   }
 }

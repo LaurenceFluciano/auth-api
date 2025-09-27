@@ -13,9 +13,9 @@ export class ValidatorProjectKey extends ObjectValueValidator {
         type: 'EmptyValue',
       });
 
-    if (this.value.trim().length < 4)
+    if (this.value.trim().length < 2)
       this.addError({
-        message: 'O tamanho minimo da projectKey deve ser 4.',
+        message: 'O tamanho minimo da projectKey deve ser 2.',
         type: 'MinimalLength',
       });
   }

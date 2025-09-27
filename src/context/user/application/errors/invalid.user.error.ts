@@ -1,10 +1,11 @@
-import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
+import { UserUseCaseException } from './usecase.exception';
 import { InvalidValueObjectException } from 'src/templates/context/error/domain/value-object.error';
 import { InvalidUserException } from 'src/context/user/domain/errors/user.error';
 
-export class InvalidUserUseCaseError extends UseCaseException {
+export class InvalidUserUseCaseError extends UserUseCaseException {
   constructor(private entity: InvalidUserException) {
     super('Impossible to create an invalid user.');
+    Object.setPrototypeOf(this, InvalidUserUseCaseError.prototype);
   }
 
   toDto(): {
