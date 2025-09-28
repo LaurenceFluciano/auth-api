@@ -13,6 +13,14 @@ export class InvalidValueObjectException extends DomainException {
     public errors: TObjectValueError[],
   ) {
     super(message);
+    this.name = new.target.name;
     Object.setPrototypeOf(this, InvalidValueObjectException.prototype);
+  }
+
+  public toDto(): object {
+    return {
+      message: this.message,
+      errors: this.errors,
+    };
   }
 }

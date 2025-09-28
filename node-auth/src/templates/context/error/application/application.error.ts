@@ -1,7 +1,10 @@
 export class ApplicationException extends Error {
-  constructor(public message: string) {
+  constructor(message: string) {
     super(message);
-    this.name = 'ApplicationException';
-    Object.setPrototypeOf(this, ApplicationException.prototype);
+    this.name = new.target.name;
+    Object.setPrototypeOf(this, new.target.prototype);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, new.target);
+    }
   }
 }

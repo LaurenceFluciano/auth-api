@@ -1,8 +1,7 @@
-import { UserUseCaseException } from './usecase.exception';
+import { NotFoundUseCaseException } from 'src/templates/context/error/application/usecase.error';
 
-export class NotFoundUserUseCaseError extends UserUseCaseException {
+export class NotFoundUserUseCaseError extends NotFoundUseCaseException {
   constructor() {
     super('User Not Found.');
-    Object.setPrototypeOf(this, NotFoundUserUseCaseError.prototype);
   }
 }

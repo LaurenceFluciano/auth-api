@@ -1,8 +1,7 @@
-import { UserUseCaseException } from './usecase.exception';
+import { ConflictUseCaseException } from 'src/templates/context/error/application/usecase.error';
 
-export class AlreadyExistsUserUseCaseError extends UserUseCaseException {
+export class AlreadyExistsUserUseCaseError extends ConflictUseCaseException {
   constructor() {
     super('User Already Exists');
-    Object.setPrototypeOf(this, AlreadyExistsUserUseCaseError.prototype);
   }
 }
