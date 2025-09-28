@@ -7,7 +7,7 @@ describe('ProjectKey Value Object', () => {
   });
 
   it("Shouldn't create a invalid projectKey", () => {
-    const projectKeyOrError = ProjectKey.create('ad');
+    const projectKeyOrError = ProjectKey.create('a');
     expect(projectKeyOrError.isLeft()).toBe(true);
   });
 

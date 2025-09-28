@@ -2,7 +2,6 @@ import { Response, Request } from 'express';
 import { UserServiceFacade } from '../service/user.service';
 import { RegisterUserDto } from 'src/context/user/application/dto/register.user.dto';
 import { inject, injectable } from 'tsyringe';
-import { NaturalNumber } from 'src/templates/context/base/domain/pagination.vo';
 
 @injectable()
 export class UserController {
@@ -28,13 +27,16 @@ export class UserController {
   };
 
   getUsers = async (req: Request, res: Response) => {
-    const { page, limit } = req.pagination;
-    const offset = new NaturalNumber(limit.get() * (page.get() - 1));
+    const { offset, limit } = req.pagination.getPagination();
+
+    if (offset === undefined)
+      throw new Error('Internal not defined offset error.');
+
     const usersOrError = await this.userService.findAll({ offset, limit });
     if (usersOrError.isLeft()) throw usersOrError.value;
     return res.status(200).json({
-      page: page.get(),
-      limit: limit.get(),
+      offset: offset,
+      limit: limit,
       data: usersOrError.value,
     });
   };

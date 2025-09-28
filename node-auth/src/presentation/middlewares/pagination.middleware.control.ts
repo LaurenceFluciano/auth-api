@@ -1,27 +1,31 @@
 import { NextFunction, Request, Response } from 'express';
-import { NaturalNumber } from 'src/templates/context/base/domain/pagination.vo';
+import { Pagination } from 'src/templates/context/base/domain/pagination.vo';
 
 export function paginationMiddleware(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
-  try {
-    const limit = Number(req.query.limit ?? 10);
-    const page = Number(req.query.page ?? 1);
+  const rawOffset = req.query.offset;
+  const rawLimit = req.query.limit;
 
-    const pagination = {
-      limit: new NaturalNumber(limit ?? 10),
-      page: new NaturalNumber(page ?? 1),
-    };
+  const offset = Number(rawOffset ?? 0);
+  const limit = Number(rawLimit ?? 10);
 
-    if (pagination.limit.get() < 5) throw new Error('Limit cannot exceed 50');
-    if (pagination.limit.get() > 50) throw new Error('Limit cannot exceed 50');
+  if (isNaN(offset) || isNaN(limit))
+    return res.status(400).json({
+      message: 'Offset or Limit must to be a single number',
+    });
 
-    req.pagination = pagination;
+  const pagination = Pagination.create({
+    limit: limit,
+    offset: offset ?? undefined,
+    lastId: req.query.lastId as string | undefined,
+  });
 
-    return next();
-  } catch (err) {
-    next(err);
-  }
+  if (pagination.isLeft()) return res.status(400).json(pagination.value);
+
+  req.pagination = pagination.value;
+
+  return next();
 }

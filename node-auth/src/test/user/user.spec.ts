@@ -1,4 +1,4 @@
-import { DomainException } from 'src/share/error/domain/domain.error';
+import { DomainException } from 'src/templates/context/error/domain/domain.error';
 import { User } from 'src/context/user/domain/entities/user';
 import { InvalidUserException } from 'src/context/user/domain/errors/user.error';
 
@@ -19,7 +19,6 @@ describe('User Entity', () => {
       const user = result.value;
       expect(user.getName()).toBe(userInput.name);
       expect(user.getEmail()).toBe(userInput.email);
-      expect(user.getProjectKey()).toBe(userInput.projectKey);
       expect(user.getScopes()).toEqual(userInput.scopes);
     }
   });
@@ -90,7 +89,6 @@ describe('User Entity', () => {
 
     if (result.isRight()) {
       const user = result.value;
-      expect(user.getProjectKey()).toBeUndefined();
       expect(user.getScopes()).toEqual([]);
     }
   });

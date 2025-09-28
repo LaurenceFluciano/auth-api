@@ -25,8 +25,8 @@ export class UserRepositoryMongo implements IUserRepository {
 
   async findAll(pagination: TOffsetPagination): Promise<TUserDto[]> {
     const users: HydratedDocument<IUserMongo>[] = await MongoUserModel.find({})
-      .skip(pagination.offset.get())
-      .limit(pagination.limit.get());
+      .skip(pagination.offset)
+      .limit(pagination.limit);
     return users.map((user) => this.mapper.toPersistence(user));
   }
 

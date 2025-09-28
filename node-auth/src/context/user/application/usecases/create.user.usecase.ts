@@ -1,12 +1,11 @@
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
-import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
 import { TUserValidators } from 'src/context/user/domain/entities/type.user';
 import { User } from 'src/context/user/domain/entities/user';
 import { IUserRepository } from 'src/context/user/domain/ports/user.repository';
 import { InvalidUserUseCaseError } from '../errors/invalid.user.error';
 import { RegisterUserDto } from '../dto/register.user.dto';
 import { AlreadyExistsUserUseCaseError } from '../errors/exist.user.error';
-import { UserUseCaseException } from '../errors/usecase.exception';
+import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
 
 export class CreateUserUseCase {
   constructor(
@@ -21,7 +20,7 @@ export class CreateUserUseCase {
      * This is the responsibility of another bounded context.
      */
     dto: RegisterUserDto,
-  ): Promise<Either<UserUseCaseException, Id>> {
+  ): Promise<Either<UseCaseException, Id>> {
     const { name, email } = dto;
     const userOrError = User.create({ name, email }, this.validator);
 

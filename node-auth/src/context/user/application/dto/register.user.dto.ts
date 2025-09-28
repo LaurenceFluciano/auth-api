@@ -1,5 +1,5 @@
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
-import { NotDefinedFieldDtoException } from 'src/templates/context/error/application/invalid.dto.error';
+import { DtoFieldApplcationException } from 'src/templates/context/error/application/invalid.dto.error';
 
 export class RegisterUserDto {
   public readonly name: string;
@@ -16,7 +16,7 @@ export class RegisterUserDto {
     name: string | undefined;
     email: string | undefined;
     projectKey: string | undefined;
-  }): Either<NotDefinedFieldDtoException, RegisterUserDto> {
+  }): Either<DtoFieldApplcationException, RegisterUserDto> {
     const missingFields: string[] = [];
 
     const normalized: Record<string, string> = {
@@ -30,7 +30,7 @@ export class RegisterUserDto {
     }
 
     if (missingFields.length > 0)
-      return Left.create(new NotDefinedFieldDtoException(missingFields));
+      return Left.create(new DtoFieldApplcationException(missingFields));
 
     return Right.create(
       new RegisterUserDto(
