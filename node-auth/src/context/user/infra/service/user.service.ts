@@ -1,8 +1,12 @@
 import { ResponseUserDto } from 'src/context/user/application/dto/find.user.dto';
-import { RegisterUserDto } from 'src/context/user/application/dto/register.user.dto';
+import {
+  RegisterUserDto,
+  TRegisterUserDto,
+} from 'src/context/user/application/dto/register.user.dto';
 import { CreateUserUseCase } from 'src/context/user/application/usecases/create.user.usecase';
 import { FindUserUseCase } from 'src/context/user/application/usecases/find.user.usecase';
 import * as userRepository from 'src/context/user/domain/ports/user.repository';
+import { ApplicationException } from 'src/templates/context/error/application/application.error';
 import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
 import { Either } from 'src/templates/context/error/others/either';
 import { TOffsetPagination } from 'src/templates/global/types/base.pagination';
@@ -20,8 +24,12 @@ export class UserServiceFacade {
     this.findUseCase = new FindUserUseCase(this.repo);
   }
 
-  public create(dto: RegisterUserDto): Promise<Either<UseCaseException, Id>> {
-    return this.createUseCase.execute(dto);
+  public async create(
+    dto: TRegisterUserDto,
+  ): Promise<Either<ApplicationException, Id>> {
+    const userDtoOrError = RegisterUserDto.create(dto);
+    if (userDtoOrError.isLeft()) return userDtoOrError;
+    return this.createUseCase.execute(userDtoOrError.value);
   }
 
   async findAll(

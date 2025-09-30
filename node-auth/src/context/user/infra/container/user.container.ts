@@ -1,7 +1,7 @@
 import { container } from 'tsyringe';
 import { UserServiceFacade } from '../service/user.service';
-import { UserRepositoryFactory } from '../factory/director.factory';
-import { UserController } from '../controllers/user.controller';
+import { UserRepositoryFactory } from '../database/factory/director.factory';
+import { UserController } from '../../../../presentation/controllers/user.controller';
 import { IUserRepository } from 'src/context/user/domain/ports/user.repository';
 
 const userRepository = new UserRepositoryFactory().createRepository();

@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import { UserServiceFacade } from '../service/user.service';
+import { UserServiceFacade } from '../../context/user/infra/service/user.service';
 import { RegisterUserDto } from 'src/context/user/application/dto/register.user.dto';
 import { inject, injectable } from 'tsyringe';
 
@@ -14,13 +14,11 @@ export class UserController {
     req: Request<object, object, RegisterUserDto>,
     res: Response,
   ) => {
-    const userDtoOrError = RegisterUserDto.create(req.body);
-
-    if (userDtoOrError.isLeft()) throw userDtoOrError.value;
-    const id = await this.userService.create(userDtoOrError.value);
+    const id = await this.userService.create(req.body);
     if (id.isLeft()) throw id.value;
 
     return res.status(201).json({
+      status: 201,
       message: 'User created.',
       userId: id.value,
     });
@@ -35,6 +33,7 @@ export class UserController {
     const usersOrError = await this.userService.findAll({ offset, limit });
     if (usersOrError.isLeft()) throw usersOrError.value;
     return res.status(200).json({
+      status: 200,
       offset: offset,
       limit: limit,
       data: usersOrError.value,

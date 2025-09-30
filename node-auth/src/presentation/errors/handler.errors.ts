@@ -15,35 +15,36 @@ export const handlerError = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction,
 ) => {
-  if (err instanceof DtoFieldApplcationException) {
-    return res.status(400).json(err.toDto());
-  }
-
-  if (err instanceof InvalidUseCaseException) {
-    return res.status(400).json(err.toDto());
-  }
-
-  if (err instanceof ConflictUseCaseException) {
-    return res.status(409).json({ message: err.message });
-  }
-
-  if (err instanceof NotFoundUseCaseException) {
-    return res.status(404).json({ message: err.message });
-  }
-
-  if (err instanceof UnprocessableEntityUseCaseException) {
-    return res.status(422).json({ message: err.message });
-  }
-
-  if (err instanceof UseCaseException) {
-    return res.status(500).json({ message: err.message });
-  }
-
   if (err instanceof Error) {
-    console.error(err.stack);
-  } else {
-    console.error(err);
-  }
+    console.warn(`[${err.constructor.name}] ${err.message}`);
 
-  return res.status(500).json({ message: 'Ocorreu um erro no servidor!' });
+    if (err instanceof DtoFieldApplcationException) {
+      return res.status(400).json(err.toDto());
+    }
+
+    if (err instanceof InvalidUseCaseException) {
+      return res.status(400).json(err.toDto());
+    }
+
+    if (err instanceof ConflictUseCaseException) {
+      return res.status(409).json({ message: err.message });
+    }
+
+    if (err instanceof NotFoundUseCaseException) {
+      return res.status(404).json({ message: err.message });
+    }
+
+    if (err instanceof UnprocessableEntityUseCaseException) {
+      return res.status(422).json({ message: err.message });
+    }
+
+    if (err instanceof UseCaseException) {
+      return res.status(500).json({ message: err.message });
+    }
+
+    console.error(err.stack);
+  } else console.error(err);
+  return res
+    .status(500)
+    .json({ status: 500, message: 'Ocorreu um erro no servidor!' });
 };

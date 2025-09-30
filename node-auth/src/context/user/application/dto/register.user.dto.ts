@@ -1,6 +1,12 @@
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
 import { DtoFieldApplcationException } from 'src/templates/context/error/application/invalid.dto.error';
 
+export type TRegisterUserDto = {
+  name: string;
+  email: string;
+  projectKey: string;
+};
+
 export class RegisterUserDto {
   public readonly name: string;
   public readonly email: string;
