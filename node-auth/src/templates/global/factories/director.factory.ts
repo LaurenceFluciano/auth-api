@@ -1,7 +1,7 @@
 import { TDatabases } from 'src/templates/global/config/config.type';
-import { IUserRepositoryFactory } from './user.repository.factory';
+import { IUserRepositoryFactory } from '../../../context/user/infra/database/factory/user.repository.factory';
 import { IUserRepository } from 'src/context/user/domain/ports/user.repository';
-import { UserRepositoryFactoryMongodb } from './user.repository.mongodb.factory';
+import { UserRepositoryFactoryMongodb } from '../../../context/user/infra/database/factory/user.repository.mongodb.factory';
 
 const DATABASE_USER_REPOSITORY_ADAPTER = 'mongoose';
 

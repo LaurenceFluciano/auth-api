@@ -23,4 +23,5 @@ mongoUserSchema.index({ email: 1, projectKey: 1 }, { unique: true });
 export const MongoUserModel = mongoose.model<IUserMongo>(
   collections['user'],
   mongoUserSchema,
+  collections['user'],
 );

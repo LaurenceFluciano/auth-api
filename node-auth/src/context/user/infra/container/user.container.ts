@@ -1,6 +1,6 @@
 import { container } from 'tsyringe';
 import { UserServiceFacade } from '../service/user.service';
-import { UserRepositoryFactory } from '../database/factory/director.factory';
+import { UserRepositoryFactory } from '../../../../templates/global/factories/director.factory';
 import { UserController } from '../../../../presentation/controllers/user.controller';
 import { IUserRepository } from 'src/context/user/domain/ports/user.repository';
 
