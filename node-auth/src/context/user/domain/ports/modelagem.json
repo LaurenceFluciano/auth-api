@@ -1,0 +1,31 @@
+{
+  "id": "ObjectId",
+  "username": "John",
+  "email": "john@gmail.com",
+  "projectKey": "",
+  "scopes": [],
+  "auth": {
+    "knowledge": [
+      {
+        "id": "?",
+        "type": "password",
+        "secret": "hash123",
+        "createdAt": "2025-09-30T12:00:00Z"
+      },
+      {
+        "id": "?",
+        "type": "pin",
+        "secret": "1234hash",
+        "createdAt": "2025-10-01T22:00:00Z"
+      }
+    ],
+    "possesion": [
+      {
+        "id": "?",
+        "type": "otp",
+        "secret": "***",
+        "createdAt": "2025-09-30T12:00:00Z"
+      }
+    ]
+  }
+}

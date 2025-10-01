@@ -1,9 +1,9 @@
 import {
   IExternalValidators,
   ObjectValueValidator,
-} from '../../../../templates/context/base/domain/validator';
+} from '../../../../../templates/context/base/domain/validator';
 
-export class ValidatorPassword extends ObjectValueValidator {
+export class ValidatorEmail extends ObjectValueValidator {
   constructor(
     protected value: string,
     private readonly externalValidator?: IExternalValidators,
@@ -16,14 +16,21 @@ export class ValidatorPassword extends ObjectValueValidator {
     if (!this.value || this.value.trim() === '') {
       this.addError({
         type: 'Empty',
-        message: 'Password cannot be empty',
+        message: 'Email cannot be empty',
       });
     }
 
     if (this.value.length < 6) {
       this.addError({
         type: 'TooShort',
-        message: 'Password must be at least 6 characters',
+        message: 'Email must be at least 6 characters',
+      });
+    }
+
+    if (!this.value.includes('@')) {
+      this.addError({
+        type: 'InvalidEmail',
+        message: 'Email must contain @ symbol',
       });
     }
 

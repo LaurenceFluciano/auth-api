@@ -1,6 +1,6 @@
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
-import { InvalidScopesException } from '../errors/scopes.error';
-import { ValidatorScope } from '../validations/scopes.validator';
+import { InvalidScopesException } from '../../errors/user/scopes.error';
+import { ValidatorScope } from '../../validations/user/scopes.validator';
 export class Scope {
   protected constructor(private scope: string) {}
 

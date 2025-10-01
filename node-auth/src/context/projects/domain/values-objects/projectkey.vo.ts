@@ -1,6 +1,6 @@
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
-import { ValidatorProjectKey } from '../../../user/domain/validations/projectkey.validator';
-import { InvalidProjectKeyException } from '../../../user/domain/errors/projectkey.error';
+import { ValidatorProjectKey } from '../validator/projectkey.validator';
+import { InvalidProjectKeyException } from '../errors/projectkey.error';
 
 export class ProjectKey {
   protected constructor(private projectKey: string) {}

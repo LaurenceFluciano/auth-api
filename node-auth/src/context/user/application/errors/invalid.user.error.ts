@@ -1,4 +1,4 @@
-import { InvalidUserException } from 'src/context/user/domain/errors/user.error';
+import { InvalidUserException } from 'src/context/user/domain/errors/user/user.error';
 import { InvalidUseCaseException } from 'src/templates/context/error/application/usecase.error';
 
 export class InvalidUserUseCaseError extends InvalidUseCaseException<InvalidUserException> {
