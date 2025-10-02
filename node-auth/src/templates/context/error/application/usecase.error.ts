@@ -8,7 +8,7 @@ export class InvalidUseCaseException<
 > extends UseCaseException {
   constructor(
     public message: string,
-    protected entity: T,
+    protected domainError: T,
   ) {
     super(message);
   }
@@ -20,3 +20,4 @@ export class InvalidUseCaseException<
 export class ConflictUseCaseException extends UseCaseException {}
 export class NotFoundUseCaseException extends UseCaseException {}
 export class UnprocessableEntityUseCaseException extends UseCaseException {}
+export class InternalServerErrorUseCaseException extends UseCaseException {}

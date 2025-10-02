@@ -1,4 +1,4 @@
-export interface IMapper<TEntity, TSchema> {
-  toPersistence(schema: TSchema): TEntity;
-  toSchema(entity: TEntity): TSchema;
+export interface IMapper<D, M> {
+  toDomain(schema: M): D;
+  toModel(entity: D): M;
 }

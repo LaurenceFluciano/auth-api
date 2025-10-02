@@ -4,7 +4,7 @@ import { IUserMongo } from '../schema/user.schema.mongodb';
 import mongoose from 'mongoose';
 
 export class UserMapperEntityMongo implements IMapper<TUserDto, IUserMongo> {
-  toPersistence(schema: IUserMongo): TUserDto {
+  toDomain(schema: IUserMongo): TUserDto {
     return {
       email: schema.email,
       name: schema.name,
@@ -13,7 +13,7 @@ export class UserMapperEntityMongo implements IMapper<TUserDto, IUserMongo> {
       scopes: schema.scopes,
     } as TUserDto;
   }
-  toSchema(entity: TUserDto): IUserMongo {
+  toModel(entity: TUserDto): IUserMongo {
     const id = entity.id?.toString();
     return {
       email: entity.email,
@@ -26,10 +26,10 @@ export class UserMapperEntityMongo implements IMapper<TUserDto, IUserMongo> {
 }
 
 export class UserMapperIdMongo implements IMapper<Id, mongoose.Types.ObjectId> {
-  toPersistence(schema: mongoose.Types.ObjectId): Id {
+  toDomain(schema: mongoose.Types.ObjectId): Id {
     return schema.toString();
   }
-  toSchema(entity: Id): mongoose.Types.ObjectId {
+  toModel(entity: Id): mongoose.Types.ObjectId {
     const id = entity.toString();
     return new mongoose.Types.ObjectId(id);
   }

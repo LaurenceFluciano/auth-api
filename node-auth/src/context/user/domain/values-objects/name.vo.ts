@@ -1,6 +1,6 @@
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
-import { ValidatorName } from '../../validations/user/name.validator';
-import { InvalidNameException } from '../../errors/user/name.error';
+import { ValidatorName } from '../validations/name.validator';
+import { InvalidNameException } from '../errors/name.error';
 
 export class Name {
   protected constructor(private name: string) {}

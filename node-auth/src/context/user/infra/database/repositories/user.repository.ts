@@ -49,4 +49,11 @@ export class UserRepositoryMongo implements IUserRepository {
     if (!user) return null;
     return this.mapper.toPersistence(user);
   }
+
+  async findManyByIds(ids: Id[]): Promise<TUserDto[]> {
+    const users = await MongoUserModel.find({
+      _id: { $in: ids },
+    });
+    return users.map((user) => this.mapper.toPersistence(user));
+  }
 }

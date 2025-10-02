@@ -8,4 +8,5 @@ if (!USER_COLLECTION_NAME) throw new ConfigError('Collection is not defined');
 
 export const collections: Record<string, string> = {
   user: USER_COLLECTION_NAME,
+  auth: 'Auth',
 };

@@ -1,7 +1,7 @@
 // Values Objects
-import { Email } from '../values-objects/user/email.vo';
-import { Name } from '../values-objects/user/name.vo';
-import { Scope } from '../values-objects/user/scope.vo';
+import { Email } from '../values-objects/email.vo';
+import { Name } from '../values-objects/name.vo';
+import { Scope } from '../values-objects/scope.vo';
 
 // Types
 import { TUserEntity, TUserValidators } from './type.user';
@@ -10,7 +10,7 @@ import { TUserEntity, TUserValidators } from './type.user';
 import {
   InvalidUserException,
   TInvalidUserResponse,
-} from '../errors/user/user.error';
+} from '../errors/user.error';
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
 import { DomainEvents } from 'src/templates/context/events/domain.events';
 import { UserRegisteredEvent } from '../events/user.registered.event';

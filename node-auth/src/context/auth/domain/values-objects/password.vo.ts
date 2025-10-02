@@ -1,7 +1,7 @@
 import { IExternalValidators } from 'src/templates/context/base/domain/validator';
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
-import { InvalidPasswordException } from '../../errors/auth/invalid.password';
-import { ValidatorPassword } from '../../validations/auth/password.validator';
+import { InvalidPasswordException } from '../errors/invalid.password';
+import { ValidatorPassword } from '../validations/password.validator';
 
 export class Password {
   private constructor(public readonly password: string) {}

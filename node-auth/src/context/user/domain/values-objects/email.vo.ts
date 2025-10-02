@@ -1,7 +1,7 @@
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
-import { ValidatorEmail } from '../../validations/user/email.validator';
-import { InvalidEmailException } from '../../errors/user/email.error';
-import { IExternalValidators } from '../../../../../templates/context/base/domain/validator';
+import { ValidatorEmail } from '../validations/email.validator';
+import { InvalidEmailException } from '../errors/email.error';
+import { IExternalValidators } from '../../../../templates/context/base/domain/validator';
 
 export class Email {
   protected constructor(private readonly email: string) {}

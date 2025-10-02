@@ -1,4 +1,4 @@
-import { Name } from 'src/context/user/domain/values-objects/user/name.vo';
+import { Name } from 'src/context/user/domain/values-objects/name.vo';
 
 describe('Name Value Object', () => {
   it('Should create a name', () => {
