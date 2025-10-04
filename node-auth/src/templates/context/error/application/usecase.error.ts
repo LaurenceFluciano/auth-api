@@ -1,15 +1,9 @@
-import { DomainException } from '../domain/domain.error';
 import { ApplicationException } from './application.error';
 
 export class UseCaseException extends ApplicationException {}
 
-export class InvalidUseCaseException<
-  T extends DomainException,
-> extends UseCaseException {
-  constructor(
-    public message: string,
-    protected domainError: T,
-  ) {
+export class InvalidUseCaseException extends UseCaseException {
+  constructor(public message: string) {
     super(message);
   }
 

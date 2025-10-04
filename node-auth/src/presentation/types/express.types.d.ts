@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { Pagination } from 'src/templates/context/base/domain/pagination.vo';
+import { Pagination } from 'src/templates/context/domain/base/domain/pagination.vo';
 
 declare module 'express' {
   export interface Request {

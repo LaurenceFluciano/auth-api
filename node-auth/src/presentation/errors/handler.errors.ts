@@ -18,6 +18,10 @@ export const handlerError = (
   if (err instanceof Error) {
     console.warn(`[${err.constructor.name}] ${err.message}`);
 
+    if (err instanceof SyntaxError && 'body' in err) {
+      return res.status(400).json({ message: 'JSON inválido' });
+    }
+
     if (err instanceof DtoFieldApplcationException) {
       return res.status(400).json(err.toDto());
     }

@@ -15,15 +15,15 @@ export function projectKeyMiddleware(
         ? req.params.projectKey
         : typeof req.query?.projectKey === 'string'
           ? req.query.projectKey
-          : undefined;
+          : '';
 
-  if (!projectKeyRaw) {
-    return next(new Error('ProjectKey is required'));
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  // IMPROVISING ERROR
   const projectKeyOrError = ProjectKey.create(projectKeyRaw);
-  if (projectKeyOrError.isLeft()) return next(projectKeyOrError.value);
+  if (projectKeyOrError.isLeft())
+    return res.status(400).json({
+      message: projectKeyOrError.value.message,
+      errors: projectKeyOrError.value.errors,
+    });
 
   // adiciona no req
   req.projectKey = projectKeyOrError.value.getValue();

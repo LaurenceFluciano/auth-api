@@ -1,6 +1,6 @@
 import { Response, Request } from 'express';
-import { UserServiceFacade } from '../../context/user/infra/service/user.service';
-import { RegisterUserDto } from 'src/context/user/application/dto/register.user.dto';
+import { UserServiceFacade } from '../../context/user-auth/infra/service/user.service';
+import { RegisterUserDto } from 'src/context/user-auth/application/dto/register.user.dto';
 import { inject, injectable } from 'tsyringe';
 
 @injectable()

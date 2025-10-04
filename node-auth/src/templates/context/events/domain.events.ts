@@ -8,7 +8,6 @@ export class DomainEventsFactory {
 
     switch (context.toLowerCase()) {
       case 'monolitic':
-        // Pode ser adicionado uma nova implementação, em vez de ser na memória
         return new InMemoryDomainEventsObserver();
       case 'microservice':
         throw new Error('Microservice observer não implementado ainda');

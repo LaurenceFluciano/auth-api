@@ -1,7 +1,7 @@
 import express from 'express';
 const userRouter = express.Router();
 import { asyncRoute } from '../middlewares/async.handler.middleware';
-import { userController } from '../../context/user/infra/container/user.container';
+import { userController } from '../container/user.container';
 import { projectKeyMiddleware } from '../middlewares/projectkey.middleware';
 import { paginationMiddleware } from '../middlewares/pagination.middleware.control';
 

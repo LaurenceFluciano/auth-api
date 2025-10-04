@@ -1,7 +1,10 @@
 export class DomainException extends Error {
   constructor(public message: string) {
     super(message);
-    this.name = 'DomainException';
-    Object.setPrototypeOf(this, DomainException.prototype);
+    this.name = new.target.name;
+    Object.setPrototypeOf(this, new.target.prototype);
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, new.target);
+    }
   }
 }

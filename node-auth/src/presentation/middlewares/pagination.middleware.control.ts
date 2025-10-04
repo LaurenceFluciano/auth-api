@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { Pagination } from 'src/templates/context/base/domain/pagination.vo';
+import { Pagination } from 'src/templates/context/domain/pagination.vo';
 
 export function paginationMiddleware(
   req: Request,

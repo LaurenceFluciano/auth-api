@@ -1,15 +1,12 @@
-import { FakeConnectionDatabase } from '../connections/connection.fake.db';
 import { IConnectionDatabase } from '../connections/connection.interface';
 import { MongooseConnectionDatabase } from '../connections/connection.mongo.db';
-import { TDatabases } from './config.type';
 
-const databases: Record<TDatabases, new () => IConnectionDatabase> = {
-  fake: FakeConnectionDatabase,
+const databases: Record<string, new () => IConnectionDatabase> = {
   mongoose: MongooseConnectionDatabase,
 };
 
 export const factoryConnectionDatabase = (
-  database: TDatabases,
+  database: string,
 ): IConnectionDatabase => {
   return new databases[database]();
 };
