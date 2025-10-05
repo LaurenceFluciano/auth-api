@@ -1,6 +1,6 @@
 import { Response, Request } from 'express';
 import { UserServiceFacade } from '../../context/user-auth/infra/service/user.service';
-import { RegisterUserDto } from 'src/context/user-auth/application/dto/register.user.dto';
+import { TRegisterUserDto } from 'src/context/user-auth/application/dto/register.user.dto';
 import { inject, injectable } from 'tsyringe';
 
 @injectable()
@@ -11,10 +11,11 @@ export class UserController {
   ) {}
 
   register = async (
-    req: Request<object, object, RegisterUserDto>,
+    req: Request<object, object, TRegisterUserDto>,
     res: Response,
   ) => {
-    const id = await this.userService.create(req.body);
+    const authFactor = req.authFactor;
+    const id = await this.userService.create(req.body, authFactor);
     if (id.isLeft()) throw id.value;
 
     return res.status(201).json({

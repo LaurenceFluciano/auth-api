@@ -6,6 +6,8 @@ import { InvalidUserUseCaseError } from '../errors/invalid.user.error';
 import { RegisterUserDto } from '../dto/register.user.dto';
 import { AlreadyExistsUserUseCaseError } from '../errors/exist.user.error';
 import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
+import { IAuthFactory } from '../factories/auth.method.factory';
+import { TAuths } from '../../domain/entities/types.auth';
 
 export class CreateUserUseCase {
   constructor(
@@ -15,18 +17,29 @@ export class CreateUserUseCase {
 
   public async execute(
     dto: RegisterUserDto,
+    authFactory?: IAuthFactory,
   ): Promise<Either<UseCaseException, Id>> {
-    const userOrError = User.create(dto, this.validator);
-
-    if (userOrError.isLeft())
-      return Left.create(new InvalidUserUseCaseError(userOrError.value));
-
     const userExist = await this.repo.findByCredential(
       dto.email,
       dto.projectKey,
     );
 
     if (userExist) return Left.create(new AlreadyExistsUserUseCaseError());
+
+    let auth: TAuths = {};
+    if (dto.authField && authFactory) {
+      const authOrError = await Promise.resolve(
+        authFactory.createAuthFactor(dto.authField),
+      );
+      if (authOrError.isLeft()) return authOrError;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      auth = authOrError.value;
+    }
+
+    const userOrError = User.create({ ...dto, auths: auth }, this.validator);
+
+    if (userOrError.isLeft())
+      return Left.create(new InvalidUserUseCaseError(userOrError.value));
 
     const id = await this.repo.add(userOrError.value);
 

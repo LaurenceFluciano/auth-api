@@ -5,23 +5,32 @@ export type TRegisterUserDto = {
   name: string;
   email: string;
   projectKey: string;
+  authField?: object;
 };
 
 export class RegisterUserDto {
   public readonly name: string;
   public readonly email: string;
   public readonly projectKey: string;
+  public readonly authField?: object;
 
-  private constructor(name: string, email: string, projectKey: string) {
+  private constructor(
+    name: string,
+    email: string,
+    projectKey: string,
+    authField?: object,
+  ) {
     this.name = name;
     this.email = email;
     this.projectKey = projectKey;
+    this.authField = authField;
   }
 
   public static create(_dto: {
     name: string | undefined;
     email: string | undefined;
     projectKey: string | undefined;
+    authField?: object;
   }): Either<DtoFieldApplcationException, RegisterUserDto> {
     const missingFields: string[] = [];
 
@@ -43,6 +52,7 @@ export class RegisterUserDto {
         normalized.name,
         normalized.email,
         normalized.projectKey,
+        _dto.authField,
       ),
     );
   }

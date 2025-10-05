@@ -1,4 +1,4 @@
-type TPasswordAuthMethod = {
+export type TPasswordAuthMethod = {
   secret: string;
 };
 

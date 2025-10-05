@@ -1,6 +1,6 @@
 import { DomainException } from 'src/templates/context/error/domain/domain.error';
 import { Either, Left, Right } from 'src/templates/context/error/others/either';
-import { IEncryptStrategy } from '../../domain/ports/encrypt.port';
+import { IEncryptStrategy } from '../../application/ports/encrypt.port';
 import bcrypt from 'bcryptjs';
 
 export class BcryptJsEncryptStrategy implements IEncryptStrategy {

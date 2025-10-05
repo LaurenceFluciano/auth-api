@@ -28,8 +28,8 @@ export class User extends Entity {
     super(id);
   }
 
-  public addAuthMethod<T extends keyof TAuths>(type: T, method: TAuths[T]) {
-    this.auths[type] = method;
+  public addAuthMethod(newAuth: TAuths) {
+    this.auths = { ...this.auths, ...newAuth };
   }
 
   public removeAuthMethod<T extends keyof TAuths>(type: T) {

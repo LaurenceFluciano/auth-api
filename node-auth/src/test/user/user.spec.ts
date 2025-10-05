@@ -37,7 +37,7 @@ describe('User Entity', () => {
       const error = result.value;
       expect(error).toBeInstanceOf(DomainException);
       expect(error).toBeInstanceOf(InvalidUserException);
-      expect(error.errors.fields.length).toBeGreaterThan(0);
+      expect(error.fields.length).toBeGreaterThan(0);
     }
   });
 
@@ -55,7 +55,7 @@ describe('User Entity', () => {
       const error = result.value;
       expect(error).toBeInstanceOf(DomainException);
       expect(error).toBeInstanceOf(InvalidUserException);
-      expect(error.errors.fields.length).toBeGreaterThan(0);
+      expect(error.fields.length).toBeGreaterThan(0);
     }
   });
 
@@ -73,7 +73,7 @@ describe('User Entity', () => {
       const error = result.value;
       expect(error).toBeInstanceOf(DomainException);
       expect(error).toBeInstanceOf(InvalidUserException);
-      expect(error.errors.fields.length).toBeGreaterThan(0);
+      expect(error.fields.length).toBeGreaterThan(0);
     }
   });
 

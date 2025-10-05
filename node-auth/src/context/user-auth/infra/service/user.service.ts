@@ -11,34 +11,27 @@ import { UseCaseException } from 'src/templates/context/error/application/usecas
 import { Either } from 'src/templates/context/error/others/either';
 import { TOffsetPagination } from 'src/templates/global/types/base.pagination';
 import { inject, injectable } from 'tsyringe';
-import * as encryptPort from '../../domain/ports/encrypt.port';
-import { RegisterPasswordAuthMethod } from '../../application/usecases/register.password.auth';
+import { IAuthFactory } from '../../application/factories/auth.method.factory';
 
 @injectable()
 export class UserServiceFacade {
   private createUseCase: CreateUserUseCase;
   private findUseCase: FindUserUseCase;
-  private registerPasswordAuthMethod: RegisterPasswordAuthMethod;
 
   constructor(
     @inject('IUserRepository') private repo: userRepository.IUserRepository,
-    @inject('IEncryptStrategy')
-    private encryptService: encryptPort.IEncryptStrategy,
   ) {
     this.createUseCase = new CreateUserUseCase(this.repo);
     this.findUseCase = new FindUserUseCase(this.repo);
-    this.registerPasswordAuthMethod = new RegisterPasswordAuthMethod(
-      this.repo,
-      this.encryptService,
-    );
   }
 
   public async create(
     dto: TRegisterUserDto,
+    factoryAuth?: IAuthFactory,
   ): Promise<Either<ApplicationException, Id>> {
     const userDtoOrError = RegisterUserDto.create(dto);
     if (userDtoOrError.isLeft()) return userDtoOrError;
-    return this.createUseCase.execute(userDtoOrError.value);
+    return await this.createUseCase.execute(userDtoOrError.value, factoryAuth);
   }
 
   async findAll(
@@ -58,14 +51,5 @@ export class UserServiceFacade {
     projectKey: string,
   ): Promise<Either<UseCaseException, ResponseUserDto>> {
     return this.findUseCase.findByCredential(email, projectKey);
-  }
-
-  async registerPasswordAuth(
-    userId: Id,
-    password: string,
-  ): Promise<Either<UseCaseException, null>> {
-    return await this.registerPasswordAuthMethod.register(userId, {
-      password: password,
-    });
   }
 }
