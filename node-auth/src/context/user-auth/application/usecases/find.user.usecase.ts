@@ -1,4 +1,4 @@
-import { TOffsetPagination } from 'src/templates/global/types/base.pagination';
+import { TOffsetPagination } from 'src/templates/types/base.pagination';
 import { IUserRepository } from '../../domain/ports/user.repository';
 import { ResponseUserDto } from '../dto/find.user.dto';
 import { UserIdNotDefinedUseCaseError } from '../errors/without.id.user.error';

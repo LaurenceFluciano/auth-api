@@ -1,6 +1,6 @@
 import { UserPersistence } from 'src/context/user-auth/domain/entities/type.user';
 import { IUserRepository } from 'src/context/user-auth/domain/ports/user.repository';
-import { TOffsetPagination } from 'src/templates/global/types/base.pagination';
+import { TOffsetPagination } from 'src/templates/types/base.pagination';
 import { IUserMongo, MongoUserModel } from '../schema/user.schema.mongodb';
 import { HydratedDocument } from 'mongoose';
 import { injectable } from 'tsyringe';

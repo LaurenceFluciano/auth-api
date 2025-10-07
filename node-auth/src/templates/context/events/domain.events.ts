@@ -1,10 +1,11 @@
+import { StaticConfigEnv } from 'src/templates/config/environment.config';
 import { DomainEvent, IDomainEventsObserver } from './event.interface';
 import { InMemoryDomainEventsObserver } from './event.observer';
 // import { ExternalBusDomainEventsObserver } from "./event.external.observer";
 
-export class DomainEventsFactory {
+export class DomainEventsFactory extends StaticConfigEnv {
   public static create(): IDomainEventsObserver {
-    const context = process.env.EVENT_CONTEXT || 'monolitic';
+    const context = this.getEnvironmentConfig().getEnv('DOMAIN_EVENT_CONTEXT');
 
     switch (context.toLowerCase()) {
       case 'monolitic':
@@ -16,16 +17,24 @@ export class DomainEventsFactory {
     }
   }
 }
-const domainEvents = DomainEventsFactory.create();
 
 export class DomainEvents {
+  private static domainEvents: IDomainEventsObserver;
+
+  public static getInstance() {
+    if (!DomainEvents.domainEvents) {
+      DomainEvents.domainEvents = DomainEventsFactory.create();
+    }
+    return DomainEvents.domainEvents;
+  }
+
   public static async dispatch(event: DomainEvent): Promise<void> {
-    await domainEvents.dispatch(event);
+    await DomainEvents.getInstance().dispatch(event);
   }
   public static async register<T extends DomainEvent>(
     eventName: string,
     handler: (event: T) => Promise<void>,
   ): Promise<void> {
-    await domainEvents.register(eventName, handler);
+    await DomainEvents.getInstance().register(eventName, handler);
   }
 }

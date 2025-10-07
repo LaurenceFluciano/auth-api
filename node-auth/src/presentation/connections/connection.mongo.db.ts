@@ -1,17 +1,22 @@
-import { IConnectionDatabase } from './connection.interface';
+import { IConnectionDatabase } from '../../templates/connections/connection.interface';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { ConfigError } from 'src/templates/context/error/others/config.error';
+import { StaticConfigEnv } from '../../templates/config/environment.config';
 dotenv.config();
 
-export class MongooseConnectionDatabase implements IConnectionDatabase {
+export class MongooseConnectionDatabase
+  extends StaticConfigEnv
+  implements IConnectionDatabase
+{
   private getConfig(): {
     uri: string;
   } {
-    const { DB_CONN_STRING } = process.env;
-    if (!DB_CONN_STRING)
-      throw new ConfigError('Mongodb connection string is not defined.');
-    return { uri: DB_CONN_STRING };
+    const uri =
+      MongooseConnectionDatabase.getEnvironmentConfig().getEnv(
+        'DB_CONN_STRING',
+      );
+    return { uri };
   }
 
   async connect(): Promise<void> {

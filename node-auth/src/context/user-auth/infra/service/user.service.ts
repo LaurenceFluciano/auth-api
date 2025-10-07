@@ -9,7 +9,7 @@ import * as userRepository from 'src/context/user-auth/domain/ports/user.reposit
 import { ApplicationException } from 'src/templates/context/error/application/application.error';
 import { UseCaseException } from 'src/templates/context/error/application/usecase.error';
 import { Either } from 'src/templates/context/error/others/either';
-import { TOffsetPagination } from 'src/templates/global/types/base.pagination';
+import { TOffsetPagination } from 'src/templates/types/base.pagination';
 import { inject, injectable } from 'tsyringe';
 import { IAuthFactory } from '../../application/factories/auth.method.factory';
 

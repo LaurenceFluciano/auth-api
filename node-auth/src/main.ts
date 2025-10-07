@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import express from 'express';
 import { userRouter } from './presentation/routes/user.routes';
-import { factoryConnectionDatabase } from './templates/global/config/config.main';
+import { factoryConnectionDatabase } from './templates/config/config.main';
 import { handlerError } from './presentation/errors/handler.errors';
 import { authRouter } from './presentation/routes/auth.routes';
 const app = express();

@@ -1,4 +1,4 @@
-import { TOffsetPagination } from 'src/templates/global/types/base.pagination';
+import { TOffsetPagination } from 'src/templates/types/base.pagination';
 
 export interface ICreateRepository<TEntity> {
   add(input: TEntity): MaybePromise<Id | null>;

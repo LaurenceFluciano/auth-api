@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { collections } from 'src/templates/global/config/config.collections.mongodb';
+import { collections } from 'src/templates/config/config.collections.mongodb';
 import { UserPersistence } from 'src/context/user-auth/domain/entities/type.user';
 
 export interface IUserMongo extends Omit<UserPersistence, 'id'> {
