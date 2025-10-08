@@ -1,6 +1,5 @@
 import { ConfigError } from 'src/templates/context/error/others/config.error';
 import { IConnectionDatabase } from '../connections/connection.interface';
-import { MongooseConnectionDatabase } from '../../presentation/connections/connection.mongo.db';
 
 export class DatabaseConfig {
   private static databases: Record<string, new () => IConnectionDatabase> = {};
@@ -18,5 +17,3 @@ export class DatabaseConfig {
     return new DatabaseConfig.databases[database]();
   }
 }
-
-DatabaseConfig.setDatabase('mongoose', MongooseConnectionDatabase);

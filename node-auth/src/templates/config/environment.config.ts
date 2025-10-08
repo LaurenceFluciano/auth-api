@@ -16,12 +16,20 @@ export interface IEnvironmentConfig {
   getEnv(key: string): string;
 
   /**
+   * Obtém varias variáveis de ambiente ou configuração.
+   * @param {string} keys - As chaves da configuração a ser buscada (ex: 'DB_CONN_STRING').
+   * @returns {string} O valor da configuração.
+   * @throws {ConfigError} Se a chave não for encontrada ou o valor for nulo/vazio.
+   */
+  getManyEnv(...keys: string[]): string[];
+
+  /**
    * Define um valor de ambiente para fins de teste ou inicialização em runtime.
    * (Pode ser opcional dependendo da sua necessidade).
-   * @param {string} key - A chave a ser definida.
-   * @param {string} value - O valor a ser atribuído.
+   * @param {string} envName - A chave a ser definida.
+   * @param {string} alias - Um apelido amigável para usar no código
    */
-  setEnvironment(key: string, value: string);
+  setEnvironment(envName: string, alias?: string);
 }
 
 /**
