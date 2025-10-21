@@ -21,6 +21,12 @@ StaticConfigEnv.getEnvironmentConfig().setEnvironment('USER_COLLECTION_NAME');
 StaticConfigEnv.getEnvironmentConfig().setEnvironment(
   'DATABASE_USER_REPOSITORY_ADAPTER',
 );
+StaticConfigEnv.getEnvironmentConfig().setEnvironment('ACCESS_TOKEN_EXPIRE_IN');
+StaticConfigEnv.getEnvironmentConfig().setEnvironment(
+  'REFRESH_TOKEN_EXPIRE_IN',
+);
+StaticConfigEnv.getEnvironmentConfig().setEnvironment('SECRET_KEY_JWT');
+StaticConfigEnv.getEnvironmentConfig().setEnvironment('DOMAIN_EVENT_CONTEXT');
 
 async function run() {
   DatabaseConfig.setDatabase('mongoose', MongooseConnectionDatabase);

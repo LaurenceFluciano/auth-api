@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { PasswordAuthMethodFactory } from 'src/context/user-auth/application/factories/auth.password.factory';
-import { BcryptJsEncryptStrategy } from 'src/context/user-auth/infra/encrypt/bcryptjs';
+import { PasswordAuthMethodFactory } from 'src/context/auth/application/factories/auth.password.factory';
+import { BcryptJsEncryptStrategy } from 'src/context/auth/infra/service/bcryptjs';
 
 export function authFactorMiddleware(
   req: Request,

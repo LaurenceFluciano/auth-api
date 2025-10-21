@@ -1,4 +1,4 @@
-import { Email } from 'src/context/user-auth/domain/values-objects/email.vo';
+import { Email } from 'src/context/user/domain/values-objects/email.vo';
 import { FakeValidator } from './fake.external.validator';
 
 describe('Email Value Object', () => {

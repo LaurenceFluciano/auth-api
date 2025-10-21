@@ -1,12 +1,12 @@
 import { container } from 'tsyringe';
-import { UserServiceFacade } from '../../context/user-auth/infra/service/user.service';
+import { UserServiceFacade } from '../../context/user/infra/service/user.service';
 import { RepositoryFactoryManager } from 'src/templates/factories/repository.factory.director';
 import { UserController } from '../controllers/user.controller';
-import { IUserRepository } from 'src/context/user-auth/domain/ports/user.repository';
-import { IEncryptStrategy } from 'src/context/user-auth/application/ports/encrypt.port';
-import { BcryptJsEncryptStrategy } from 'src/context/user-auth/infra/encrypt/bcryptjs';
+import { IUserRepository } from 'src/context/user/domain/ports/user.repository';
+import { IEncryptStrategy } from 'src/context/auth/application/ports/encrypt.port';
+import { BcryptJsEncryptStrategy } from 'src/context/auth/infra/service/bcryptjs';
 import { UserAuthController } from '../controllers/auth.controller';
-import { UserRepositoryFactoryMongodb } from 'src/context/user-auth/infra/database/factory/user.repository.mongodb.factory';
+import { UserRepositoryFactoryMongodb } from 'src/context/user/infra/database/factory/user.repository.mongodb.factory';
 
 RepositoryFactoryManager.setDatabase('user', UserRepositoryFactoryMongodb);
 export const bcryptjsService = new BcryptJsEncryptStrategy();

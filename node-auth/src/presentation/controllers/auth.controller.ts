@@ -1,8 +1,8 @@
 import { Response, Request } from 'express';
 import { inject, injectable } from 'tsyringe';
-import { UserAuthUseCase } from 'src/context/user-auth/application/usecases/user.auth.usecase';
-import * as userRepository from 'src/context/user-auth/domain/ports/user.repository';
-import { UserLoginPasswordStatelessService } from 'src/context/user-auth/infra/service/password.login.service';
+import { UserAuthUseCase } from 'src/context/user/application/usecases/user.auth.usecase';
+import * as userRepository from 'src/context/user/domain/ports/user.repository';
+import { UserLoginPasswordStatelessService } from 'src/context/user/infra/service/password.login.service';
 
 @injectable()
 export class UserAuthController {
